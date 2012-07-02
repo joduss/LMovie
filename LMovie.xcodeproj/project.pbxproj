@@ -18,10 +18,9 @@
 		C8F30C2A15A210C7000AB421 /* LMovie.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C8F30C2815A210C7000AB421 /* LMovie.xcdatamodeld */; };
 		C8F30C2D15A210C7000AB421 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C8F30C2C15A210C7000AB421 /* MasterViewController.m */; };
 		C8F30C3015A210C7000AB421 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C8F30C2F15A210C7000AB421 /* DetailViewController.m */; };
-		C8F30C4215A213A1000AB421 /* MovieInfoMVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8F30C4115A213A1000AB421 /* MovieInfoMVC.m */; };
 		C8F30C5115A21733000AB421 /* MovieCellHorizontal.xib in Resources */ = {isa = PBXBuildFile; fileRef = C8F30C5015A21733000AB421 /* MovieCellHorizontal.xib */; };
 		C8F30C5415A21C3C000AB421 /* MovieCellHorizontal.m in Sources */ = {isa = PBXBuildFile; fileRef = C8F30C5315A21C3C000AB421 /* MovieCellHorizontal.m */; };
-		C8F30C6715A22056000AB421 /* MovieListDVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8F30C6615A22056000AB421 /* MovieListDVC.m */; };
+		C8F30C7315A236DD000AB421 /* MovieListTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8F30C7215A236DD000AB421 /* MovieListTVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,13 +41,11 @@
 		C8F30C2C15A210C7000AB421 /* MasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
 		C8F30C2E15A210C7000AB421 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		C8F30C2F15A210C7000AB421 /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
-		C8F30C4015A213A1000AB421 /* MovieInfoMVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieInfoMVC.h; sourceTree = "<group>"; };
-		C8F30C4115A213A1000AB421 /* MovieInfoMVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieInfoMVC.m; sourceTree = "<group>"; };
 		C8F30C5015A21733000AB421 /* MovieCellHorizontal.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MovieCellHorizontal.xib; sourceTree = "<group>"; };
 		C8F30C5215A21C3C000AB421 /* MovieCellHorizontal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieCellHorizontal.h; sourceTree = "<group>"; };
 		C8F30C5315A21C3C000AB421 /* MovieCellHorizontal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieCellHorizontal.m; sourceTree = "<group>"; };
-		C8F30C6515A22056000AB421 /* MovieListDVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieListDVC.h; sourceTree = "<group>"; };
-		C8F30C6615A22056000AB421 /* MovieListDVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieListDVC.m; sourceTree = "<group>"; };
+		C8F30C7115A236DD000AB421 /* MovieListTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieListTVC.h; sourceTree = "<group>"; };
+		C8F30C7215A236DD000AB421 /* MovieListTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieListTVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,10 +95,10 @@
 		C8F30C1915A210C7000AB421 /* LMovie */ = {
 			isa = PBXGroup;
 			children = (
-				C8F30C6515A22056000AB421 /* MovieListDVC.h */,
-				C8F30C6615A22056000AB421 /* MovieListDVC.m */,
-				C8F30C4015A213A1000AB421 /* MovieInfoMVC.h */,
-				C8F30C4115A213A1000AB421 /* MovieInfoMVC.m */,
+				C8F30C7115A236DD000AB421 /* MovieListTVC.h */,
+				C8F30C7215A236DD000AB421 /* MovieListTVC.m */,
+				C8F30C2E15A210C7000AB421 /* DetailViewController.h */,
+				C8F30C2F15A210C7000AB421 /* DetailViewController.m */,
 				C8F30C2515A210C7000AB421 /* MainStoryboard.storyboard */,
 				C8F30C5515A21C42000AB421 /* Cell */,
 				C8F30C2B15A210C7000AB421 /* MasterViewController.h */,
@@ -138,8 +135,6 @@
 		C8F30C6915A22260000AB421 /* old */ = {
 			isa = PBXGroup;
 			children = (
-				C8F30C2E15A210C7000AB421 /* DetailViewController.h */,
-				C8F30C2F15A210C7000AB421 /* DetailViewController.m */,
 			);
 			name = old;
 			path = LMovie;
@@ -213,9 +208,8 @@
 				C8F30C2A15A210C7000AB421 /* LMovie.xcdatamodeld in Sources */,
 				C8F30C2D15A210C7000AB421 /* MasterViewController.m in Sources */,
 				C8F30C3015A210C7000AB421 /* DetailViewController.m in Sources */,
-				C8F30C4215A213A1000AB421 /* MovieInfoMVC.m in Sources */,
 				C8F30C5415A21C3C000AB421 /* MovieCellHorizontal.m in Sources */,
-				C8F30C6715A22056000AB421 /* MovieListDVC.m in Sources */,
+				C8F30C7315A236DD000AB421 /* MovieListTVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
