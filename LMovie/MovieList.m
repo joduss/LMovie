@@ -1,18 +1,19 @@
 //
-//  MovieInfoMVC.m
+//  MovieList.m
 //  LMovie
 //
 //  Created by Jonathan Duss on 02.07.12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "MovieInfoMVC.h"
+#import "MovieList.h"
 
-@interface MovieInfoMVC ()
+@interface MovieList ()
 
 @end
 
-@implementation MovieInfoMVC
+@implementation MovieList
+@synthesize buttonT = _buttonT;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -26,7 +27,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+    UIViewController *vc = [sb instantiateViewControllerWithIdentifier:@"test"];    
+    
+    
+    [self.view bringSubviewToFront:[vc.view viewWithTag:10]];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -36,6 +41,7 @@
 
 - (void)viewDidUnload
 {
+    [self setButtonT:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -43,7 +49,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return (interfaceOrientation == UIInterfaceOrientationLandscapeLeft);
 }
 
 #pragma mark - Table view data source
@@ -124,4 +130,16 @@
      */
 }
 
+UIPopoverController *pop;
+
+
+- (IBAction)coucou:(id)sender {
+        
+        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+        UIViewController *vc = [sb instantiateViewControllerWithIdentifier:@"test"];    
+
+    
+    [self.view bringSubviewToFront:[vc.view viewWithTag:10]];
+
+}
 @end
