@@ -19,6 +19,8 @@
 @property (nonatomic, strong) NSString * title;
 @property (nonatomic, strong) NSNumber * viewed;
 @property (nonatomic, strong) NSNumber * year;
+@property (nonatomic, strong) NSString *language;
+@property (nonatomic, strong) NSString *subtitle;
 
 
 /**

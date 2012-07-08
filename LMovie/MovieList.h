@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MovieManager.h"
 
-@interface MovieList : UITableViewController
+@interface MovieList : UITableViewController <NSFetchedResultsControllerDelegate>
 - (IBAction)coucou:(id)sender;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *buttonT;
+
 
 @end

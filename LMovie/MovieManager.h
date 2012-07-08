@@ -8,10 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "MyMovie.h";
+#import "MyMovie.h"
 
 @interface MovieManager : NSObject
-@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 - (void)insertNewMovie:(MyMovie *)movie;
 

@@ -1,13 +1,13 @@
 //
-//  MovieListTVC.h
+//  infoViewPanel.h
 //  LMovie
 //
-//  Created by Jonathan Duss on 02.07.12.
+//  Created by Jonathan Duss on 08.07.12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface MovieListTVC : UITableViewController
+@interface infoViewPanel : UIView
 
 @end
