@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MovieManager.h"
 
-@interface MovieEditorTVC : UITableView
-
+@interface MovieEditorTVC : UITableViewController
+@property Movie *movieToEdit;
+@property MovieManager *movieManager;
 @end

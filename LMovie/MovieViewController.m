@@ -136,8 +136,8 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if([segue.identifier isEqualToString:@"segue to new movieEditorTVC"]){
-        NSLog(@"segue to newMovieEditorTVC");
+    if([segue.identifier isEqualToString:@"segue to new MovieEditorTVC"]){
+        NSLog(@"segue to new MovieEditorTVC");
         UIViewController *view = segue.destinationViewController;
         [view setContentSizeForViewInPopover:CGSizeMake(500, 500)];
         UIPopoverController *pc = [(UIStoryboardPopoverSegue *)segue popoverController];
