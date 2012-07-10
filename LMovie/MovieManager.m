@@ -13,7 +13,7 @@
 @implementation MovieManager
 
 //@synthesize fetchedResultsController = __fetchedResultsController;
-@synthesize managedObjectContext = __managedObjectContext;
+@synthesize managedObjectContext = _managedObjectContext;
 
 
 
@@ -43,8 +43,29 @@
     }
 }*/
 
+- (Movie *)newMovieWithTitle:(NSString *)title genre:(NSString *)genre year:(NSNumber *)year director:(NSString *)director picture:(NSData *)picture actors:(NSString *)actors duration:(NSNumber *)duration language:(NSString *)language subtitle:(NSString *)subtitle userRate:(NSNumber *)userRate tmdbRate:(NSNumber *)tmdbRate viewed:(BOOL)viewed comment:(NSString *)comment
+{
 
--(void)insertNewMovie:(MyMovie *)movie
+    Movie *newMovie = [NSEntityDescription insertNewObjectForEntityForName:@"Movie" inManagedObjectContext:_managedObjectContext];
+    
+    newMovie.title = title;
+    newMovie.genre = genre;
+    newMovie.year = year;
+    newMovie.picture = picture;
+    newMovie.director = director;
+    newMovie.actors = actors;
+    newMovie.user_rate = userRate;
+    newMovie.user_rate = userRate;
+    newMovie.viewed = [NSNumber numberWithInt:viewed];
+    newMovie.comment = comment;
+    newMovie.subtitle = subtitle;
+    newMovie.language = language;
+    newMovie.duration = duration;
+    
+    return newMovie;
+}
+
+/*-(void)insertNewMovie:(MyMovie *)movie
 {
     NSManagedObjectContext *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"Movie" inManagedObjectContext:self.managedObjectContext];
     
@@ -53,7 +74,7 @@
     for (NSString *key in [info allKeys]) {
         [newManagedObject setValue:[info valueForKey:key] forKey:key];
     }
-}
+}*/
 
 
 

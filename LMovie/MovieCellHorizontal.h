@@ -9,11 +9,18 @@
 #import <UIKit/UIKit.h>
 
 @interface MovieCellHorizontal : UITableViewCell
-@property (strong, nonatomic) IBOutlet UILabel *title;
-@property (strong, nonatomic) IBOutlet UILabel *year;
-@property (strong, nonatomic) IBOutlet UILabel *director;
-@property (strong, nonatomic) IBOutlet UILabel *actor;
-@property (strong, nonatomic) IBOutlet UILabel *viewed;
-@property (strong, nonatomic) IBOutlet UILabel *rate;
+@property IBOutlet UIImageView *picture;
+@property IBOutlet UILabel *title;
+@property IBOutlet UILabel *year;
+@property IBOutlet UILabel *duration;
+@property IBOutlet UILabel *labelBeforeUserRate;
+@property IBOutlet UILabel *labelBeforetmdbRate;
+@property IBOutlet UIImageView *userRate;
+@property IBOutlet UIImageView *tmdbRate;
+@property IBOutlet UILabel *director;
+@property IBOutlet UILabel *actor;
+@property IBOutlet UILabel *viewed;
+@property IBOutlet UIImageView *viewedPicture;
+
 
 @end

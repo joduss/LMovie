@@ -4,16 +4,18 @@
         <attribute name="actors" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="comment" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="director" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="duration" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="genre" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="language" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="picture" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="rate" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="subtitle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tmdb_rate" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="user_rate" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="viewed" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="year" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Movie" positionX="160" positionY="192" width="128" height="210"/>
+        <element name="Movie" positionX="160" positionY="192" width="128" height="240"/>
     </elements>
 </model>

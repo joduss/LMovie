@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MovieCellHorizontal.h"
+#import "infoViewPanel.h"
 
-@interface MovieViewController : UIViewController
+@interface MovieViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *connard;
 - (IBAction)fuck:(id)sender;
-@property (strong, nonatomic) IBOutlet UIView *detailPanel;
+@property (strong, nonatomic) IBOutlet UIScrollView *detailPanel;
 
 @end

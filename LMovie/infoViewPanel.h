@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MyMovie.h"
 
 @interface infoViewPanel : UIView
 

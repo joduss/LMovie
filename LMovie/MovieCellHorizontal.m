@@ -9,12 +9,18 @@
 #import "MovieCellHorizontal.h"
 
 @implementation MovieCellHorizontal
+@synthesize picture = _picture;
 @synthesize title = _title;
 @synthesize year = _year;
+@synthesize duration = _duration;
+@synthesize labelBeforeUserRate = _labelBeforeUserRate;
+@synthesize labelBeforetmdbRate = _labelBeforetmdbRate;
+@synthesize userRate = _userRate;
+@synthesize tmdbRate = _tmdbRate;
 @synthesize director = _director;
-@synthesize actor = _actor;
+@synthesize actor =_actor;
 @synthesize viewed = _viewed;
-@synthesize rate = _rate;
+@synthesize viewedPicture = _viewedPicture;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

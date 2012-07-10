@@ -2,7 +2,7 @@
 //  Movie.m
 //  LMovie
 //
-//  Created by Jonathan Duss on 06.07.12.
+//  Created by Jonathan Duss on 09.07.12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
@@ -14,11 +14,15 @@
 @dynamic actors;
 @dynamic comment;
 @dynamic director;
+@dynamic duration;
 @dynamic genre;
+@dynamic language;
 @dynamic picture;
-@dynamic rate;
+@dynamic user_rate;
+@dynamic subtitle;
 @dynamic title;
 @dynamic viewed;
 @dynamic year;
+@dynamic tmdb_rate;
 
 @end

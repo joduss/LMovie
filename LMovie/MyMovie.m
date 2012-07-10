@@ -21,9 +21,10 @@
 @synthesize comment = _comment;
 @synthesize subtitle = _subtitle;
 @synthesize language = _language;
+@synthesize duration = _duration;
 
 
-- (id)initWithTitle:(NSString *)title genre:(NSString *)genre year:(NSNumber *)year director:(NSString *)director picture:(NSData *)picture actors:(NSString *)actors language:(NSString *)language subtitle:(NSString *)subtitle rate:(NSNumber *)rate viewed:(BOOL)viewed comment:(NSString *)comment
+- (id)initWithTitle:(NSString *)title genre:(NSString *)genre year:(NSNumber *)year director:(NSString *)director picture:(NSData *)picture actors:(NSString *)actors duration:(NSNumber *)duration language:(NSString *)language subtitle:(NSString *)subtitle rate:(NSNumber *)rate viewed:(BOOL)viewed comment:(NSString *)comment
 {
     self = [super init];
     _title = title;
@@ -37,6 +38,7 @@
     _comment = comment;
     _subtitle = subtitle;
     _language = language;
+    _duration = duration;
     
     return self;
 }
@@ -54,8 +56,9 @@
                           self.title, @"title",
                           self.viewed, @"viewed",
                           self.year, @"year",
-                          self.subtitle = @"subtitle",
-                          self.language = @"language",
+                          self.subtitle , @"subtitle",
+                          self.language , @"language",
+                          self.duration , @"duration",
                           nil];
 }
 
@@ -139,6 +142,13 @@
 {
     if(_subtitle == nil)
         _subtitle = @"";
+}
+
+-(NSNumber *)duration
+{
+    if(_duration ==nil)
+        _duration = [NSNumber numberWithInt:0];
+    return _duration;
 }
 
 

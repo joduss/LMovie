@@ -10,13 +10,18 @@
 
 @implementation infoViewPanel
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if ((self = [super initWithCoder:aDecoder])) {
+       /* UIView *view = [[[NSBundle mainBundle] loadNibNamed:@"infoView" owner:self options:nil] objectAtIndex:0];
+        [self addSubview: view];*/
     }
+    NSLog(@"infoViewPanel loaded");
     return self;
+}
+
+- (void)awakeFromNib
+{
+    NSLog(@"awake form nib");
 }
 
 
