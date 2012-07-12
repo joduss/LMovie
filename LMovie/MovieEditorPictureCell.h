@@ -10,8 +10,8 @@
 
 @interface MovieEditorPictureCell : UITableViewCell
 
-@property (nonatomic, strong) IBOutlet UIImageView *imageViewHere;
-@property (nonatomic, strong) UIImage *image;
+@property (nonatomic, strong) IBOutlet UIImageView *cellImageView;
+@property (nonatomic, strong) UIImage *cellImage;
 @property (nonatomic, strong) NSString *keyAssociated;
 -(IBAction)selectImage:(UIButton*)sender;
 @end

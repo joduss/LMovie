@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<array>
+		<dict>
+			<key>picture</key>
+			<dict>
+				<key>placeHolder</key>
+				<string>Choose a picture</string>
+				<key>infoLabel</key>
+				<string>Choose a picture</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>title</key>
+			<dict>
+				<key>placeHolder</key>
+				<string>Enter the title</string>
+				<key>infoLabel</key>
+				<string>Title</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>year</key>
+			<dict>
+				<key>placeHolder</key>
+				<string>Enter the release year</string>
+				<key>infoLabel</key>
+				<string>Release year</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>duration</key>
+			<dict>
+				<key>placeHolder</key>
+				<string>Enter the playing time</string>
+				<key>infoLabel</key>
+				<string>Playing time</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>genre</key>
+			<dict>
+				<key>placeHolder</key>
+				<string>enter the Genre</string>
+				<key>infoLabel</key>
+				<string>Genre</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>director</key>
+			<dict>
+				<key>placeHolder</key>
+				<string>Enter the director(s)</string>
+				<key>infoLabel</key>
+				<string>Director</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>actor</key>
+			<dict>
+				<key>placeHolder</key>
+				<string>Enter the main actor(s)</string>
+				<key>infoLabel</key>
+				<string>Actors</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>tmdb_rate</key>
+			<dict>
+				<key>placeHolder</key>
+				<string>Enter the rate</string>
+				<key>infoLabel</key>
+				<string>Rate</string>
+			</dict>
+		</dict>
+	</array>
+	<array>
+		<dict>
+			<key>language</key>
+			<dict>
+				<key>placeHolder</key>
+				<string>Enter the available language(s)</string>
+				<key>infoLabel</key>
+				<string>Language</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>subtitle</key>
+			<dict>
+				<key>placeHolder</key>
+				<string>Enter the available subtitle(s)</string>
+				<key>infoLabel</key>
+				<string>Subtitle</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>user_rate</key>
+			<dict>
+				<key>placeHolder</key>
+				<string>Enter your rate</string>
+				<key>infoLabel</key>
+				<string>Your Rate</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>viewed</key>
+			<dict>
+				<key>placeHolder</key>
+				<string>Already watched?</string>
+				<key>infoLabel</key>
+				<string>Already watched?</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<dict>
+				<key>placeHolder</key>
+				<string>Enter any comment about the movie</string>
+				<key>infoLabel</key>
+				<string>Comment</string>
+			</dict>
+		</dict>
+	</array>
+</array>
+</plist>

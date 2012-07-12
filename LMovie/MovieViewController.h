@@ -9,10 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "MovieCellHorizontal.h"
 #import "infoViewPanel.h"
+#import "Utilities.h"
+#import "MovieEditorTVC.h"
 
-@interface MovieViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface MovieViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MovieEditorDelegate>
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *connard;
 - (IBAction)fuck:(id)sender;
 @property (strong, nonatomic) IBOutlet UIScrollView *detailPanel;
+- (IBAction)addAMovieButtonPressed:(UIBarButtonItem *)sender;
 
 @end

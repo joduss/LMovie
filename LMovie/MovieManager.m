@@ -55,7 +55,7 @@
     newMovie.director = director;
     newMovie.actors = actors;
     newMovie.user_rate = userRate;
-    newMovie.user_rate = userRate;
+    newMovie.tmdb_rate = tmdbRate;
     newMovie.viewed = [NSNumber numberWithInt:viewed];
     newMovie.comment = comment;
     newMovie.subtitle = subtitle;
@@ -64,6 +64,9 @@
     
     return newMovie;
 }
+
+
+
 
 /*-(void)insertNewMovie:(MyMovie *)movie
 {

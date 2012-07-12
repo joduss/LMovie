@@ -138,15 +138,34 @@
 {
     if([segue.identifier isEqualToString:@"segue to new MovieEditorTVC"]){
         NSLog(@"segue to new MovieEditorTVC");
-        UIViewController *view = segue.destinationViewController;
-        [view setContentSizeForViewInPopover:CGSizeMake(500, 500)];
+        MovieEditorTVC *view = [[segue.destinationViewController viewControllers] lastObject];
+        [view setContentSizeForViewInPopover:CGSizeMake(500, 630)];
         UIPopoverController *pc = [(UIStoryboardPopoverSegue *)segue popoverController];
-        [pc setPopoverContentSize:CGSizeMake(500, 500)];
-        
+        [pc setPopoverContentSize:CGSizeMake(500, 630)];
+        view.delegate = self;
     }
         
 }
 
+- (IBAction)addAMovieButtonPressed:(UIBarButtonItem *)sender {
+    [self performSegueWithIdentifier:@"segue to new MovieEditorTVC" sender:sender];
+}
+
+
+
+
+/*******
+ Delegate Methode de MovieEditorDelegate
+ *******/
+- (void)actionExecuted:(ActionDone)action
+{
+    if(action == ActionReset){
+    }
+    else if(action == ActionSave){
+
+
+    }
+}
 
 /**************
  GESTION TABLEVIEW
@@ -179,6 +198,7 @@
     
     return cell;
 }
+
 
 
 
