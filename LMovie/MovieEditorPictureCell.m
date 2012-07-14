@@ -24,6 +24,12 @@
     // Configure the view for the selected state
 }
 
+-(void)setCellImage:(UIImage *)cellImage
+{
+    _cellImage = cellImage;
+    [_cellImageView setImage:cellImage];
+}
+
 
 
 

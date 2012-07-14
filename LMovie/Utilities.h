@@ -1,18 +1,18 @@
 //
-//  Utilities.h
+//  utilities2.h
 //  LMovie
 //
-//  Created by Jonathan Duss on 11.07.12.
+//  Created by Jonathan Duss on 12.07.12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#ifndef LMovie_Utilities_h
-#define LMovie_Utilities_h
+#import <Foundation/Foundation.h>
+
+
 typedef enum ActionDoneIn {
     ActionReset = 0,
     ActionSave = 1,
 } ActionDone;
 
-
-
-#endif
+@interface utilities : NSObject
+@end

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Movie.h"
 
 @interface MovieCellHorizontal : UITableViewCell
 @property IBOutlet UIImageView *picture;
@@ -21,6 +22,7 @@
 @property IBOutlet UILabel *actor;
 @property IBOutlet UILabel *viewed;
 @property IBOutlet UIImageView *viewedPicture;
+-(void)configureCellWithMovie:(Movie *)movie;
 
 
 @end

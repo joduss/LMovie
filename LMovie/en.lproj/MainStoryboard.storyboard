@@ -227,8 +227,8 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
                         <outlet property="detailPanel" destination="77r-q7-O7a" id="Aj3-a4-oDF"/>
-                        <outlet property="tableview" destination="HQW-ra-dFg" id="RuZ-KB-vLy"/>
-                        <segue destination="8pz-B3-aM3" kind="popover" identifier="segue to new MovieEditorTVC" popoverAnchorBarButtonItem="blY-H0-mxX" id="tnx-eW-P1N">
+                        <outlet property="tableView" destination="HQW-ra-dFg" id="dJd-UI-Bz2"/>
+                        <segue destination="8pz-B3-aM3" kind="popover" identifier="segue to MovieEditorTVC to create movie" popoverAnchorBarButtonItem="blY-H0-mxX" id="tnx-eW-P1N">
                             <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                         </segue>
                     </connections>
@@ -534,7 +534,7 @@
                 <relationship kind="action" name="fuck:"/>
                 <relationship kind="outlet" name="connard" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="detailPanel" candidateClass="UIScrollView"/>
-                <relationship kind="outlet" name="tableview" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
             </relationships>
         </class>
     </classes>

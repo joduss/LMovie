@@ -12,10 +12,11 @@
 #import "Utilities.h"
 #import "MovieEditorTVC.h"
 
-@interface MovieViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MovieEditorDelegate>
+@interface MovieViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MovieEditorDelegate, NSFetchedResultsControllerDelegate>
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *connard;
 - (IBAction)fuck:(id)sender;
 @property (strong, nonatomic) IBOutlet UIScrollView *detailPanel;
 - (IBAction)addAMovieButtonPressed:(UIBarButtonItem *)sender;
+@property IBOutlet UITableView *tableView;
 
 @end

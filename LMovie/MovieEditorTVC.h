@@ -19,5 +19,7 @@
 @property (nonatomic, weak) id <MovieEditorDelegate> delegate;
 - (IBAction)resetButtonPressed:(UIBarButtonItem *)sender;
 - (IBAction)saveButtonPressed:(UIBarButtonItem *)sender;
+@property (nonatomic, weak) UIPopoverController *popover;
+
 
 @end

@@ -9,9 +9,7 @@
 #import "MovieEditorTVC.h"
 
 @interface MovieEditorTVC ()
-@property (nonatomic, weak) UIPopoverController *popover;
-@property BOOL isReseting;
-@property (nonatomic, strong) NSDictionary *valueEntered;
+@property (nonatomic, strong) NSMutableDictionary *valueEntered;
 @end
 
 @implementation MovieEditorTVC
@@ -19,20 +17,31 @@
 @synthesize movieManager = _movieManager;
 @synthesize delegate = _delegate;
 @synthesize popover = _popover; 
-@synthesize isReseting = _isReseting;
 @synthesize valueEntered = _valueEntered;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.title = @"Add a movie";
-    self.isReseting = NO;
+    _valueEntered = [[NSMutableDictionary alloc] init];
+    [self.tableView setAllowsSelection:NO];
+    
+}
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if(_movieToEdit != nil){
+        self.title = @"Modify informations";
+        for(NSString *key in _movieManager.allKey){
+            if([key isEqualToString:@"picture"]){
+                [_valueEntered setValue:[UIImage imageWithData:_movieToEdit.picture] forKey:@"picture"];
+            }
+            else {
+                [_valueEntered setValue:[[_movieToEdit valueForKey:key] description] forKey:key];
+            }
+        }
+    }
 }
 
 
@@ -76,6 +85,14 @@
     if(indexPath.section == 0 && row == 0){
             identifier = @"picture cell";
             MovieEditorPictureCell * cell = (MovieEditorPictureCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
+        if([_valueEntered valueForKey:@"picture"] == nil){
+            cell.cellImage = [UIImage imageWithContentsOfFile:@"emptyartwork.jpg"];
+        }
+        else {
+            cell.cellImage = [_valueEntered valueForKey:@"picture"];
+        }
+        
+        
             return cell;
     }
     else {
@@ -92,11 +109,13 @@
         
         //NSLog(@"Array %@", sectionArray);
         //NSLog(@"Populating cell: key %@, value: %@", key, value);
-        cell.textField.text = [_valueEntered valueForKey:key];
+        cell.textField.text = [self.valueEntered valueForKey:key];
         cell.infoLabel.text = [dicoWithInfo valueForKey:@"infoLabel"];
-        [cell setAssociatedKey:key];
         cell.textField.placeholder = [dicoWithInfo valueForKey:@"placeHolder"];
+        [cell setAssociatedKey:key];
         cell.textField.delegate = self;
+        
+        NSLog(@"Load key: %@, value: %@", key, [self.valueEntered valueForKey:key]);
         
         return cell;
     }
@@ -129,96 +148,76 @@
     }
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
 
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
+
+
 
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
-}
 
+#pragma mark - IBAction methods
 - (IBAction)resetButtonPressed:(UIBarButtonItem *)sender {
     //[_delegate actionExecuted:ActionReset];
-    _isReseting = YES;
-    [self.tableView reloadData];
-    _isReseting = NO;
+    _valueEntered = [[NSMutableDictionary alloc] init];
 }
 
 - (IBAction)saveButtonPressed:(UIBarButtonItem *)sender {
     
     BOOL error1 = NO;
+    BOOL error2 = NO;
     
+    [self.view endEditing:YES];
+    
+    //test: title est différente de rien
     NSString *test1 = [_valueEntered valueForKey:@"title"];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[^a-zA-Z0-9]"];
-
     error1 = [test1 isEqualToString:@""] || test1 == nil || [predicate evaluateWithObject:test1]; 
     
     if(error1){
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Erreur" 
                                                        message:@"Title cannot be empty" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+    } else {
+        
+        //Test de la condition: année est un nombre
+        NSString *test2 = [_valueEntered valueForKey:@"year"];
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        error2 = ([formatter numberFromString:test2] == nil);
+        //NSLog(@"From %@ -> formater -> %@", test2, [formatter numberFromString:test2]);
+        if (error2) {
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Erreur" 
+                                                           message:@"Year must be a number" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
     }
     
-    NSString *test2 = [_valueEntered valueForKey:@"year"];
-    NSNumberFormatter *formatter;
-    BOOL error2 = [formatter numberFromString:test2] == nil;
-    if (error2) {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Erreur" 
-                                                       message:@"Year must be a number" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
+    if(error1 != YES && error2 != YES){
+        NSLog(@"SavebuttonPressed: no error up here");
+        
+        //si le film à éditer existe, on modifie l'objet, sinon, crée un nouveau objet
+        if(_movieToEdit == nil){
+        [_movieManager insertMovieWithInformations:_valueEntered];
+        }
+        else {
+            [_movieManager modifyMovie:_movieToEdit WithInformations:_valueEntered];
+        }
+        [self.popover dismissPopoverAnimated:YES];
     }
 
     
 }
 
+
+
+
+#pragma mark - textfield delegate methods
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
     MovieEditorGeneralCell *cell = (MovieEditorGeneralCell *) [[textField superview] superview];
     [_valueEntered setValue:textField.text forKey:cell.associatedKey];
+    NSLog(@"Value Entered set for: key: %@ and value: %@", cell.associatedKey, textField.text);
 }
 
 @end

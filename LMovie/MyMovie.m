@@ -142,6 +142,7 @@
 {
     if(_subtitle == nil)
         _subtitle = @"";
+    return _subtitle;
 }
 
 -(NSNumber *)duration

@@ -34,8 +34,28 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
+}
 
-    // Configure the view for the selected state
+
+-(void)configureCellWithMovie:(Movie *)movie{
+#warning - uncomplete definition
+    [_picture setImage:[UIImage imageWithData:movie.picture]];
+    _title.text = movie.title;
+    _year.text = [movie.year stringValue];
+    _duration.text = [movie.duration stringValue];
+    
+    //USER RATE
+    //TMDBRATE
+    
+    _director.text = movie.director;
+    _actor.text = movie.actors;
+    _viewed.text = [movie.viewed stringValue];
+    
+    //VIEWED PICTURe
+    
+    
+    
+    
 }
 
 @end
