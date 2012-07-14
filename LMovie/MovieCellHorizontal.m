@@ -39,7 +39,15 @@
 
 -(void)configureCellWithMovie:(Movie *)movie{
 #warning - uncomplete definition
-    [_picture setImage:[UIImage imageWithData:movie.picture]];
+    if(movie.picture == nil){
+        NSLog(@"Picture nil");
+        NSString *file = [[NSBundle mainBundle] pathForResource:@"emptyartwork_mini" ofType:@"jpg"];
+        [_picture setImage:[UIImage imageWithContentsOfFile:file]]; 
+    }
+    else {
+        NSLog(@"Picture non nil");
+        [_picture setImage:[UIImage imageWithData:movie.picture]];
+    }
     _title.text = movie.title;
     _year.text = [movie.year stringValue];
     _duration.text = [movie.duration stringValue];

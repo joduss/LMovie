@@ -80,13 +80,14 @@
     //NSLog(@"section: %d, row: %d ", indexPath.section, indexPath.row);
     
     int row = indexPath.row;
-    NSString *identifier = @"";
+    NSString *identifier = @""; //rempli plus tard
     
     if(indexPath.section == 0 && row == 0){
             identifier = @"picture cell";
             MovieEditorPictureCell * cell = (MovieEditorPictureCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
         if([_valueEntered valueForKey:@"picture"] == nil){
-            cell.cellImage = [UIImage imageWithContentsOfFile:@"emptyartwork.jpg"];
+            NSString *file = [[NSBundle mainBundle] pathForResource:@"emptyartwork_big" ofType:@"jpg"];
+            cell.cellImage = [UIImage imageWithContentsOfFile:file];
         }
         else {
             cell.cellImage = [_valueEntered valueForKey:@"picture"];
