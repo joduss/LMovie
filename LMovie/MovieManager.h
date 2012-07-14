@@ -28,5 +28,7 @@
 
 -(void)modifyMovie:(Movie *)movie WithInformations:(NSDictionary *)info;
 
+-(void)deleteMovie:(Movie *)movie;
+
 
 @end

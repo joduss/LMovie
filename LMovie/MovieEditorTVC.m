@@ -202,6 +202,7 @@
         }
         else {
             [_movieManager modifyMovie:_movieToEdit WithInformations:_valueEntered];
+            [_delegate actionExecuted:ActionSaveModification];
         }
         [self.popover dismissPopoverAnimated:YES];
     }

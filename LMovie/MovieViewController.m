@@ -222,9 +222,11 @@
 {
     if(action == ActionReset){
     }
-    else if(action == ActionSave){
-
-
+    else if(action == ActionSaveModification){
+        NSIndexPath *path = [_tableView indexPathForSelectedRow];
+        MovieCellHorizontal *cell = (MovieCellHorizontal *)[_tableView cellForRowAtIndexPath:path];
+        cell.backgroundColor = [UIColor lightGrayColor];
+        [_tableView deselectRowAtIndexPath:path animated:NO];
     }
 }
 
@@ -256,7 +258,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        //add code here for when you hit delete
+        [_movieManager deleteMovie:[_fetchedResultsController objectAtIndexPath:indexPath]];
     }    
 }
 

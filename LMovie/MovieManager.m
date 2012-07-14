@@ -166,6 +166,11 @@
 }*/
 
 
+-(void)deleteMovie:(Movie *)movie{
+    [_managedObjectContext deleteObject:movie];
+}
+
+
 
 
 @end

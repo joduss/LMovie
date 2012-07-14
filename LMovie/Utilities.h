@@ -11,7 +11,8 @@
 
 typedef enum ActionDoneIn {
     ActionReset = 0,
-    ActionSave = 1,
+    ActionSaveNew = 1,
+    ActionSaveModification = 2
 } ActionDone;
 
 @interface utilities : NSObject
