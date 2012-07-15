@@ -112,7 +112,8 @@
     
     [self.tableView reloadData];
     //UIView *view = [[infoViewPanel alloc] init];
-    infoViewPanel* view = [[[NSBundle mainBundle] loadNibNamed:@"infoView" owner:self options:nil] objectAtIndex:0];
+    //infoViewPanel* view = [[[NSBundle mainBundle] loadNibNamed:@"infoView" owner:self options:nil] objectAtIndex:0];
+    UIView *view = [_connard2.subviews objectAtIndex:0];
     
 
 
@@ -229,6 +230,11 @@
         [_tableView deselectRowAtIndexPath:path animated:NO];
     }
 }
+
+
+
+
+
 
 /**************
  GESTION TABLEVIEW
@@ -362,10 +368,35 @@
 
 
 
+-(void)showMeAgain:(UIViewController *)vc{
+}
 
 
 
 
 
+
+- (IBAction)coucou:(id)sender {
+    /*infoViewPanel* view = [[[NSBundle mainBundle] loadNibNamed:@"infoView" owner:self options:nil] objectAtIndex:0];
+    view.frame =CGRectMake(100, 100, 200, 200);
+    view.bounds = CGRectMake(0, 0, 200, 200);
+    
+    UIWindow *window = [UIApplication sharedApplication].keyWindow ;
+    
+    [window addSubview:view];*/
+    [self performSegueWithIdentifier:@"bla" sender:sender];
+}
+
+
+- (IBAction)itemcoucou:(id)sender {
+    UIWindow *win = [UIApplication sharedApplication].keyWindow;
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(500, 0, 200, 600)];
+    view.backgroundColor = [UIColor blueColor];
+    
+    [self.view addSubview:view];
+    
+}
+    
 
 @end

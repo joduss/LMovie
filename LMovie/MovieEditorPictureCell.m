@@ -13,6 +13,7 @@
 @synthesize cellImageView = _cellImageView;
 @synthesize cellImage = _cellImage;
 @synthesize keyAssociated = _keyAssociated;
+@synthesize selectButton = _selectButton;
 
 
 
@@ -31,11 +32,5 @@
 }
 
 
-
-
--(IBAction)selectImage:(UIButton *)sender
-{
-    NSLog(@"selectImage...");
-}
 
 @end

@@ -148,7 +148,18 @@
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
-                    <toolbarItems/>
+                    <toolbarItems>
+                        <barButtonItem title="Coucou" id="q43-4I-Ami">
+                            <connections>
+                                <action selector="coucou:" destination="kh7-LU-hyZ" id="Lyv-ti-2d6"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="Item" id="H1J-ZK-djk">
+                            <connections>
+                                <action selector="itemcoucou:" destination="kh7-LU-hyZ" id="Y4j-LY-gcO"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" id="lKy-tx-bsY">
                         <barButtonItem key="leftBarButtonItem" systemItem="add" id="blY-H0-mxX">
                             <connections>
@@ -169,10 +180,26 @@
                         <segue destination="8pz-B3-aM3" kind="popover" identifier="segue to MovieEditorTVC to create movie" popoverAnchorBarButtonItem="blY-H0-mxX" id="tnx-eW-P1N">
                             <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                         </segue>
+                        <segue destination="FuZ-UV-OfA" kind="custom" identifier="bla" customClass="PanelSegue" id="4hi-JJ-5Rp"/>
                     </connections>
                 </viewController>
             </objects>
             <point key="canvasLocation" x="-1341" y="2759"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="oiV-DU-pyj">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SRk-rD-Ykg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="FuZ-UV-OfA" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="6bW-8Q-Rtd">
+                        <rect key="frame" x="0.0" y="20" width="1024" height="748"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    </view>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="-37" y="3429"/>
         </scene>
         <!--Movie EditorTVC-->
         <scene sceneID="eO0-7K-vpg">
@@ -192,7 +219,7 @@
                                     <rect key="frame" x="45" y="1" width="934" height="420"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="emptyartwork.jpg" id="7a2-jg-3dD">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" image="emptyartwork_big.jpg" id="7a2-jg-3dD">
                                             <rect key="frame" x="329" y="20" width="276" height="323"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES"/>
                                         </imageView>
@@ -211,6 +238,10 @@
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
+                                <connections>
+                                    <outlet property="cellImageView" destination="7a2-jg-3dD" id="NYx-66-QoF"/>
+                                    <outlet property="selectButton" destination="zDN-Qr-1V6" id="Kk3-Bf-eAZ"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="general cell movieEditor" rowHeight="45" id="3lF-d3-mcx" customClass="MovieEditorGeneralCell">
                                 <rect key="frame" x="0.0" y="476" width="1024" height="46"/>
@@ -314,7 +345,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="emptyartwork.jpg" width="1500" height="2122"/>
+        <image name="emptyartwork.jpg" width="16" height="16"/>
+        <image name="emptyartwork_big.jpg" width="600" height="849"/>
     </resources>
     <classes>
         <class className="MovieCellHorizontal" superclassName="UITableViewCell">
@@ -344,13 +376,14 @@
         <class className="MovieEditorPictureCell" superclassName="UITableViewCell">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieEditorPictureCell.h"/>
             <relationships>
-                <relationship kind="action" name="selectImage:" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="cellImageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="selectButton" candidateClass="UIButton"/>
             </relationships>
         </class>
         <class className="MovieEditorTVC" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieEditorTVC.h"/>
             <relationships>
+                <relationship kind="action" name="pickImage:"/>
                 <relationship kind="action" name="resetButtonPressed:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="action" name="saveButtonPressed:" candidateClass="UIBarButtonItem"/>
             </relationships>
@@ -359,7 +392,9 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieViewController.h"/>
             <relationships>
                 <relationship kind="action" name="addAMovieButtonPressed:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="coucou:"/>
                 <relationship kind="action" name="fuck:"/>
+                <relationship kind="action" name="itemcoucou:"/>
                 <relationship kind="outlet" name="connard" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="detailPanel" candidateClass="UIScrollView"/>
                 <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>

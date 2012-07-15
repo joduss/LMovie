@@ -12,6 +12,9 @@
 		C8252E7A15ACAEE800DF0F96 /* MovieEditorPictureCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C8252E7915ACAEE800DF0F96 /* MovieEditorPictureCell.m */; };
 		C866301D15A9B64900D0723F /* infoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C866301C15A9B64800D0723F /* infoView.xib */; };
 		C866302115A9B78900D0723F /* infoViewPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = C866302015A9B78900D0723F /* infoViewPanel.m */; };
+		C86F0B7615B2CFDF00B31602 /* PanelSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = C86F0B7515B2CFDF00B31602 /* PanelSegue.m */; };
+		C86F0B7A15B2DF0600B31602 /* InfoPanelTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C86F0B7915B2DF0500B31602 /* InfoPanelTVC.m */; };
+		C86F0B8115B2E84200B31602 /* BarButtonBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = C86F0B8015B2E84200B31602 /* BarButtonBlocks.m */; };
 		C8995C4015A7413C0000C909 /* IMG_1458.JPG in Resources */ = {isa = PBXBuildFile; fileRef = C8995C3F15A7413C0000C909 /* IMG_1458.JPG */; };
 		C8C58F8E15B1C1F6005C921A /* emptyartwork_mini.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C8C58F8C15B1C1F5005C921A /* emptyartwork_mini.jpg */; };
 		C8DAD3EF15ACC1D7004BFCEA /* MovieEditorGeneralCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DAD3EE15ACC1D6004BFCEA /* MovieEditorGeneralCell.m */; };
@@ -48,6 +51,12 @@
 		C866301C15A9B64800D0723F /* infoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = infoView.xib; sourceTree = "<group>"; };
 		C866301F15A9B78900D0723F /* infoViewPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = infoViewPanel.h; sourceTree = "<group>"; };
 		C866302015A9B78900D0723F /* infoViewPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = infoViewPanel.m; sourceTree = "<group>"; };
+		C86F0B7415B2CFDF00B31602 /* PanelSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelSegue.h; sourceTree = "<group>"; };
+		C86F0B7515B2CFDF00B31602 /* PanelSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelSegue.m; sourceTree = "<group>"; };
+		C86F0B7815B2DF0500B31602 /* InfoPanelTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoPanelTVC.h; sourceTree = "<group>"; };
+		C86F0B7915B2DF0500B31602 /* InfoPanelTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoPanelTVC.m; sourceTree = "<group>"; };
+		C86F0B7F15B2E84200B31602 /* BarButtonBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarButtonBlocks.h; sourceTree = "<group>"; };
+		C86F0B8015B2E84200B31602 /* BarButtonBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarButtonBlocks.m; sourceTree = "<group>"; };
 		C872841915A74D560028D6D7 /* MovieManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieManager.h; sourceTree = "<group>"; };
 		C8995C3F15A7413C0000C909 /* IMG_1458.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = IMG_1458.JPG; sourceTree = "<group>"; };
 		C8C58F8C15B1C1F5005C921A /* emptyartwork_mini.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = emptyartwork_mini.jpg; sourceTree = "<group>"; };
@@ -124,6 +133,19 @@
 			name = Utilities;
 			sourceTree = "<group>";
 		};
+		C86F0B7B15B2DF1800B31602 /* segue et cie */ = {
+			isa = PBXGroup;
+			children = (
+				C86F0B7F15B2E84200B31602 /* BarButtonBlocks.h */,
+				C86F0B8015B2E84200B31602 /* BarButtonBlocks.m */,
+				C86F0B7815B2DF0500B31602 /* InfoPanelTVC.h */,
+				C86F0B7915B2DF0500B31602 /* InfoPanelTVC.m */,
+				C86F0B7415B2CFDF00B31602 /* PanelSegue.h */,
+				C86F0B7515B2CFDF00B31602 /* PanelSegue.m */,
+			);
+			name = "segue et cie";
+			sourceTree = "<group>";
+		};
 		C872841815A74D1D0028D6D7 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
@@ -176,6 +198,7 @@
 				C8C58F8C15B1C1F5005C921A /* emptyartwork_mini.jpg */,
 				C8F369E715AAE8EE0024F2CD /* original */,
 				C8F30C2515A210C7000AB421 /* MainStoryboard.storyboard */,
+				C86F0B7B15B2DF1800B31602 /* segue et cie */,
 				C866301C15A9B64800D0723F /* infoView.xib */,
 				C81B764E15AA1D48008D1653 /* File.rtf */,
 				C866301F15A9B78900D0723F /* infoViewPanel.h */,
@@ -331,6 +354,9 @@
 				C8252E7A15ACAEE800DF0F96 /* MovieEditorPictureCell.m in Sources */,
 				C8DAD3EF15ACC1D7004BFCEA /* MovieEditorGeneralCell.m in Sources */,
 				C8F3C87315AF639A004D7A9E /* utilities.m in Sources */,
+				C86F0B7615B2CFDF00B31602 /* PanelSegue.m in Sources */,
+				C86F0B7A15B2DF0600B31602 /* InfoPanelTVC.m in Sources */,
+				C86F0B8115B2E84200B31602 /* BarButtonBlocks.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -18,5 +18,7 @@
 @property (strong, nonatomic) IBOutlet UIScrollView *detailPanel;
 - (IBAction)addAMovieButtonPressed:(UIBarButtonItem *)sender;
 @property IBOutlet UITableView *tableView;
+- (IBAction)coucou:(id)sender;
+- (IBAction)itemcoucou:(id)sender;
 
 @end

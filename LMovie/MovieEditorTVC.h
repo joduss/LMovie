@@ -13,12 +13,13 @@
 #import "Utilities.h"
 #import "MovieEditorDelegate.h"
 
-@interface MovieEditorTVC : UITableViewController <UITextFieldDelegate>
+@interface MovieEditorTVC : UITableViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 @property Movie *movieToEdit;
 @property MovieManager *movieManager;
 @property (nonatomic, weak) id <MovieEditorDelegate> delegate;
 - (IBAction)resetButtonPressed:(UIBarButtonItem *)sender;
 - (IBAction)saveButtonPressed:(UIBarButtonItem *)sender;
+- (IBAction)pickImage:(id)sender;
 @property (nonatomic, weak) UIPopoverController *popover;
 
 

@@ -10,6 +10,7 @@
 
 @interface MovieEditorTVC ()
 @property (nonatomic, strong) NSMutableDictionary *valueEntered;
+@property (nonatomic, strong) UIPopoverController *pc;
 @end
 
 @implementation MovieEditorTVC
@@ -18,6 +19,7 @@
 @synthesize delegate = _delegate;
 @synthesize popover = _popover; 
 @synthesize valueEntered = _valueEntered;
+@synthesize pc = _pc;
 
 - (void)viewDidLoad
 {
@@ -77,24 +79,25 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //NSLog(@"section: %d, row: %d ", indexPath.section, indexPath.row);
+    NSLog(@"section: %d, row: %d ", indexPath.section, indexPath.row);
     
     int row = indexPath.row;
     NSString *identifier = @""; //rempli plus tard
     
     if(indexPath.section == 0 && row == 0){
-            identifier = @"picture cell";
-            MovieEditorPictureCell * cell = (MovieEditorPictureCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
+        identifier = @"picture cell";
+        MovieEditorPictureCell * cell = (MovieEditorPictureCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
         if([_valueEntered valueForKey:@"picture"] == nil){
             NSString *file = [[NSBundle mainBundle] pathForResource:@"emptyartwork_big" ofType:@"jpg"];
             cell.cellImage = [UIImage imageWithContentsOfFile:file];
+            [cell.selectButton addTarget:self action:@selector(pickImage:) forControlEvents:UIControlEventTouchUpInside];
         }
         else {
+            NSLog(@"Image mise");
             cell.cellImage = [_valueEntered valueForKey:@"picture"];
         }
-        
-        
-            return cell;
+        [cell.selectButton addTarget:self action:@selector(pickImage:) forControlEvents:UIControlEventTouchUpInside];
+        return cell;
     }
     else {
         NSString *file = [[NSBundle mainBundle] pathForResource:@"keyOrder" ofType:@"plist"];        
@@ -221,5 +224,68 @@
     [_valueEntered setValue:textField.text forKey:cell.associatedKey];
     NSLog(@"Value Entered set for: key: %@ and value: %@", cell.associatedKey, textField.text);
 }
+
+
+#pragma mark - Gestion Selection d'image
+- (IBAction)pickImage:(id)sender{
+    NSLog(@"coucou");
+    UIImagePickerController *mediaUI = [[UIImagePickerController alloc] init];
+    [mediaUI setDelegate:self];
+    [mediaUI setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+    [mediaUI setAllowsEditing:NO];
+    
+#warning Voir pour ajouter un bouton annuler
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"back"
+                                                                   style:UIBarButtonItemStyleBordered 
+                                                                  target:self                                                                             
+                                                                  action:@selector(ha:)];
+    
+    mediaUI.navigationItem.leftBarButtonItem = backButton;
+    mediaUI.navigationController.navigationItem.leftBarButtonItem = backButton;
+
+    
+    UIPopoverController *pc = [[UIPopoverController alloc] initWithContentViewController:mediaUI];
+    CGRect fr = [sender frame];
+    fr.origin.y = fr.origin.y + 50;
+[pc presentPopoverFromRect:fr inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+    
+    
+    _pc = pc;
+
+
+
+}
+
+
+- (void) imagePickerController: (UIImagePickerController *) picker
+ didFinishPickingMediaWithInfo: (NSDictionary *) info {
+    
+    UIImage *originalImage, *editedImage, *imageToUse;
+    
+    // Handle a still image picked from a photo album
+    //if (CFStringCompare ((CFStringRef) mediaType, kUTTypeImage, 0)
+        //== kCFCompareEqualTo) {
+        
+        editedImage = (UIImage *) [info objectForKey:
+                                   UIImagePickerControllerEditedImage];
+        originalImage = (UIImage *) [info objectForKey:
+                                     UIImagePickerControllerOriginalImage];
+        
+        if (editedImage) {
+            imageToUse = editedImage;
+        } else {
+            imageToUse = originalImage;
+        }
+        // Do something with imageToUse
+    //}
+    [_valueEntered setValue:originalImage forKey:@"picture"];
+    [self.tableView reloadData];
+    
+    
+    
+    [self.pc dismissPopoverAnimated:YES];
+}
+
+
 
 @end

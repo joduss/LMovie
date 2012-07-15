@@ -13,5 +13,5 @@
 @property (nonatomic, strong) IBOutlet UIImageView *cellImageView;
 @property (nonatomic, strong) UIImage *cellImage;
 @property (nonatomic, strong) NSString *keyAssociated;
--(IBAction)selectImage:(UIButton*)sender;
+@property (nonatomic, weak) IBOutlet UIButton *selectButton;
 @end

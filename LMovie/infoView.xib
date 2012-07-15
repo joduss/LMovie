@@ -320,7 +320,7 @@
 						<reference key="IBUIFont" ref="328419734"/>
 					</object>
 				</array>
-				<string key="NSFrameSize">{280, 2006}</string>
+				<string key="NSFrameSize">{320, 1017}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="868425421"/>
@@ -466,7 +466,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">22</int>
+			<int key="maxID">23</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
