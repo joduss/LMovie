@@ -19,11 +19,6 @@
                                 <rect key="frame" x="1" y="0.0" width="1023" height="660"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <searchBar key="tableFooterView" contentMode="redraw" id="Y8h-yY-lbh">
-                                    <rect key="frame" x="0.0" y="87" width="1023" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                    <textInputTraits key="textInputTraits"/>
-                                </searchBar>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="movie cell" rowHeight="65" id="n26-nn-UvB" customClass="MovieCellHorizontal">
                                         <rect key="frame" x="0.0" y="22" width="1023" height="65"/>
@@ -140,7 +135,7 @@
                                 </prototypes>
                             </tableView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="z4K-1V-hwY">
-                                <rect key="frame" x="1" y="0.0" width="1023" height="660"/>
+                                <rect key="frame" x="367" y="0.0" width="657" height="660"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </scrollView>
                         </subviews>
@@ -178,7 +173,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WLt-tP-olO" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="yuP-w1-40X" customClass="MovieEditorTVC" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="52" sectionHeaderHeight="10" sectionFooterHeight="10" id="Id4-DD-UMw">
-                        <rect key="frame" x="0.0" y="64" width="1024" height="660"/>
+                        <rect key="frame" x="0.0" y="44" width="1024" height="680"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -348,13 +343,13 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="kFk-2a-XyM"/>
                         <barButtonItem title="Delete" id="ugb-kN-Cr1">
                             <color key="tintColor" red="0.74876868206521741" green="0.044081192670768057" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="deleteButtonPressed:" destination="PIS-am-m98" id="7lc-6e-UAS"/>
+                            </connections>
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="mTe-jF-j4e"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="deleteButtonPressed" destination="ugb-kN-Cr1" id="AeD-Mh-lmG"/>
-                    </connections>
                 </tableViewController>
             </objects>
             <point key="canvasLocation" x="1199" y="3246"/>
@@ -477,8 +472,7 @@
         <class className="MovieInfoTVC" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieInfoTVC.h"/>
             <relationships>
-                <relationship kind="action" name="modifyButtonPressed:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="deleteButtonPressed" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="deleteButtonPressed:" candidateClass="UIBarButtonItem"/>
             </relationships>
         </class>
         <class className="MovieViewController" superclassName="UIViewController">
@@ -498,6 +492,6 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="UWW-DQ-Sc7"/>
+        <segue reference="tnx-eW-P1N"/>
     </inferredMetricsTieBreakers>
 </document>

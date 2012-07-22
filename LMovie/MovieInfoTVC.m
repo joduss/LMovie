@@ -16,7 +16,6 @@
 @synthesize infoArray = _infoArray;
 @synthesize movieManager = _movieManager;
 @synthesize movie = _movie;
-@synthesize deleteButtonPressed = _deleteButtonPressed;
 @synthesize popover = _popover;
 
 
@@ -86,7 +85,6 @@
 
 - (void)viewDidUnload
 {
-    [self setDeleteButtonPressed:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -219,6 +217,9 @@
     view.delegate = self;
 }
 
+
+
+#pragma mark - MovieEditorDelegate methods
 - (void)actualizeWithMovie:(Movie *)movie
 {
     _infoArray = nil;
@@ -228,16 +229,17 @@
 
 
 
-
-- (IBAction)modifyButtonPressed:(UIBarButtonItem *)sender {
-    /*UIStoryboard storyboard = [[UIStoryboard storyboardWithName:@"MainStoryboard" bundle:[NSBundle mainBundle]];
-    MovieEditorTVC *me = [storyboard instantiateViewControllerWithIdentifier:@""]
-    UIPopoverController *pop = [[UIPopoverController alloc] initWithContentViewController:me];
-    me.popover = pop;
-    me.movieToEdit = self.movie;
-    me.movieManager = self.movieManager;
-    [pop presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];*/
+#pragma mark - IBAction support
+-(void)deleteButtonPressed:(UIBarButtonItem *)sender
+{
+    [_movieManager deleteMovie:_movie];
+    [self.popover dismissPopoverAnimated:YES];
 }
+
+
+
+
+
 
 
 

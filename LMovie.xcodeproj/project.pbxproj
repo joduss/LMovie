@@ -101,7 +101,7 @@
 		C8F369EA15AAF0910024F2CD /* Movie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Movie.m; sourceTree = "<group>"; };
 		C8F369EC15AB0B2E0024F2CD /* emptyartwork_big.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = emptyartwork_big.jpg; sourceTree = "<group>"; };
 		C8F3C87115AF639A004D7A9E /* utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utilities.h; sourceTree = "<group>"; };
-		C8F3C87215AF639A004D7A9E /* utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = utilities.m; sourceTree = "<group>"; };
+		C8F3C87215AF639A004D7A9E /* utilities.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = utilities.m; sourceTree = "<group>"; };
 		C8F9D2EF15A238A4007E01C9 /* MovieList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieList.h; sourceTree = "<group>"; };
 		C8F9D2F015A238A4007E01C9 /* MovieList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieList.m; sourceTree = "<group>"; };
 		C8FDF6D415A89F9100289DAF /* MyMovie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyMovie.h; sourceTree = "<group>"; };

@@ -17,7 +17,6 @@
 @property (nonatomic, strong) MovieManager *movieManager;
 @property (nonatomic, strong) Movie *movie;
 -(void)setInfo:(NSDictionary *)info;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *deleteButtonPressed;
+- (IBAction)deleteButtonPressed:(UIBarButtonItem *)sender;
 @property (strong, nonatomic) UIPopoverController *popover;
-- (IBAction)modifyButtonPressed:(UIBarButtonItem *)sender;
 @end

@@ -45,6 +45,7 @@
             }
         }
     }
+    self.modalInPopover = YES;
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -58,6 +59,7 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+    
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
@@ -320,6 +322,7 @@
     
     
     [self.pc dismissPopoverAnimated:YES];
+    picker = nil;
 }
 
 

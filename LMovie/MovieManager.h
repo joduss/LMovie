@@ -11,6 +11,8 @@
 #import "Movie.h"
 #import "Movie+Info.h"
 #import "AppDelegate.h"
+#import "utilities.h"
+
 @interface MovieManager : NSObject
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;

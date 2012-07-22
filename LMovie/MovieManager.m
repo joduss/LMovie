@@ -67,7 +67,7 @@
 {
     
     Movie* newMovie = (Movie *)[NSEntityDescription insertNewObjectForEntityForName:@"Movie" inManagedObjectContext:self.managedObjectContext];
-    
+    UIImage *image = [utilities resizeImageToMini:[info valueForKey:@"picture"]];
 
     NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
     
@@ -75,7 +75,7 @@
     newMovie.title = [info valueForKey:@"title"];
     newMovie.genre = [info valueForKey:@"genre"];
     newMovie.year = [nf numberFromString:[info valueForKey:@"year"] ];
-    newMovie.picture = UIImagePNGRepresentation([info valueForKey:@"picture"]);
+    newMovie.picture = UIImagePNGRepresentation(image);
     newMovie.director = [info valueForKey:@"director"];
     newMovie.actors = [info valueForKey:@"actor"];
     newMovie.user_rate = [nf numberFromString:[info valueForKey:@"user_rate"] ];
@@ -114,12 +114,13 @@
     Movie *movieToModify = movie;
     
     NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+    UIImage *image = [utilities resizeImageToMini:[info valueForKey:@"picture"]];
     
     
     movieToModify.title = [info valueForKey:@"title"];
     movieToModify.genre = [info valueForKey:@"genre"];
     movieToModify.year = [nf numberFromString:[info valueForKey:@"year"] ];
-    movieToModify.picture = UIImagePNGRepresentation([info valueForKey:@"picture"]);
+    movieToModify.picture = UIImagePNGRepresentation(image);
     movieToModify.director = [info valueForKey:@"director"];
     movieToModify.actors = [info valueForKey:@"actor"];
     movieToModify.user_rate = [nf numberFromString:[info valueForKey:@"user_rate"] ];
