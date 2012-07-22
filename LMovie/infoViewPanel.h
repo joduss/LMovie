@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "MyMovie.h"
 #import "MovieManager.h"
+#import "MovieEditorGeneralCell.h"
 
-@interface infoViewPanel : UIView
-@property NSManagedObject *movieToEdit;
-@property MovieManager *movieManager;
+@interface infoViewPanel : UIView <UITableViewDataSource, UITableViewDelegate>
+@property (strong, nonatomic)  IBOutlet UITableView *tableView;
+@property (nonatomic, strong) Movie *movieToEdit;
+@property (nonatomic, strong) MovieManager *movieManager;
 @end

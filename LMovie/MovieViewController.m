@@ -20,6 +20,7 @@
 @synthesize detailPanel = _connard2;
 @synthesize panelUsed = _panelUsed;
 @synthesize tableView = _tableView;
+@synthesize bouton = _bouton;
 @synthesize movieManager = _movieManager;
 @synthesize fetchedResultsController = _fetchedResultsController;
 
@@ -35,7 +36,7 @@
         
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    [_connard2 setFrame:CGRectMake(0, 0, 0, 0)];
+    //[_connard2 setFrame:CGRectMake(0, 0, 0, 0)];
     [_connard2 setHidden:YES];
     self.title = @"LMovie";
     _movieManager.fetchedResultsController = self.fetchedResultsController;
@@ -47,6 +48,7 @@
 - (void)viewDidUnload
 {
     [self setConnard:nil];
+    [self setBouton:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -89,103 +91,14 @@
 	if (![self.fetchedResultsController performFetch:&error]) {
         // Replace this implementation with code to handle the error appropriately.
         // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-	    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+	    DLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	    abort();
 	}
     
     
     
-    NSLog(@"Fetch ok");
+    DLog(@"Fetch ok");
     return _fetchedResultsController;
-}
-
-
-
-
-
-
-
-
-
-
-- (IBAction)fuck:(id)sender {
-    
-    [self.tableView reloadData];
-    //UIView *view = [[infoViewPanel alloc] init];
-    //infoViewPanel* view = [[[NSBundle mainBundle] loadNibNamed:@"infoView" owner:self options:nil] objectAtIndex:0];
-    UIView *view = [_connard2.subviews objectAtIndex:0];
-    
-
-
-    int bw = view.bounds.size.width;
-    int bh = view.bounds.size.height;
-    int px = self.view.frame.size.width - bw;
-    int sh = self.view.frame.size.width;
-    
-    NSLog(@"sh: %d", sh);
-    NSLog(@"bh: %d", bh);
-
-    
-    //int py = self.view.frame.size.height;
-    if(_panelUsed == NO){
-    [_connard2 setFrame:CGRectMake(px+bw, 0, bw, sh)];
-    //[view setFrame:CGRectMake(0, 0, bw, bh)];
-        [_connard2 setContentSize:CGSizeMake(bw, bh)];
-    
-   
-    for(UIView *v in _connard2.subviews){
-        [v removeFromSuperview];
-    }
-
-    
-   NSLog(@"view: , frame: origine:(%f, %f), size:(%f,%f)", view.frame.origin.x, view.frame.origin.y, view.frame.size.width, view.frame.size.height);
-    NSLog(@"bounds:origine:(%f, %f), size:(%f,%f)", view.bounds.origin.x, view.bounds.origin.y, view.bounds.size.width, view.bounds.size.height  );
-    
-    NSLog(@"_connard frame: origine:(%f, %f), size:(%f,%f)",_connard2.frame.origin.x, _connard2.frame.origin.y, _connard2.frame.size.width, _connard2.frame.size.height);
-    NSLog(@"_connard bounds:origine:(%f, %f), size:(%f,%f)", _connard2.bounds.origin.x, _connard2.bounds.origin.y, _connard2.bounds.size.width, _connard2.bounds.size.height  );
-        
-        //[_connard2 setNeedsDisplay];
-        //[self.view addSubview:_connard2];
-        //[_connard2 setFrame:CGRectMake(0, 0, 100, 400)];
-        
-    [_connard2 addSubview:view];
-
-        
-    }
-    
-    void (^unload2)(BOOL) = ^(BOOL finished){
-        if(finished && _panelUsed == NO){
-            //[controller viewDidUnload];
-            //controller = nil;
-            for(UIView *v in _connard2.subviews){
-                [v removeFromSuperview];
-            }
-            [_connard2 setHidden:YES];
-        }
-    }; 
-    
-    [UIView animateWithDuration:0.5 
-                     animations:^{
-                         if(_panelUsed == NO){
-                             [_connard2 setHidden:NO];
-                             [_connard2 setFrame:CGRectMake(px, 0, bw, sh)];
-                             _panelUsed = YES;
-                         }
-                         else {
-                             [_connard2 setFrame:CGRectMake(px+bw, 0, bw, sh)];
-                             _panelUsed = NO;
-                             
-                         }
-                     }
-                     completion:unload2];
-    
-    NSLog(@"view: , frame: origine:(%f, %f), size:(%f,%f)", view.frame.origin.x, view.frame.origin.y, view.frame.size.width, view.frame.size.height);
-    NSLog(@"bounds:origine:(%f, %f), size:(%f,%f)", view.bounds.origin.x, view.bounds.origin.y, view.bounds.size.width, view.bounds.size.height  );
-    
-    NSLog(@"_connard frame: origine:(%f, %f), size:(%f,%f)",_connard2.frame.origin.x, _connard2.frame.origin.y, _connard2.frame.size.width, _connard2.frame.size.height);
-    NSLog(@"_connard bounds:origine:(%f, %f), size:(%f,%f)", _connard2.bounds.origin.x, _connard2.bounds.origin.y, _connard2.bounds.size.width, _connard2.bounds.size.height  );
-
-    
 }
 
 
@@ -193,7 +106,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([segue.identifier isEqualToString:@"segue to MovieEditorTVC to create movie"]){
-        NSLog(@"segue to MovieEditorTVC to create movie");
+        DLog(@"segue to MovieEditorTVC to create movie");
         MovieEditorTVC *view = [[segue.destinationViewController viewControllers] lastObject];
         [view setContentSizeForViewInPopover:CGSizeMake(500, 630)];
         UIPopoverController *pc = [(UIStoryboardPopoverSegue *)segue popoverController];
@@ -205,6 +118,14 @@
             view.movieToEdit = sender;
         }
     }
+    else if ([segue.identifier isEqualToString:@"segue to movieInfoTVC"]) {
+        [(SeguePopoverMovieInfoTVC *)segue setRec:[_tableView rectForRowAtIndexPath:[_tableView indexPathForSelectedRow]]];
+        
+
+        [[[[segue destinationViewController] childViewControllers] lastObject]setMovieManager:_movieManager];
+                [[[[segue destinationViewController] childViewControllers] lastObject] setMovie:[_fetchedResultsController objectAtIndexPath:[_tableView indexPathForSelectedRow]]];
+    }
+
         
 }
 
@@ -273,9 +194,11 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"cell for row");
+    DLog(@"cell for row");
     NSString *identifier = @"movie cell";
-    MovieCellHorizontal *cell = [tableView dequeueReusableCellWithIdentifier:identifier];    
+    MovieCellHorizontal *cell = [tableView dequeueReusableCellWithIdentifier:identifier]; 
+    
+    DLog(@"Cell: %@",cell);
     
     Movie *movie = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
@@ -352,7 +275,7 @@
     Movie *movie = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
     [(MovieCellHorizontal *)cell configureCellWithMovie:movie];
-    NSLog(@"configuration cell après modification");
+    DLog(@"configuration cell après modification");
     
 }
 
@@ -360,7 +283,7 @@
 //HANDLIG SELECTION
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self performSegueWithIdentifier:@"segue to MovieEditorTVC to create movie" sender:[_fetchedResultsController objectAtIndexPath:indexPath]];
+    [self performSegueWithIdentifier:@"segue to movieInfoTVC" sender:_tableView];
 }
 
 
@@ -368,35 +291,11 @@
 
 
 
--(void)showMeAgain:(UIViewController *)vc{
-}
 
 
 
 
-
-
-- (IBAction)coucou:(id)sender {
-    /*infoViewPanel* view = [[[NSBundle mainBundle] loadNibNamed:@"infoView" owner:self options:nil] objectAtIndex:0];
-    view.frame =CGRectMake(100, 100, 200, 200);
-    view.bounds = CGRectMake(0, 0, 200, 200);
     
-    UIWindow *window = [UIApplication sharedApplication].keyWindow ;
-    
-    [window addSubview:view];*/
-    [self performSegueWithIdentifier:@"bla" sender:sender];
-}
 
-
-- (IBAction)itemcoucou:(id)sender {
-    UIWindow *win = [UIApplication sharedApplication].keyWindow;
-    
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(500, 0, 200, 600)];
-    view.backgroundColor = [UIColor blueColor];
-    
-    [self.view addSubview:view];
-    
-}
-    
 
 @end

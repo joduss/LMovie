@@ -28,6 +28,7 @@
     _valueEntered = [[NSMutableDictionary alloc] init];
     [self.tableView setAllowsSelection:NO];
     
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -44,6 +45,12 @@
             }
         }
     }
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.modalInPopover = YES;
 }
 
 
@@ -79,7 +86,7 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"section: %d, row: %d ", indexPath.section, indexPath.row);
+    DLog(@"section: %d, row: %d ", indexPath.section, indexPath.row);
     
     int row = indexPath.row;
     NSString *identifier = @""; //rempli plus tard
@@ -93,7 +100,7 @@
             [cell.selectButton addTarget:self action:@selector(pickImage:) forControlEvents:UIControlEventTouchUpInside];
         }
         else {
-            NSLog(@"Image mise");
+            DLog(@"Image mise");
             cell.cellImage = [_valueEntered valueForKey:@"picture"];
         }
         [cell.selectButton addTarget:self action:@selector(pickImage:) forControlEvents:UIControlEventTouchUpInside];
@@ -111,15 +118,15 @@
         identifier = @"general cell movieEditor";
         MovieEditorGeneralCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
-        //NSLog(@"Array %@", sectionArray);
-        //NSLog(@"Populating cell: key %@, value: %@", key, value);
+        //DLog(@"Array %@", sectionArray);
+        //DLog(@"Populating cell: key %@, value: %@", key, value);
         cell.textField.text = [self.valueEntered valueForKey:key];
         cell.infoLabel.text = [dicoWithInfo valueForKey:@"infoLabel"];
         cell.textField.placeholder = [dicoWithInfo valueForKey:@"placeHolder"];
         [cell setAssociatedKey:key];
         cell.textField.delegate = self;
         
-        NSLog(@"Load key: %@, value: %@", key, [self.valueEntered valueForKey:key]);
+        DLog(@"Load key: %@, value: %@", key, [self.valueEntered valueForKey:key]);
         
         return cell;
     }
@@ -130,7 +137,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.section == 0 && indexPath.row == 0){
-        return 421;
+        return 360;
     }
     else {
         return 45;
@@ -161,11 +168,17 @@
 #pragma mark - Table view delegate
 
 
+/****************************************
+ IBACTION
+ ****************************************/
+
 #pragma mark - IBAction methods
 - (IBAction)resetButtonPressed:(UIBarButtonItem *)sender {
     //[_delegate actionExecuted:ActionReset];
     _valueEntered = [[NSMutableDictionary alloc] init];
 }
+
+
 
 - (IBAction)saveButtonPressed:(UIBarButtonItem *)sender {
     
@@ -189,7 +202,7 @@
         NSString *test2 = [_valueEntered valueForKey:@"year"];
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         error2 = ([formatter numberFromString:test2] == nil);
-        //NSLog(@"From %@ -> formater -> %@", test2, [formatter numberFromString:test2]);
+        //DLog(@"From %@ -> formater -> %@", test2, [formatter numberFromString:test2]);
         if (error2) {
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Erreur" 
                                                            message:@"Year must be a number" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -198,37 +211,53 @@
     }
     
     if(error1 != YES && error2 != YES){
-        NSLog(@"SavebuttonPressed: no error up here");
+        DLog(@"SavebuttonPressed: no error up here");
+        
+        Movie *movie;
         
         //si le film à éditer existe, on modifie l'objet, sinon, crée un nouveau objet
         if(_movieToEdit == nil){
-        [_movieManager insertMovieWithInformations:_valueEntered];
+            [_movieManager insertMovieWithInformations:_valueEntered];
         }
         else {
-            [_movieManager modifyMovie:_movieToEdit WithInformations:_valueEntered];
-            [_delegate actionExecuted:ActionSaveModification];
+            movie = [_movieManager modifyMovie:_movieToEdit WithInformations:_valueEntered];
+            
+            if([_delegate respondsToSelector:@selector(actionExecuted:)]){
+                [_delegate actionExecuted:ActionSaveModification];
+            }
         }
+        
+        if ([_delegate respondsToSelector:@selector(actualizeWithMovie:)]) {
+            [self.delegate actualizeWithMovie:movie];
+            DLog(@"actualiser");
+            
+        }
+        
         [self.popover dismissPopoverAnimated:YES];
+        [self dismissModalViewControllerAnimated:YES];
     }
-
+    
     
 }
 
 
 
 
+/****************************************
+ Textfield Delegate Methodes
+ ****************************************/
 #pragma mark - textfield delegate methods
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
     MovieEditorGeneralCell *cell = (MovieEditorGeneralCell *) [[textField superview] superview];
     [_valueEntered setValue:textField.text forKey:cell.associatedKey];
-    NSLog(@"Value Entered set for: key: %@ and value: %@", cell.associatedKey, textField.text);
+    DLog(@"Value Entered set for: key: %@ and value: %@", cell.associatedKey, textField.text);
 }
 
 
 #pragma mark - Gestion Selection d'image
 - (IBAction)pickImage:(id)sender{
-    NSLog(@"coucou");
+    DLog(@"coucou");
     UIImagePickerController *mediaUI = [[UIImagePickerController alloc] init];
     [mediaUI setDelegate:self];
     [mediaUI setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
@@ -251,11 +280,18 @@
     
     
     _pc = pc;
-
-
-
 }
 
+
+
+
+
+
+/****************************************
+ Image picker
+ ****************************************/
+
+#pragma mark - image picker
 
 - (void) imagePickerController: (UIImagePickerController *) picker
  didFinishPickingMediaWithInfo: (NSDictionary *) info {

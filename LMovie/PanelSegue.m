@@ -30,8 +30,9 @@
     
     
     //UIView *view = [[infoViewPanel alloc] init];
-    //infoViewPanel* view = [[[NSBundle mainBundle] loadNibNamed:@"infoView" owner:self options:nil] objectAtIndex:0];
-    UIView *destView = [self.destinationViewController view];
+    DLog(@"%@", [[[NSBundle mainBundle] loadNibNamed:@"infoView" owner:self options:nil]description]);
+    infoViewPanel* destView = [[infoViewPanel alloc] init];
+    
     destView.frame = CGRectMake(0, 0, viewWidth, mvcHeigth);
     destView.bounds = CGRectMake(0, 0, viewWidth, mvcHeigth);
     
@@ -48,7 +49,7 @@
             [view setFrame:CGRectMake(mvcWidth, 0, viewWidth, mvcHeigth)];
         } completion:^(BOOL finished){[view removeFromSuperview];}];
         
-        [mvc.navigationItem setRightBarButtonItems:nil animated:YES];
+        [mvc.navigationItem setRightBarButtonItems:nil animated:YES]; 
     };
     
    

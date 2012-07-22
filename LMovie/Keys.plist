@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>order</key>
+	<array>
+		<string>picture</string>
+		<string>title</string>
+		<string>year</string>
+		<string>duration</string>
+		<string>genre</string>
+		<string>director</string>
+		<string>actors</string>
+		<string>tmdb_rate</string>
+		<string>language</string>
+		<string>subtitle</string>
+		<string>user_rate</string>
+		<string>viewed</string>
+		<string>comment</string>
+	</array>
+	<key>section</key>
+	<dict>
+		<key>picture</key>
+		<integer>0</integer>
+		<key>title</key>
+		<integer>0</integer>
+		<key>year</key>
+		<integer>0</integer>
+		<key>duration</key>
+		<integer>0</integer>
+		<key>genre</key>
+		<integer>0</integer>
+		<key>director</key>
+		<integer>0</integer>
+		<key>actors</key>
+		<integer>0</integer>
+		<key>tmdb_rate</key>
+		<integer>0</integer>
+		<key>language</key>
+		<integer>1</integer>
+		<key>subtitle</key>
+		<integer>1</integer>
+		<key>user_rate</key>
+		<integer>1</integer>
+		<key>viewed</key>
+		<integer>1</integer>
+		<key>comment</key>
+		<integer>1</integer>
+	</dict>
+	<key>label</key>
+	<dict>
+		<key>picture</key>
+		<string></string>
+		<key>title</key>
+		<string>Title</string>
+		<key>year</key>
+		<string>Release year</string>
+		<key>duration</key>
+		<string>Playing time</string>
+		<key>genre</key>
+		<string>Genre</string>
+		<key>director</key>
+		<string>Director</string>
+		<key>actors</key>
+		<string>Actors</string>
+		<key>tmdb_rate</key>
+		<string>TMDB Rate</string>
+		<key>language</key>
+		<string>Language</string>
+		<key>subtitle</key>
+		<string>Subtitle</string>
+		<key>user_rate</key>
+		<string>Your rate</string>
+		<key>viewed</key>
+		<string>Already Watched?</string>
+		<key>comment</key>
+		<string>Comment</string>
+	</dict>
+</dict>
+</plist>

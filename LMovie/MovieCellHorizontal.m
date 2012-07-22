@@ -40,12 +40,12 @@
 -(void)configureCellWithMovie:(Movie *)movie{
 #warning - uncomplete definition
     if(movie.picture == nil){
-        NSLog(@"Picture nil");
+        DLog(@"Picture nil");
         NSString *file = [[NSBundle mainBundle] pathForResource:@"emptyartwork_mini" ofType:@"jpg"];
         [_picture setImage:[UIImage imageWithContentsOfFile:file]]; 
     }
     else {
-        NSLog(@"Picture non nil");
+        DLog(@"Picture non nil");
         [_picture setImage:[UIImage imageWithData:movie.picture]];
     }
     _title.text = movie.title;
@@ -55,8 +55,20 @@
     //USER RATE
     //TMDBRATE
     
-    _director.text = movie.director;
-    _actor.text = movie.actors;
+    if(movie.director == nil){
+        _director.text = @"Director: ";
+    }
+    else {
+        _director.text = [@"Director: " stringByAppendingString:movie.director];
+
+    }
+    if(movie.actors == nil){
+        _actor.text = @"Actor";
+    }
+    else {
+        _actor.text = [@"Actor: " stringByAppendingString:movie.actors];
+    }
+
     _viewed.text = [movie.viewed stringValue];
     
     //VIEWED PICTURe

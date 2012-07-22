@@ -10,7 +10,9 @@
 #import "Utilities.h"
 
 @protocol MovieEditorDelegate <NSObject>
-- (void)actionExecuted:(ActionDone)action;
 
--(void)showMeAgain:(UIViewController *)vc;
+@optional
+- (void)actionExecuted:(ActionDone)action;
+- (void)actualizeWithMovie:(Movie *)movie;
+
 @end

@@ -9,6 +9,10 @@
 #import "MovieManager.h"
 
 
+@interface MovieManager ()
+-(NSDictionary *)loadPlistValueOfKey:(NSString *)key;
+
+@end
 
 @implementation MovieManager
 
@@ -20,7 +24,7 @@
 
 -(id)init
 {
-    NSLog(@"Initialisation of MovieManager");
+    DLog(@"Initialisation of MovieManager");
     AppDelegate *appDel = [UIApplication sharedApplication].delegate;
     _managedObjectContext = appDel.managedObjectContext;
     _managedObjectModel = appDel.managedObjectModel;
@@ -35,28 +39,6 @@
 
 
 
-/*- (void)insertNewObject:(id)sender
-{
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
-    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
-    
-    NSMutableDictionary *dico = [[NSMutableDictionary alloc] init];
-    NSData *data = [[NSData alloc] initWithContentsOfFile:@"IMG_1458.JPG"];
-    [dico setValue:data forKey:@"picture"];
-    // If appropriate, configure the new managed object.
-    // Normally you should use accessor methods, but using KVC here avoids the need to add a custom class to the template.
-    [newManagedObject setValue:[NSDate date] forKey:@"timeStamp"];
-    
-    // Save the context.
-    NSError *error = nil;
-    if (![context save:&error]) {
-        // Replace this implementation with code to handle the error appropriately.
-        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
-}*/
 
 - (Movie *)insertNewMovieWithTitle:(NSString *)title genre:(NSString *)genre year:(NSNumber *)year director:(NSString *)director picture:(NSData *)picture actors:(NSString *)actors duration:(NSNumber *)duration language:(NSString *)language subtitle:(NSString *)subtitle userRate:(NSNumber *)userRate tmdbRate:(NSNumber *)tmdbRate viewed:(BOOL)viewed comment:(NSString *)comment
 {
@@ -104,7 +86,7 @@
     newMovie.language = [info valueForKey:@"language"];
     newMovie.duration = [nf numberFromString:[info valueForKey:@"duration"] ];
     
-   // NSLog(@"new movie inserted: %@", [newMovie description]);
+   // DLog(@"new movie inserted: %@", [newMovie description]);
     [self saveContext];
     
 }
@@ -118,16 +100,16 @@
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
             // Replace this implementation with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            DLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         } 
         else {
-            NSLog(@"Context saved successfully");
+            DLog(@"Context saved successfully");
         }
     }
 }
 
--(void)modifyMovie:(Movie *)movie WithInformations:(NSDictionary *)info
+-(Movie *)modifyMovie:(Movie *)movie WithInformations:(NSDictionary *)info
 {
     Movie *movieToModify = movie;
     
@@ -148,8 +130,9 @@
     movieToModify.language = [info valueForKey:@"language"];
     movieToModify.duration = [nf numberFromString:[info valueForKey:@"duration"] ];
     
-    // NSLog(@"new movie inserted: %@", [newMovie description]);
+    // DLog(@"new movie inserted: %@", [newMovie description]);
     [self saveContext];
+    return movieToModify;
 }
 
 
@@ -168,6 +151,57 @@
 
 -(void)deleteMovie:(Movie *)movie{
     [_managedObjectContext deleteObject:movie];
+}
+
+
+
+#pragma mark - gestion des clé, de leur ordre, section associée etc
+//Retourne soit le dico de la section associée à une variable d'un film, soit de l'ordre
+-(NSDictionary *)loadPlistValueOfKey:(NSString *)key
+{
+    NSString *file = [[NSBundle mainBundle] pathForResource:@"Keys" ofType:@"plist"];  
+    NSDictionary *dico = [NSDictionary dictionaryWithContentsOfFile:file];
+    
+    return [dico valueForKey:key];
+}
+
+-(NSArray *)orderedKey
+{
+    return (NSArray *)[self loadPlistValueOfKey:@"order"];
+}
+
+-(NSArray *)keyOrderedBySection{
+    NSMutableArray *indexPathOrdered = [[NSMutableArray alloc] init];
+    [indexPathOrdered addObject:[[NSArray alloc] init]];
+    [indexPathOrdered addObject:[[NSArray alloc] init]];
+    
+    NSDictionary *sectionInfo = [self loadPlistValueOfKey:@"section"];
+     NSArray *keyOrdered = (NSArray *)[self loadPlistValueOfKey:@"order"];
+    
+    for(NSString *key in keyOrdered){
+        int section = [[sectionInfo valueForKey:key] intValue];
+        [indexPathOrdered insertObject:key atIndex:section];
+    }
+    
+    return [indexPathOrdered copy];
+
+}
+
+
+-(NSString *)keyAtIndexPath:(NSIndexPath *)path
+{
+    return [[[self keyOrderedBySection] objectAtIndex:path.section] objectAtIndex:path.row];
+}
+
+
+-(int)sectionForKey:(NSString *)key{
+    NSDictionary *dico = [self loadPlistValueOfKey:@"section"];
+    return [[dico valueForKey:key] intValue];
+}
+
+-(NSString *)labelForKey:(NSString *)key
+{
+    return [[self loadPlistValueOfKey:@"label"] valueForKey:key];
 }
 
 

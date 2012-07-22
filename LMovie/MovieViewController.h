@@ -11,14 +11,15 @@
 #import "infoViewPanel.h"
 #import "Utilities.h"
 #import "MovieEditorTVC.h"
+#import "PanelSegue.h"
+#import "MovieInfoTVC.h"
+#import "SeguePopoverMovieInfoTVC.h"
 
 @interface MovieViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MovieEditorDelegate, NSFetchedResultsControllerDelegate>
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *connard;
-- (IBAction)fuck:(id)sender;
 @property (strong, nonatomic) IBOutlet UIScrollView *detailPanel;
 - (IBAction)addAMovieButtonPressed:(UIBarButtonItem *)sender;
 @property IBOutlet UITableView *tableView;
-- (IBAction)coucou:(id)sender;
-- (IBAction)itemcoucou:(id)sender;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *bouton;
 
 @end

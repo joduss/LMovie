@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "MovieViewController.h"
 #import "BarButtonBlocks.h"
+#import "infoViewPanel.h"
 
 @interface PanelSegue : UIStoryboardSegue
 @end
