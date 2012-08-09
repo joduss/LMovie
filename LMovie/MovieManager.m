@@ -43,23 +43,9 @@
 - (Movie *)insertNewMovieWithTitle:(NSString *)title genre:(NSString *)genre year:(NSNumber *)year director:(NSString *)director picture:(NSData *)picture actors:(NSString *)actors duration:(NSNumber *)duration language:(NSString *)language subtitle:(NSString *)subtitle userRate:(NSNumber *)userRate tmdbRate:(NSNumber *)tmdbRate viewed:(BOOL)viewed comment:(NSString *)comment
 {
 
-    Movie *newMovie = [NSEntityDescription insertNewObjectForEntityForName:@"Movie" inManagedObjectContext:_managedObjectContext];
+    NSLog(@"ERREUR, ERREUR ERREUR");
     
-    newMovie.title = title;
-    newMovie.genre = genre;
-    newMovie.year = year;
-    newMovie.picture = picture;
-    newMovie.director = director;
-    newMovie.actors = actors;
-    newMovie.user_rate = userRate;
-    newMovie.tmdb_rate = tmdbRate;
-    newMovie.viewed = [NSNumber numberWithInt:viewed];
-    newMovie.comment = comment;
-    newMovie.subtitle = subtitle;
-    newMovie.language = language;
-    newMovie.duration = duration;
-    
-    return newMovie;
+    return nil;
 }
 
 
@@ -67,7 +53,10 @@
 {
     
     Movie* newMovie = (Movie *)[NSEntityDescription insertNewObjectForEntityForName:@"Movie" inManagedObjectContext:self.managedObjectContext];
-    UIImage *image = [utilities resizeImageToMini:[info valueForKey:@"picture"]];
+    DLog(@"info: %@", [info description]);
+    UIImage *mini_image = [utilities resizeImageToMini:[info valueForKey:@"mini_picture"]];
+    UIImage *big_image = [utilities resizeImageToBig:[info valueForKey:@"big_picture"]];
+
 
     NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
     
@@ -75,7 +64,8 @@
     newMovie.title = [info valueForKey:@"title"];
     newMovie.genre = [info valueForKey:@"genre"];
     newMovie.year = [nf numberFromString:[info valueForKey:@"year"] ];
-    newMovie.picture = UIImagePNGRepresentation(image);
+    newMovie.mini_picture = UIImagePNGRepresentation(mini_image);
+    newMovie.big_picture = UIImagePNGRepresentation(big_image);
     newMovie.director = [info valueForKey:@"director"];
     newMovie.actors = [info valueForKey:@"actor"];
     newMovie.user_rate = [nf numberFromString:[info valueForKey:@"user_rate"] ];
@@ -92,35 +82,23 @@
 }
 
 
-- (void)saveContext
-{
-    NSError *error = nil;
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
-    if (managedObjectContext != nil) {
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-            // Replace this implementation with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-            DLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        } 
-        else {
-            DLog(@"Context saved successfully");
-        }
-    }
-}
 
 -(Movie *)modifyMovie:(Movie *)movie WithInformations:(NSDictionary *)info
 {
     Movie *movieToModify = movie;
     
-    NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
-    UIImage *image = [utilities resizeImageToMini:[info valueForKey:@"picture"]];
+    DLog(@"info mises à jour lors de la modif: %@", [info description]);
+
     
+    NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+    UIImage *mini_image = [utilities resizeImageToMini:[info valueForKey:@"mini_picture"]];
+    UIImage *big_image = [utilities resizeImageToBig:[info valueForKey:@"big_picture"]];    
     
     movieToModify.title = [info valueForKey:@"title"];
     movieToModify.genre = [info valueForKey:@"genre"];
     movieToModify.year = [nf numberFromString:[info valueForKey:@"year"] ];
-    movieToModify.picture = UIImagePNGRepresentation(image);
+    movieToModify.big_picture = UIImagePNGRepresentation(big_image);
+    movieToModify.mini_picture = UIImagePNGRepresentation(mini_image);
     movieToModify.director = [info valueForKey:@"director"];
     movieToModify.actors = [info valueForKey:@"actor"];
     movieToModify.user_rate = [nf numberFromString:[info valueForKey:@"user_rate"] ];
@@ -155,6 +133,24 @@
 }
 
 
+- (void)saveContext
+{
+    NSError *error = nil;
+    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    if (managedObjectContext != nil) {
+        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
+            // Replace this implementation with code to handle the error appropriately.
+            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
+            DLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        } 
+        else {
+            DLog(@"Context saved successfully");
+        }
+    }
+}
+
+
 
 #pragma mark - gestion des clé, de leur ordre, section associée etc
 //Retourne soit le dico de la section associée à une variable d'un film, soit de l'ordre
@@ -180,7 +176,7 @@
      NSArray *keyOrdered = (NSArray *)[self loadPlistValueOfKey:@"order"];
     
     for(NSString *key in keyOrdered){
-        int section = [[sectionInfo valueForKey:key] intValue];
+        int section = [[sectionInfo valueForKey:key] floatValue];
         [indexPathOrdered insertObject:key atIndex:section];
     }
     
@@ -197,7 +193,7 @@
 
 -(int)sectionForKey:(NSString *)key{
     NSDictionary *dico = [self loadPlistValueOfKey:@"section"];
-    return [[dico valueForKey:key] intValue];
+    return [[dico valueForKey:key] floatValue];
 }
 
 -(NSString *)labelForKey:(NSString *)key

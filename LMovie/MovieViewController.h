@@ -17,7 +17,6 @@
 
 @interface MovieViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MovieEditorDelegate, NSFetchedResultsControllerDelegate>
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *connard;
-@property (strong, nonatomic) IBOutlet UIScrollView *detailPanel;
 - (IBAction)addAMovieButtonPressed:(UIBarButtonItem *)sender;
 @property IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *bouton;

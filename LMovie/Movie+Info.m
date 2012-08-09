@@ -14,8 +14,11 @@
     NSMutableDictionary *dico= [[NSMutableDictionary alloc] init];
       
     for(NSString *key in [[self.entity propertiesByName] allKeys]){
-        if([key isEqualToString:@"picture"] && [self valueForKey:key] != nil){
-            [dico setObject:[UIImage imageWithData:self.picture] forKey:@"picture"];
+        if([key isEqualToString:@"mini_picture"] && [self valueForKey:key] != nil){
+            [dico setObject:[UIImage imageWithData:self.mini_picture] forKey:@"mini_picture"];
+        }
+        else if([key isEqualToString:@"big_picture"] && [self valueForKey:key] != nil){
+            [dico setObject:[UIImage imageWithData:self.big_picture] forKey:@"big_picture"];
         }
         else {
             NSString *value = [[self valueForKey:key] description];
@@ -26,7 +29,7 @@
     }
 
            
-    DLog(@"dicodico: %@", [dico description]);
+    DLog(@"dico renvoyé avec les info formatée: %@", [dico description]);
     return dico;
 }
 @end

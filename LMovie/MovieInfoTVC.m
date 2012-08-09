@@ -35,7 +35,7 @@
 
 -(void)setInfo:(NSDictionary *)info
 {
-    DLog(@"info: %@", [info description]);
+    DLog(@"info dans MovieInfoTVC: %@", [info description]);
     
     
     for(NSString * key in [_movieManager orderedKey
@@ -46,7 +46,7 @@
         int section = [_movieManager sectionForKey:key];
         
         
-        if([key isEqualToString:@"picture"]){
+        if([key isEqualToString:@"big_picture"]){
             UIImage *image = [info valueForKey:key];
             infoFormattedForArray *infoFormatted = [[infoFormattedForArray alloc] init];
             infoFormatted.isFirst = isFirst;
@@ -54,8 +54,36 @@
             infoFormatted.key = key; 
             [[self.infoArray objectAtIndex:0] addObject:infoFormatted];
         }
+        else if ([key isEqualToString:@"viewed"]){
+            int value = [[info valueForKey:key] intValue];
+            DLog(@"caca: %@",
+                 [info valueForKey:key]);
+            NSString *text = @"";
+            
+            switch (value) {
+                case 0:
+                    text = @"No";
+                    break;
+                case 1:
+                    text = @"Yes";
+                    break;
+                default:
+                    text = @"?";
+                    break;
+            }
+            infoFormattedForArray *infoFormatted = [[infoFormattedForArray alloc] init];
+            infoFormatted.isFirst = YES;
+            infoFormatted.value = text;
+            infoFormatted.key = key;
+            [[self.infoArray objectAtIndex:section] addObject:infoFormatted];
+
+        }
+        
         else {
             NSString *value = [info valueForKey:key];
+            if([value isEqualToString:@""]){
+                value = nil;
+            }
             DLog(@"type: %@", value);
             NSArray *valueArray =[value componentsSeparatedByString:@", "];
             for(NSString *formattedValue in valueArray){
@@ -114,7 +142,8 @@
 {
     static NSString *CellIdentifier = @"";
     infoFormattedForArray *infoToUse = [[_infoArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell;
+    NSString *key = infoToUse.key;
     
     if(indexPath.row == 0 && indexPath .section == 0){
         CellIdentifier = @"picture cell";
@@ -132,6 +161,21 @@
         [(MovieEditorPictureCell *)cell setCellImage:image];
     }
     else {
+        if ([key isEqualToString:@"user_rate"] || [key isEqualToString:@"tmdb_rate"]){
+            CellIdentifier = @"rateView cell";
+            RateViewCell *thisCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            
+            thisCell.infoLabel.text = [_movieManager labelForKey:infoToUse.key];
+            //DLog(@"rateViewCell: %@ et rateView:%@", cell, cell.rateView);
+            
+            thisCell.key =  key;
+            [thisCell configureCellWithRate:[infoToUse.value intValue]];
+            thisCell.rateView.editable = NO;
+            cell = thisCell;
+            
+        }
+        else
+        {
         CellIdentifier = @"info cell";
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         UILabel *rightLabel = (UILabel *)[cell viewWithTag:101];
@@ -143,6 +187,7 @@
         }
         rightLabel.text = infoToUse.value;
         leftLabel.text = rightLabelText;
+        }
         
         
     }

@@ -7,11 +7,14 @@
 //
 
 #import "MovieEditorTVC.h"
+#import "MovieEditorViewedCell.h"
+
 
 @interface MovieEditorTVC ()
 @property (nonatomic, strong) NSMutableDictionary *valueEntered;
 @property (nonatomic, strong) UIPopoverController *pc;
 @end
+
 
 @implementation MovieEditorTVC
 @synthesize movieToEdit = _movieToEdit;
@@ -37,8 +40,11 @@
     if(_movieToEdit != nil){
         self.title = @"Modify informations";
         for(NSString *key in _movieManager.allKey){
-            if([key isEqualToString:@"picture"]){
-                [_valueEntered setValue:[UIImage imageWithData:_movieToEdit.picture] forKey:@"picture"];
+            if([key isEqualToString:@"big_picture"]){
+                [_valueEntered setValue:[UIImage imageWithData:_movieToEdit.big_picture] forKey:key];
+            }
+            else if([key isEqualToString:@"mini_picture"]){
+                [_valueEntered setValue:[UIImage imageWithData:_movieToEdit.mini_picture] forKey:key];
             }
             else {
                 [_valueEntered setValue:[[_movieToEdit valueForKey:key] description] forKey:key];
@@ -96,14 +102,14 @@
     if(indexPath.section == 0 && row == 0){
         identifier = @"picture cell";
         MovieEditorPictureCell * cell = (MovieEditorPictureCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
-        if([_valueEntered valueForKey:@"picture"] == nil){
+        if([_valueEntered valueForKey:@"big_picture"] == nil){
             NSString *file = [[NSBundle mainBundle] pathForResource:@"emptyartwork_big" ofType:@"jpg"];
             cell.cellImage = [UIImage imageWithContentsOfFile:file];
             [cell.selectButton addTarget:self action:@selector(pickImage:) forControlEvents:UIControlEventTouchUpInside];
         }
         else {
             DLog(@"Image mise");
-            cell.cellImage = [_valueEntered valueForKey:@"picture"];
+            cell.cellImage = [_valueEntered valueForKey:@"big_picture"];
         }
         [cell.selectButton addTarget:self action:@selector(pickImage:) forControlEvents:UIControlEventTouchUpInside];
         return cell;
@@ -115,22 +121,77 @@
         NSString *key = [[keyDico allKeys] objectAtIndex:0];
         
         NSDictionary *dicoWithInfo = [keyDico valueForKey:key];
-        
+
+        UITableViewCell *cellToReturn;
         
         identifier = @"general cell movieEditor";
-        MovieEditorGeneralCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
+        //Pour cellule VIEWED
+        if([key isEqualToString:@"viewed"]){
+            
+            identifier = @"viewed cell movieEditor";
+            MovieEditorViewedCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            [cell.infoLabel setText:[dicoWithInfo valueForKey:@"infoLabel"]];
+            [cell.choice addTarget:self action:@selector(segmentControlChanged:) forControlEvents:UIControlEventValueChanged];
+            int viewedValue = [[_valueEntered valueForKey:@"viewed"] intValue];
+            if(viewedValue < 0 || viewedValue > 2){
+                viewedValue = ViewedMAYBE;
+                [_valueEntered setValue:[NSString stringWithFormat:@"%d", viewedValue] forKey:@"viewed"];
+            }
+            cell.choice.selectedSegmentIndex = viewedValue;
+            
+            cellToReturn = cell;
+            
+            
+            
+        }
+        //pour user_rate et tmdb_rate
+        else if ([key isEqualToString:@"user_rate"] || [key isEqualToString:@"tmdb_rate"]){
+            identifier = @"rateView cell";
+            RateViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            
+            cell.infoLabel.text = [dicoWithInfo valueForKey:@"infoLabel"];
+            cell.delegate = self;
+            DLog(@"rateViewCell: %@ et rateView:%@", cell, cell.rateView);
+            
+            /*
+            NSString *file = [[NSBundle mainBundle] pathForResource:@"keyOrder" ofType:@"plist"];
+            NSArray *sectionArray = [[NSArray arrayWithContentsOfFile:file] objectAtIndex:indexPath.section];
+            NSDictionary *keyDico = [NSDictionary dictionaryWithDictionary:[sectionArray objectAtIndex:row]];
+            NSString *key = [[keyDico allKeys] objectAtIndex:0];*/
+            cell.key =  key;
+            [cell configureCellWithRate:[[_valueEntered valueForKey:key] intValue]];
+            
+            
+            cellToReturn = cell;
+
+        }
+        else {
+            identifier = @"general cell movieEditor";
+            MovieEditorGeneralCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            cell.textField.text = [self.valueEntered valueForKey:key];
+            cell.infoLabel.text = [dicoWithInfo valueForKey:@"infoLabel"];
+            cell.textField.placeholder = [dicoWithInfo valueForKey:@"placeHolder"];
+            [cell setAssociatedKey:key];
+            cell.textField.delegate = self;
+            NSPredicate *test = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@" argumentArray:[NSArray arrayWithObjects:@"duration", @"year", @"rate", nil]];
+            if([test evaluateWithObject:key]){
+                [cell.textField setKeyboardType:UIKeyboardTypeNumberPad]; //si on entre une année, une durée ou une note -> clavier numérique
+            }
+            
+            cellToReturn = cell;
+        }
+
         //DLog(@"Array %@", sectionArray);
         //DLog(@"Populating cell: key %@, value: %@", key, value);
-        cell.textField.text = [self.valueEntered valueForKey:key];
-        cell.infoLabel.text = [dicoWithInfo valueForKey:@"infoLabel"];
-        cell.textField.placeholder = [dicoWithInfo valueForKey:@"placeHolder"];
-        [cell setAssociatedKey:key];
-        cell.textField.delegate = self;
+
+        
+        //si clé contient "rate" faut agir différement
+        
         
         DLog(@"Load key: %@, value: %@", key, [self.valueEntered valueForKey:key]);
         
-        return cell;
+        return cellToReturn;
     }
     
 }
@@ -178,11 +239,18 @@
 - (IBAction)resetButtonPressed:(UIBarButtonItem *)sender {
     //[_delegate actionExecuted:ActionReset];
     _valueEntered = [[NSMutableDictionary alloc] init];
+    
+    [self.popover dismissPopoverAnimated:YES];
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 
 
 - (IBAction)saveButtonPressed:(UIBarButtonItem *)sender {
+    
+    
+    DLog(@"value entered lorsque save est pressé: %@", _valueEntered);
+
     
     BOOL error1 = NO;
     BOOL error2 = NO;
@@ -257,7 +325,19 @@
 }
 
 
-#pragma mark - Gestion Selection d'image
+
+
+
+
+
+
+
+/****************************************
+ Image picker
+ ****************************************/
+
+#pragma mark - image picker
+
 - (IBAction)pickImage:(id)sender{
     DLog(@"coucou");
     UIImagePickerController *mediaUI = [[UIImagePickerController alloc] init];
@@ -273,50 +353,40 @@
     
     mediaUI.navigationItem.leftBarButtonItem = backButton;
     mediaUI.navigationController.navigationItem.leftBarButtonItem = backButton;
-
+    
     
     UIPopoverController *pc = [[UIPopoverController alloc] initWithContentViewController:mediaUI];
     CGRect fr = [sender frame];
     fr.origin.y = fr.origin.y + 50;
-[pc presentPopoverFromRect:fr inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+    [pc presentPopoverFromRect:fr inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
     
     
     _pc = pc;
 }
 
-
-
-
-
-
-/****************************************
- Image picker
- ****************************************/
-
-#pragma mark - image picker
-
 - (void) imagePickerController: (UIImagePickerController *) picker
  didFinishPickingMediaWithInfo: (NSDictionary *) info {
     
-    UIImage *originalImage, *editedImage, *imageToUse;
+    UIImage *originalImage;//, *editedImage, *imageToUse;
     
     // Handle a still image picked from a photo album
     //if (CFStringCompare ((CFStringRef) mediaType, kUTTypeImage, 0)
         //== kCFCompareEqualTo) {
-        
+        /*
         editedImage = (UIImage *) [info objectForKey:
-                                   UIImagePickerControllerEditedImage];
+                                   UIImagePickerControllerEditedImage];*/
         originalImage = (UIImage *) [info objectForKey:
                                      UIImagePickerControllerOriginalImage];
-        
+        /*
         if (editedImage) {
             imageToUse = editedImage;
         } else {
             imageToUse = originalImage;
-        }
+        }*/
         // Do something with imageToUse
     //}
-    [_valueEntered setValue:originalImage forKey:@"picture"];
+    [_valueEntered setValue:originalImage forKey:@"big_picture"];
+    [_valueEntered setValue:originalImage forKey:@"mini_picture"];
     [self.tableView reloadData];
     
     
@@ -324,6 +394,33 @@
     [self.pc dismissPopoverAnimated:YES];
     picker = nil;
 }
+
+
+
+
+#pragma mark - methode pour SegmentedControl
+- (IBAction)segmentControlChanged:(UISegmentedControl *)sender;
+{
+    DLog(@"segmentControlChanged !!!");
+    int value = [sender selectedSegmentIndex];
+    DLog(@"value entered: %@", [NSNumber numberWithInt:value]);
+    [_valueEntered setValue:[NSString stringWithFormat:@"%d", value] forKey:@"viewed"];
+}
+
+
+
+#pragma mark - RateViewCellDelegate méthode
+
+-(void)rateChangeForKey:(NSString *)key newRate:(float)rate{
+    DLog(@"rateChageForKey: %@, newRate:%f", key, rate);
+    [_valueEntered setValue:[NSString stringWithFormat:@"%f", rate] forKey:key];
+}
+
+
+
+
+
+
 
 
 

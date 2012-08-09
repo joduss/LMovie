@@ -13,3 +13,8 @@
 @property (nonatomic, strong) NSString *associatedKey;
 @property (nonatomic, strong) IBOutlet UILabel *infoLabel;
 @end
+
+
+
+
+

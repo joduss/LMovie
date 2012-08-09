@@ -12,8 +12,10 @@
 #import "MovieEditorGeneralCell.h"
 #import "Utilities.h"
 #import "MovieEditorDelegate.h"
+#import "MovieEditorRateCellCell.h"
+#import "RateViewCell.h"
 
-@interface MovieEditorTVC : UITableViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface MovieEditorTVC : UITableViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RateViewCellDelegate>
 @property Movie *movieToEdit;
 @property MovieManager *movieManager;
 @property (nonatomic, weak) id <MovieEditorDelegate> delegate;
@@ -21,6 +23,8 @@
 - (IBAction)saveButtonPressed:(UIBarButtonItem *)sender;
 - (IBAction)pickImage:(id)sender;
 @property (nonatomic, weak) UIPopoverController *popover;
+- (IBAction)segmentControlChanged:(UISegmentedControl *)sender;
+
 
 
 @end

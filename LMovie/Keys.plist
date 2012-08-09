@@ -4,7 +4,7 @@
 <dict>
 	<key>order</key>
 	<array>
-		<string>picture</string>
+		<string>big_picture</string>
 		<string>title</string>
 		<string>year</string>
 		<string>duration</string>
@@ -20,7 +20,7 @@
 	</array>
 	<key>section</key>
 	<dict>
-		<key>picture</key>
+		<key>big_picture</key>
 		<integer>0</integer>
 		<key>title</key>
 		<integer>0</integer>
@@ -49,7 +49,9 @@
 	</dict>
 	<key>label</key>
 	<dict>
-		<key>picture</key>
+		<key>mini_picture</key>
+		<string></string>
+		<key>big_picture</key>
 		<string></string>
 		<key>title</key>
 		<string>Title</string>

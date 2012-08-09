@@ -17,8 +17,6 @@
 
 @implementation MovieViewController
 @synthesize connard = _connard;
-@synthesize detailPanel = _connard2;
-@synthesize panelUsed = _panelUsed;
 @synthesize tableView = _tableView;
 @synthesize bouton = _bouton;
 @synthesize movieManager = _movieManager;
@@ -32,12 +30,10 @@
     _movieManager = [[MovieManager alloc] init];
     [[self.navigationController navigationBar] setBarStyle:UIBarStyleBlack];
     [[self.navigationController toolbar] setBarStyle:UIBarStyleBlackOpaque ];
-    _panelUsed = NO;
         
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     //[_connard2 setFrame:CGRectMake(0, 0, 0, 0)];
-    [_connard2 setHidden:YES];
     self.title = @"LMovie";
     _movieManager.fetchedResultsController = self.fetchedResultsController;
 
@@ -194,11 +190,10 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    DLog(@"cell for row");
     NSString *identifier = @"movie cell";
     MovieCellHorizontal *cell = [tableView dequeueReusableCellWithIdentifier:identifier]; 
     
-    DLog(@"Cell: %@",cell);
+    DLog(@"Cell for row MovieVC -> Cell: %@",cell);
     
     Movie *movie = [self.fetchedResultsController objectAtIndexPath:indexPath];
     

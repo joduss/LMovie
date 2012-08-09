@@ -23,7 +23,7 @@
 @property (readonly, strong) NSArray *allKey;
 
 //- (void)insertNewMovie:(MyMovie *)movie;
-- (Movie *)insertNewMovieWithTitle:(NSString *)title genre:(NSString *)genre year:(NSNumber *)year director:(NSString *)director picture:(NSData *)picture actors:(NSString *)actors duration:(NSNumber *)duration language:(NSString *)language subtitle:(NSString *)subtitle userRate:(NSNumber *)userRate tmdbRate:(NSNumber *)tmdbRate viewed:(BOOL)viewed comment:(NSString *)comment;
+
 
 - (void)insertMovieWithInformations:(NSDictionary *)info;
 

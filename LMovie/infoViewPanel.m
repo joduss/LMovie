@@ -37,7 +37,8 @@
     //[self.tableView setAllowsSelection:NO];
     for(NSString *key in _movieManager.allKey){
         if([key isEqualToString:@"picture"]){
-            [_info setValue:[UIImage imageWithData:_movieToEdit.picture] forKey:@"picture"];
+            //[_info setValue:[UIImage imageWithData:_movieToEdit.picture] forKey:@"picture"];
+            @throw([NSException exceptionWithName:@"Ne pas utiliser cette classe" reason:@"Elle n'est normalement pas utilisée" userInfo:nil]);           
         }
         else {
             [_info setValue:[[_movieToEdit valueForKey:key] description] forKey:key];

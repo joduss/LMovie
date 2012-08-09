@@ -8,20 +8,24 @@
 
 #import <UIKit/UIKit.h>
 #import "Movie.h"
+#import "RateView.h"
 
-@interface MovieCellHorizontal : UITableViewCell
+@interface MovieCellHorizontal : UITableViewCell <RateViewDelegate>
 @property IBOutlet UIImageView *picture;
 @property IBOutlet UILabel *title;
 @property IBOutlet UILabel *year;
 @property IBOutlet UILabel *duration;
 @property IBOutlet UILabel *labelBeforeUserRate;
 @property IBOutlet UILabel *labelBeforetmdbRate;
-@property IBOutlet UIImageView *userRate;
-@property IBOutlet UIImageView *tmdbRate;
+@property IBOutlet RateView *userRate;
+@property IBOutlet RateView *tmdbRate;
 @property IBOutlet UILabel *director;
 @property IBOutlet UILabel *actor;
 @property IBOutlet UILabel *viewed;
 @property IBOutlet UIImageView *viewedPicture;
+@property IBOutlet UILabel *labelAfterUserRate;
+@property IBOutlet UILabel *labelAfterTMDBRate;
+
 -(void)configureCellWithMovie:(Movie *)movie;
 
 

@@ -11,3 +11,12 @@
 @interface Movie (Info)
 - (NSDictionary *)formattedInfoInDictionnary;
 @end
+
+
+typedef enum {
+    ViewedNO = 0,
+    ViewedYES = 1,
+    ViewedMAYBE = 2
+} ViewedState;
+
+

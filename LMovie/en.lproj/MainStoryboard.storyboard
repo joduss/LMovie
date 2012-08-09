@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.1" toolsVersion="2182" systemVersion="11E53" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="Xpb-Q0-7qr">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2549" systemVersion="12A269" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="Xpb-Q0-7qr">
     <dependencies>
         <deployment defaultVersion="1296" identifier="iOS"/>
-        <development defaultVersion="4200" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1181"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1498"/>
     </dependencies>
     <scenes>
         <!--Movie View Controller - LMovie-->
@@ -73,10 +72,6 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="hqF-jU-Jx5">
-                                                    <rect key="frame" x="346" y="34" width="242" height="26"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Watched" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="a8u-W5-cCg">
                                                     <rect key="frame" x="912" y="21" width="69" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -95,10 +90,6 @@
                                                     <rect key="frame" x="981" y="17" width="29" height="29"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="mhj-2N-vqX">
-                                                    <rect key="frame" x="346" y="4" width="242" height="26"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="(5.5)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="xh2-hN-G1q">
                                                     <rect key="frame" x="593" y="6" width="42" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -113,6 +104,16 @@
                                                     <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </label>
+                                                <view userInteractionEnabled="NO" contentMode="scaleToFill" id="JGW-82-T7Z" customClass="RateView">
+                                                    <rect key="frame" x="346" y="4" width="244" height="26"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                                </view>
+                                                <view userInteractionEnabled="NO" contentMode="scaleToFill" id="ULt-6C-7Qk" customClass="RateView">
+                                                    <rect key="frame" x="346" y="31" width="244" height="26"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -121,12 +122,14 @@
                                             <outlet property="actor" destination="rLg-eP-iPc" id="Xuz-nl-X27"/>
                                             <outlet property="director" destination="uq7-gV-xoS" id="gvQ-jg-OO0"/>
                                             <outlet property="duration" destination="kfi-v1-VoU" id="1vE-TY-70B"/>
+                                            <outlet property="labelAfterTMDBRate" destination="NvL-Rv-lNm" id="QWm-IE-F03"/>
+                                            <outlet property="labelAfterUserRate" destination="xh2-hN-G1q" id="DBb-3e-YwT"/>
                                             <outlet property="labelBeforeUserRate" destination="ENi-Jt-CCL" id="odo-jT-0Kc"/>
                                             <outlet property="labelBeforetmdbRate" destination="LnV-7U-bRJ" id="OlF-Ty-xYq"/>
                                             <outlet property="picture" destination="nZc-wM-xZs" id="Vgx-oP-Tle"/>
                                             <outlet property="title" destination="Lul-RW-vuJ" id="AEj-L4-4aP"/>
-                                            <outlet property="tmdbRate" destination="hqF-jU-Jx5" id="Wdh-0l-SEh"/>
-                                            <outlet property="userRate" destination="mhj-2N-vqX" id="1Ol-Yy-2xg"/>
+                                            <outlet property="tmdbRate" destination="ULt-6C-7Qk" id="Wt6-CS-yVj"/>
+                                            <outlet property="userRate" destination="JGW-82-T7Z" id="Lc0-To-apd"/>
                                             <outlet property="viewed" destination="a8u-W5-cCg" id="DkV-7Q-c66"/>
                                             <outlet property="viewedPicture" destination="3CR-lE-Hcy" id="xdM-3I-8IT"/>
                                             <outlet property="year" destination="hVN-0X-JAd" id="d52-1y-8EC"/>
@@ -134,16 +137,14 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="z4K-1V-hwY">
-                                <rect key="frame" x="367" y="0.0" width="657" height="660"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <toolbarItems>
                         <barButtonItem title="Item" id="H1J-ZK-djk"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="7DN-2R-YND"/>
+                        <barButtonItem image="settings_icon.png" style="plain" id="adc-yS-5E5"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="lKy-tx-bsY">
                         <barButtonItem key="leftBarButtonItem" systemItem="add" id="blY-H0-mxX">
@@ -156,7 +157,6 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
                         <outlet property="bouton" destination="H1J-ZK-djk" id="khU-gh-bKd"/>
-                        <outlet property="detailPanel" destination="z4K-1V-hwY" id="Jko-xF-MKz"/>
                         <outlet property="tableView" destination="HQW-ra-dFg" id="dJd-UI-Bz2"/>
                         <segue destination="8pz-B3-aM3" kind="popover" identifier="segue to MovieEditorTVC to create movie" popoverAnchorBarButtonItem="blY-H0-mxX" id="tnx-eW-P1N">
                             <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
@@ -210,7 +210,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="general cell movieEditor" rowHeight="45" id="3lF-d3-mcx" customClass="MovieEditorGeneralCell">
-                                <rect key="frame" x="0.0" y="415" width="1024" height="46"/>
+                                <rect key="frame" x="0.0" y="415" width="1024" height="45"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="45" y="0.0" width="934" height="44"/>
@@ -237,6 +237,64 @@
                                     <outlet property="textField" destination="hib-PC-mdd" id="Pzj-q7-u22"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="viewed cell movieEditor" id="6dG-y1-BKO" customClass="MovieEditorViewedCell">
+                                <rect key="frame" x="0.0" y="460" width="1024" height="52"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="45" y="0.0" width="934" height="51"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Title" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="WSP-DJ-t2z">
+                                            <rect key="frame" x="20" y="4" width="225" height="43"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="3Pe-zp-i0J">
+                                            <rect key="frame" x="253" y="11" width="661" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                            <segments>
+                                                <segment title="Yes"/>
+                                                <segment title="No"/>
+                                                <segment title="No idea"/>
+                                            </segments>
+                                            <color key="tintColor" red="0.66115404211956519" green="0.65299164653784214" blue="0.65299164653784214" alpha="1" colorSpace="calibratedRGB"/>
+                                        </segmentedControl>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <connections>
+                                    <outlet property="choice" destination="3Pe-zp-i0J" id="Pel-xF-e7z"/>
+                                    <outlet property="infoLabel" destination="WSP-DJ-t2z" id="lbC-3y-NYC"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="rateView cell" id="zXg-oi-2Wg" customClass="RateViewCell">
+                                <rect key="frame" x="0.0" y="512" width="1024" height="53"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="45" y="0.0" width="934" height="51"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Title" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="GLf-ud-vVU">
+                                            <rect key="frame" x="20" y="4" width="225" height="43"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                        <view contentMode="scaleToFill" id="SAd-89-fKO" customClass="RateView">
+                                            <rect key="frame" x="253" y="4" width="661" height="43"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        </view>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <connections>
+                                    <outlet property="infoLabel" destination="GLf-ud-vVU" id="jBe-Xd-Vn1"/>
+                                    <outlet property="rateView" destination="SAd-89-fKO" id="7TY-Tf-9YF"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <sections/>
                         <connections>
@@ -251,7 +309,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="dNT-gy-twt"/>
-                        <barButtonItem title="Reset" id="eWN-bh-D0T">
+                        <barButtonItem title="Cancel" id="eWN-bh-D0T">
                             <connections>
                                 <action selector="resetButtonPressed:" destination="yuP-w1-40X" id="l2I-JN-60j"/>
                             </connections>
@@ -325,6 +383,57 @@
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="info cell" id="h5n-oq-aWv">
+                                <rect key="frame" x="0.0" y="429" width="1024" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="45" y="0.0" width="934" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="100" contentMode="left" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="N1G-cN-zoZ">
+                                            <rect key="frame" x="20" y="0.0" width="279" height="43"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="101" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="eTu-ze-r9W">
+                                            <rect key="frame" x="313" y="0.0" width="601" height="43"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="rateView cell" id="Pos-gL-VVp" customClass="RateViewCell">
+                                <rect key="frame" x="0.0" y="473" width="1024" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="45" y="0.0" width="934" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Title" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="Nxr-eP-dO4">
+                                            <rect key="frame" x="20" y="4" width="225" height="43"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                        <view contentMode="scaleToFill" id="kWg-ZS-rbE" customClass="RateView">
+                                            <rect key="frame" x="253" y="0.0" width="661" height="43"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        </view>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <connections>
+                                    <outlet property="infoLabel" destination="Nxr-eP-dO4" id="54R-ze-NY5"/>
+                                    <outlet property="rateView" destination="kWg-ZS-rbE" id="td4-Kk-JIa"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <sections/>
@@ -423,11 +532,42 @@
             </objects>
             <point key="canvasLocation" x="-25" y="3246"/>
         </scene>
+        <!--Setting Controller-->
+        <scene sceneID="KLS-Al-DXf">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="enp-18-YED" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tableViewController id="aoh-NK-iq8" userLabel="Setting Controller" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Yey-qP-eG7">
+                        <rect key="frame" x="0.0" y="20" width="1024" height="748"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="pc7-Ev-gac">
+                                <rect key="frame" x="0.0" y="22" width="1024" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="1024" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="aoh-NK-iq8" id="kXh-62-FZt"/>
+                            <outlet property="delegate" destination="aoh-NK-iq8" id="mv6-be-rGY"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+            </objects>
+            <point key="canvasLocation" x="-25" y="4166"/>
+        </scene>
     </scenes>
     <resources>
         <image name="IMG_1458.JPG" width="3264" height="2448"/>
         <image name="emptyartwork.jpg" width="16" height="16"/>
         <image name="emptyartwork_big.jpg" width="600" height="849"/>
+        <image name="settings_icon.png" width="30" height="31"/>
     </resources>
     <classes>
         <class className="MovieCellHorizontal" superclassName="UITableViewCell">
@@ -436,12 +576,14 @@
                 <relationship kind="outlet" name="actor" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="director" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="duration" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelAfterTMDBRate" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelAfterUserRate" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="labelBeforeUserRate" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="labelBeforetmdbRate" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="picture" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="title" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="tmdbRate" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="userRate" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="tmdbRate" candidateClass="RateView"/>
+                <relationship kind="outlet" name="userRate" candidateClass="RateView"/>
                 <relationship kind="outlet" name="viewed" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="viewedPicture" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="year" candidateClass="UILabel"/>
@@ -467,6 +609,14 @@
                 <relationship kind="action" name="pickImage:"/>
                 <relationship kind="action" name="resetButtonPressed:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="action" name="saveButtonPressed:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="segmentControlChanged:" candidateClass="UISegmentedControl"/>
+            </relationships>
+        </class>
+        <class className="MovieEditorViewedCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieEditorViewedCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="choice" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="infoLabel" candidateClass="UILabel"/>
             </relationships>
         </class>
         <class className="MovieInfoTVC" superclassName="UITableViewController">
@@ -481,8 +631,17 @@
                 <relationship kind="action" name="addAMovieButtonPressed:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="bouton" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="connard" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="detailPanel" candidateClass="UIScrollView"/>
                 <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="RateView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/RateView.h"/>
+        </class>
+        <class className="RateViewCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/RateViewCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="infoLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="rateView" candidateClass="RateView"/>
             </relationships>
         </class>
     </classes>
