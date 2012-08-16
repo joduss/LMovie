@@ -40,7 +40,7 @@
 
 -(id)initWithFrame:(CGRect)frame
 {
-    DLog(@"rateview: initWithFrame");
+    //DLog(@"rateview: initWithFrame");
     self = [super initWithFrame:frame];
     if (self) {
         [self baseInit];
@@ -50,7 +50,7 @@
 
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-    DLog(@"rateView: initWithCode");
+    //DLog(@"rateView: initWithCode");
     if ((self = [super initWithCoder:aDecoder])) {
         [self baseInit];
     }

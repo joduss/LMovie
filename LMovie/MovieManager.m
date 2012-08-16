@@ -50,35 +50,55 @@
 
 
 - (void)insertMovieWithInformations:(NSDictionary *)info
+{    
+   // DLog(@"new movie inserted: %@", [newMovie description]);
+    [self insertWithoutSavingMovieWithInformations:info];
+    [self saveContext];
+    
+}
+
+- (void)insertWithoutSavingMovieWithInformations:(NSDictionary *)info
 {
     
     Movie* newMovie = (Movie *)[NSEntityDescription insertNewObjectForEntityForName:@"Movie" inManagedObjectContext:self.managedObjectContext];
     DLog(@"info: %@", [info description]);
     UIImage *mini_image = [utilities resizeImageToMini:[info valueForKey:@"mini_picture"]];
     UIImage *big_image = [utilities resizeImageToBig:[info valueForKey:@"big_picture"]];
-
-
+    
+    
     NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
     
+    if([[info valueForKey:@"viewed"] isEqualToString:@"✕"]){
+        [info setValue:@"0" forKey:@"viewed"];
+    }
+    else if([[info valueForKey:@"viewed"] isEqualToString:@"✓"]){
+        [info setValue:@"1" forKey:@"viewed"];
+    }
+    else if([[info valueForKey:@"viewed"] isEqualToString:@"?"]){
+        [info setValue:@"2" forKey:@"viewed"];
+    }
     
-    newMovie.title = [info valueForKey:@"title"];
-    newMovie.genre = [info valueForKey:@"genre"];
-    newMovie.year = [nf numberFromString:[info valueForKey:@"year"] ];
+    
     newMovie.mini_picture = UIImagePNGRepresentation(mini_image);
     newMovie.big_picture = UIImagePNGRepresentation(big_image);
+    
+    newMovie.title = [info valueForKey:@"title"];
+    newMovie.year = [nf numberFromString:[info valueForKey:@"year"] ];
+    newMovie.duration = [nf numberFromString:[info valueForKey:@"duration"] ];
+    newMovie.genre = [info valueForKey:@"genre"];
     newMovie.director = [info valueForKey:@"director"];
-    newMovie.actors = [info valueForKey:@"actor"];
-    newMovie.user_rate = [nf numberFromString:[info valueForKey:@"user_rate"] ];
+    newMovie.actors = [info valueForKey:@"actors"];
     newMovie.tmdb_rate = [nf numberFromString:[info valueForKey:@"tmdb_rate"] ];
+    
+    newMovie.language = [info valueForKey:@"language"];
+    newMovie.subtitle = [info valueForKey:@"subtitle"];
+    newMovie.resolution = [info valueForKey:@"resolution"];
+    newMovie.user_rate = [nf numberFromString:[info valueForKey:@"user_rate"] ];
     newMovie.viewed = [nf numberFromString:[info valueForKey:@"viewed"] ];
     newMovie.comment = [info valueForKey:@"comment"];
-    newMovie.subtitle = [info valueForKey:@"subtitle"];
-    newMovie.language = [info valueForKey:@"language"];
-    newMovie.duration = [nf numberFromString:[info valueForKey:@"duration"] ];
     
-   // DLog(@"new movie inserted: %@", [newMovie description]);
-    [self saveContext];
     
+    // DLog(@"new movie inserted: %@", [newMovie description]);    
 }
 
 
@@ -94,20 +114,23 @@
     UIImage *mini_image = [utilities resizeImageToMini:[info valueForKey:@"mini_picture"]];
     UIImage *big_image = [utilities resizeImageToBig:[info valueForKey:@"big_picture"]];    
     
-    movieToModify.title = [info valueForKey:@"title"];
-    movieToModify.genre = [info valueForKey:@"genre"];
-    movieToModify.year = [nf numberFromString:[info valueForKey:@"year"] ];
+    
     movieToModify.big_picture = UIImagePNGRepresentation(big_image);
     movieToModify.mini_picture = UIImagePNGRepresentation(mini_image);
+    movieToModify.title = [info valueForKey:@"title"];
+    movieToModify.year = [nf numberFromString:[info valueForKey:@"year"] ];
+    movieToModify.duration = [nf numberFromString:[info valueForKey:@"duration"] ];
+    movieToModify.genre = [info valueForKey:@"genre"];
     movieToModify.director = [info valueForKey:@"director"];
-    movieToModify.actors = [info valueForKey:@"actor"];
-    movieToModify.user_rate = [nf numberFromString:[info valueForKey:@"user_rate"] ];
+    movieToModify.actors = [info valueForKey:@"actors"];
     movieToModify.tmdb_rate = [nf numberFromString:[info valueForKey:@"tmdb_rate"] ];
-    movieToModify.viewed = [nf numberFromString:[info valueForKey:@"viewed"] ];
-    movieToModify.comment = [info valueForKey:@"comment"];
     movieToModify.subtitle = [info valueForKey:@"subtitle"];
     movieToModify.language = [info valueForKey:@"language"];
-    movieToModify.duration = [nf numberFromString:[info valueForKey:@"duration"] ];
+    movieToModify.resolution = [info valueForKey:@"resolution"];
+    movieToModify.user_rate = [nf numberFromString:[info valueForKey:@"user_rate"] ];
+    movieToModify.viewed = [nf numberFromString:[info valueForKey:@"viewed"] ];
+    movieToModify.comment = [info valueForKey:@"comment"];
+
     
     // DLog(@"new movie inserted: %@", [newMovie description]);
     [self saveContext];
@@ -169,15 +192,16 @@
 
 -(NSArray *)keyOrderedBySection{
     NSMutableArray *indexPathOrdered = [[NSMutableArray alloc] init];
-    [indexPathOrdered addObject:[[NSArray alloc] init]];
-    [indexPathOrdered addObject:[[NSArray alloc] init]];
+    [indexPathOrdered addObject:[[NSMutableArray alloc] init]];
+    [indexPathOrdered addObject:[[NSMutableArray alloc] init]];
     
     NSDictionary *sectionInfo = [self loadPlistValueOfKey:@"section"];
      NSArray *keyOrdered = (NSArray *)[self loadPlistValueOfKey:@"order"];
     
     for(NSString *key in keyOrdered){
-        int section = [[sectionInfo valueForKey:key] floatValue];
-        [indexPathOrdered insertObject:key atIndex:section];
+        int section = [[sectionInfo valueForKey:key] intValue];
+        [[indexPathOrdered objectAtIndex:section] addObject:key];
+        //[indexPathOrdered insertObject:key atIndex:section];
     }
     
     return [indexPathOrdered copy];
@@ -200,6 +224,16 @@
 {
     return [[self loadPlistValueOfKey:@"label"] valueForKey:key];
 }
+
+-(NSString *)placeholderForKey:(NSString *)key
+{
+    return [[self loadPlistValueOfKey:@"placeholder"] valueForKey:key];
+}
+
+
+
+
+
 
 
 

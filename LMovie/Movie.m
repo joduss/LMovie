@@ -2,8 +2,8 @@
 //  Movie.m
 //  LMovie
 //
-//  Created by Jonathan Duss on 23.07.12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Jonathan Duss on 12.08.12.
+//
 //
 
 #import "Movie.h"
@@ -25,5 +25,6 @@
 @dynamic user_rate;
 @dynamic viewed;
 @dynamic year;
+@dynamic resolution;
 
 @end

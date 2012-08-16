@@ -16,7 +16,8 @@
 typedef enum {
     ViewedNO = 0,
     ViewedYES = 1,
-    ViewedMAYBE = 2
+    ViewedMAYBE = 2,
+    ViewedAll = 3 //utilisée uniquement pour la recherche
 } ViewedState;
 
 

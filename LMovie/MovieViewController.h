@@ -16,9 +16,9 @@
 #import "SeguePopoverMovieInfoTVC.h"
 
 @interface MovieViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MovieEditorDelegate, NSFetchedResultsControllerDelegate>
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *connard;
 - (IBAction)addAMovieButtonPressed:(UIBarButtonItem *)sender;
 @property IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *bouton;
+@property (strong, nonatomic) IBOutlet MovieEditorTVC *movieEditor;
 
 @end

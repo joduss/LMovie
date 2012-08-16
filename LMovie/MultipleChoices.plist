@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Resolution</key>
+	<array>
+		<string>divx/mp4</string>
+		<string>HD 720p</string>
+		<string>HD 1080p</string>
+		<string>3D</string>
+		<string>DVD</string>
+		<string>?</string>
+	</array>
+</dict>
+</plist>

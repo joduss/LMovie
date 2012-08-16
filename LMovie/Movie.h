@@ -2,8 +2,8 @@
 //  Movie.h
 //  LMovie
 //
-//  Created by Jonathan Duss on 23.07.12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Jonathan Duss on 12.08.12.
+//
 //
 
 #import <Foundation/Foundation.h>
@@ -26,5 +26,6 @@
 @property (nonatomic, retain) NSNumber * user_rate;
 @property (nonatomic, retain) NSNumber * viewed;
 @property (nonatomic, retain) NSNumber * year;
+@property (nonatomic, retain) NSString * resolution;
 
 @end

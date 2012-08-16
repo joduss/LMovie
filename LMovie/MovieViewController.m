@@ -16,11 +16,11 @@
 @end
 
 @implementation MovieViewController
-@synthesize connard = _connard;
 @synthesize tableView = _tableView;
 @synthesize bouton = _bouton;
 @synthesize movieManager = _movieManager;
 @synthesize fetchedResultsController = _fetchedResultsController;
+@synthesize movieEditor = _movieEditor;
 
 
 
@@ -33,7 +33,6 @@
         
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    //[_connard2 setFrame:CGRectMake(0, 0, 0, 0)];
     self.title = @"LMovie";
     _movieManager.fetchedResultsController = self.fetchedResultsController;
 
@@ -43,7 +42,6 @@
 
 - (void)viewDidUnload
 {
-    [self setConnard:nil];
     [self setBouton:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
@@ -99,28 +97,42 @@
 
 
 
+
+
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([segue.identifier isEqualToString:@"segue to MovieEditorTVC to create movie"]){
+
         DLog(@"segue to MovieEditorTVC to create movie");
         MovieEditorTVC *view = [[segue.destinationViewController viewControllers] lastObject];
-        [view setContentSizeForViewInPopover:CGSizeMake(500, 630)];
+        //[view setContentSizeForViewInPopover:CGSizeMake(500, 630)];
         UIPopoverController *pc = [(UIStoryboardPopoverSegue *)segue popoverController];
-        [pc setPopoverContentSize:CGSizeMake(500, 630)];
+        //[pc setPopoverContentSize:CGSizeMake(500, 630)];
         view.delegate = self;
         view.popover = pc;
         view.movieManager = self.movieManager;
         if([sender isKindOfClass:[Movie class]]){
             view.movieToEdit = sender;
         }
+        _movieEditor = view;
     }
     else if ([segue.identifier isEqualToString:@"segue to movieInfoTVC"]) {
         [(SeguePopoverMovieInfoTVC *)segue setRec:[_tableView rectForRowAtIndexPath:[_tableView indexPathForSelectedRow]]];
         
-
+        
         [[[[segue destinationViewController] childViewControllers] lastObject]setMovieManager:_movieManager];
-                [[[[segue destinationViewController] childViewControllers] lastObject] setMovie:[_fetchedResultsController objectAtIndexPath:[_tableView indexPathForSelectedRow]]];
+        [[[[segue destinationViewController] childViewControllers] lastObject] setMovie:[_fetchedResultsController objectAtIndexPath:[_tableView indexPathForSelectedRow]]];
     }
+    else if ([segue.identifier isEqualToString:@"segue to SettingTVC"]) {
+        UINavigationController *nav = segue.destinationViewController;
+        [[nav.childViewControllers lastObject] setMovieManager:self.movieManager];
+    }
+    else if ([segue.identifier isEqualToString:@"segue to searchTVC"]) {
+        UINavigationController *nav = segue.destinationViewController;
+        [[nav.childViewControllers lastObject] setMovieManager:self.movieManager];
+    }
+
 
         
 }

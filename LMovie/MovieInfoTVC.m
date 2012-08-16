@@ -20,6 +20,16 @@
 
 
 
+-(void)awakeFromNib
+{
+    DLog(@"APPO 1: taille: %f", self.view.bounds.size.width);
+
+}
+
+-(void)viewDidLoad{
+    [super viewDidLoad];
+}
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.navigationController setToolbarHidden:NO ];
@@ -41,7 +51,7 @@
     for(NSString * key in [_movieManager orderedKey
                            ]){
         
-        DLog(@"coucou clé: %@", key);
+        //DLog(@"coucou clé: %@", key);
         BOOL isFirst = YES;
         int section = [_movieManager sectionForKey:key];
         
@@ -56,8 +66,7 @@
         }
         else if ([key isEqualToString:@"viewed"]){
             int value = [[info valueForKey:key] intValue];
-            DLog(@"caca: %@",
-                 [info valueForKey:key]);
+            DLog(@"movieInfoTVT: value: %@    for key: %@",[info valueForKey:key], key);
             NSString *text = @"";
             
             switch (value) {
@@ -84,7 +93,7 @@
             if([value isEqualToString:@""]){
                 value = nil;
             }
-            DLog(@"type: %@", value);
+            DLog(@"movieInfoTVT: value: %@    for key: %@",[info valueForKey:key], key);
             NSArray *valueArray =[value componentsSeparatedByString:@", "];
             for(NSString *formattedValue in valueArray){
                 infoFormattedForArray *infoFormatted = [[infoFormattedForArray alloc] init];
@@ -136,6 +145,7 @@
 {
     // Return the number of rows in the section.
     return [[_infoArray objectAtIndex:section] count];
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

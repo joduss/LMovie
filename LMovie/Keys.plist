@@ -14,6 +14,7 @@
 		<string>tmdb_rate</string>
 		<string>language</string>
 		<string>subtitle</string>
+		<string>resolution</string>
 		<string>user_rate</string>
 		<string>viewed</string>
 		<string>comment</string>
@@ -40,6 +41,8 @@
 		<integer>1</integer>
 		<key>subtitle</key>
 		<integer>1</integer>
+		<key>resolution</key>
+		<integer>1</integer>
 		<key>user_rate</key>
 		<integer>1</integer>
 		<key>viewed</key>
@@ -58,7 +61,7 @@
 		<key>year</key>
 		<string>Release year</string>
 		<key>duration</key>
-		<string>Playing time</string>
+		<string>Running time (min)</string>
 		<key>genre</key>
 		<string>Genre</string>
 		<key>director</key>
@@ -71,12 +74,47 @@
 		<string>Language</string>
 		<key>subtitle</key>
 		<string>Subtitle</string>
+		<key>resolution</key>
+		<string>Resolution</string>
 		<key>user_rate</key>
 		<string>Your rate</string>
 		<key>viewed</key>
 		<string>Already Watched?</string>
 		<key>comment</key>
 		<string>Comment</string>
+	</dict>
+	<key>placeholder</key>
+	<dict>
+		<key>mini_picture</key>
+		<string></string>
+		<key>big_picture</key>
+		<string></string>
+		<key>title</key>
+		<string>Enter title</string>
+		<key>year</key>
+		<string>Enter Release year</string>
+		<key>duration</key>
+		<string>Enter Playing time</string>
+		<key>genre</key>
+		<string>Enter Genre</string>
+		<key>director</key>
+		<string>Enter Director</string>
+		<key>actors</key>
+		<string>Enter Actors</string>
+		<key>tmdb_rate</key>
+		<string>Enter TMDB Rate</string>
+		<key>language</key>
+		<string>Enter Language</string>
+		<key>subtitle</key>
+		<string>Enter Subtitle</string>
+		<key>resolution</key>
+		<string>Enter Resolution</string>
+		<key>user_rate</key>
+		<string>Enter Your rate</string>
+		<key>viewed</key>
+		<string>Enter Already Watched?</string>
+		<key>comment</key>
+		<string>Enter Comment</string>
 	</dict>
 </dict>
 </plist>

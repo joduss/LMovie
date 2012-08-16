@@ -30,6 +30,8 @@
 - (void)saveContext;
 
 -(Movie *)modifyMovie:(Movie *)movie WithInformations:(NSDictionary *)info;
+- (void)insertWithoutSavingMovieWithInformations:(NSDictionary *)info;
+
 
 -(void)deleteMovie:(Movie *)movie;
 
@@ -42,5 +44,6 @@
 -(int)sectionForKey:(NSString *)key;
 -(NSString *)labelForKey:(NSString *)key;
 -(NSArray *)orderedKey;
+-(NSString *)placeholderForKey:(NSString *)key;
 
 @end

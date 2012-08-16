@@ -24,6 +24,8 @@
 - (IBAction)pickImage:(id)sender;
 @property (nonatomic, weak) UIPopoverController *popover;
 - (IBAction)segmentControlChanged:(UISegmentedControl *)sender;
+@property (nonatomic, strong) NSMutableDictionary *valueEntered;
+
 
 
 

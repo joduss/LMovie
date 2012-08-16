@@ -11,7 +11,6 @@
 
 
 @interface MovieEditorTVC ()
-@property (nonatomic, strong) NSMutableDictionary *valueEntered;
 @property (nonatomic, strong) UIPopoverController *pc;
 @end
 
@@ -66,6 +65,7 @@
 {
     [super viewDidUnload];
     
+    
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
@@ -85,9 +85,7 @@
 
 - (int)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSString *file = [[NSBundle mainBundle] pathForResource:@"keyOrder" ofType:@"plist"];        
-    NSArray *sectionArray = [[NSArray arrayWithContentsOfFile:file] objectAtIndex:section];
-    return [sectionArray count];
+    return [[[_movieManager keyOrderedBySection] objectAtIndex:section] count];
 }
 
 
@@ -115,12 +113,17 @@
         return cell;
     }
     else {
-        NSString *file = [[NSBundle mainBundle] pathForResource:@"keyOrder" ofType:@"plist"];        
-        NSArray *sectionArray = [[NSArray arrayWithContentsOfFile:file] objectAtIndex:indexPath.section];
+        /*NSString *file = [[NSBundle mainBundle] pathForResource:@"Keys" ofType:@"plist"];
+        NSArray *sectionArray = [[[NSArray arrayWithContentsOfFile:file] valueForKey:@"section"] objectAtIndex:indexPath.section];
         NSDictionary *keyDico = [NSDictionary dictionaryWithDictionary:[sectionArray objectAtIndex:row]];
         NSString *key = [[keyDico allKeys] objectAtIndex:0];
         
-        NSDictionary *dicoWithInfo = [keyDico valueForKey:key];
+        //NSDictionary *dicoWithInfo = [keyDico valueForKey:key];
+        */
+        
+        
+        NSString *key = [_movieManager keyAtIndexPath:indexPath];
+
 
         UITableViewCell *cellToReturn;
         
@@ -131,10 +134,10 @@
             
             identifier = @"viewed cell movieEditor";
             MovieEditorViewedCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            [cell.infoLabel setText:[dicoWithInfo valueForKey:@"infoLabel"]];
+            [cell.infoLabel setText:[_movieManager labelForKey:key]];
             [cell.choice addTarget:self action:@selector(segmentControlChanged:) forControlEvents:UIControlEventValueChanged];
             int viewedValue = [[_valueEntered valueForKey:@"viewed"] intValue];
-            if(viewedValue < 0 || viewedValue > 2){
+            if(viewedValue < 0 || viewedValue > 2 || ![_valueEntered valueForKey:@"viewed"]){
                 viewedValue = ViewedMAYBE;
                 [_valueEntered setValue:[NSString stringWithFormat:@"%d", viewedValue] forKey:@"viewed"];
             }
@@ -150,7 +153,7 @@
             identifier = @"rateView cell";
             RateViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             
-            cell.infoLabel.text = [dicoWithInfo valueForKey:@"infoLabel"];
+            cell.infoLabel.text = [_movieManager labelForKey:key];
             cell.delegate = self;
             DLog(@"rateViewCell: %@ et rateView:%@", cell, cell.rateView);
             
@@ -170,8 +173,8 @@
             identifier = @"general cell movieEditor";
             MovieEditorGeneralCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             cell.textField.text = [self.valueEntered valueForKey:key];
-            cell.infoLabel.text = [dicoWithInfo valueForKey:@"infoLabel"];
-            cell.textField.placeholder = [dicoWithInfo valueForKey:@"placeHolder"];
+            cell.infoLabel.text = [_movieManager labelForKey:key];
+            cell.textField.placeholder = [_movieManager placeholderForKey:key];
             [cell setAssociatedKey:key];
             cell.textField.delegate = self;
             NSPredicate *test = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@" argumentArray:[NSArray arrayWithObjects:@"duration", @"year", @"rate", nil]];
@@ -320,8 +323,10 @@
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
     MovieEditorGeneralCell *cell = (MovieEditorGeneralCell *) [[textField superview] superview];
-    [_valueEntered setValue:textField.text forKey:cell.associatedKey];
-    DLog(@"Value Entered set for: key: %@ and value: %@", cell.associatedKey, textField.text);
+    if(cell != nil && cell.associatedKey != nil){
+        [_valueEntered setValue:textField.text forKey:cell.associatedKey];
+        DLog(@"Value Entered set for: key: %@ and value: %@", cell.associatedKey, textField.text);
+    }
 }
 
 
@@ -339,7 +344,6 @@
 #pragma mark - image picker
 
 - (IBAction)pickImage:(id)sender{
-    DLog(@"coucou");
     UIImagePickerController *mediaUI = [[UIImagePickerController alloc] init];
     [mediaUI setDelegate:self];
     [mediaUI setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];

@@ -21,26 +21,39 @@
 
 -(void)perform
 {
-    int weightOfPopoverView = 350;
-    MovieInfoTVC *view = [[[self destinationViewController] childViewControllers] lastObject];
-    int height = [[self sourceViewController] view].window.frame.size.height;
+    
+
+    DLog(@"APPO 2");
+
+    
+    //int weightOfPopoverView = 350;
+    MovieInfoTVC *vc = [[[self destinationViewController] childViewControllers] lastObject];
+    //int height = [[self sourceViewController] view].window.frame.size.height;
+    //DLog(@"Avant modification: %f", view.view.bounds.size.width );
+
+
     
     
-    [view setContentSizeForViewInPopover:CGSizeMake(weightOfPopoverView, height)];
+   // [view setContentSizeForViewInPopover:CGSizeMake(weightOfPopoverView, height)];
     
     UIPopoverController *pc = [[UIPopoverController alloc] initWithContentViewController:[self destinationViewController]];
-    [pc setPopoverContentSize:CGSizeMake(weightOfPopoverView, height)];
+    //[pc setPopoverContentSize:CGSizeMake(weightOfPopoverView, height)];
     
     //[pc setPassthroughViews:[NSArray arrayWithObject:self.tableView]];
     
     CGRect a = _rec;
     
-    DLog(@"%f, %f, %f, %f", a.origin.x, a.origin.y, a.size.width, a.size.height);
+    //DLog(@"%f, %f, %f, %f", a.origin.x, a.origin.y, a.size.width, a.size.height);
     
     UIView *sourceView = [[self sourceViewController] tableView];
-    view.popover = pc;
+    int widthDest = vc.contentSizeForViewInPopover.width;
     
-    [pc presentPopoverFromRect:CGRectMake(a.origin.x, a.origin.y, a.size.width-weightOfPopoverView-10, a.size.height) inView:sourceView permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+    //DLog(@"youhou:%f", vc.contentSizeForViewInPopover);
+    
+    vc.popover = pc;
+    
+    
+    [pc presentPopoverFromRect:CGRectMake(a.origin.x, a.origin.y, a.size.width-widthDest, a.size.height) inView:sourceView permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
     
     
     DLog(@"ok");   
