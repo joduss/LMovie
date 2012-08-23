@@ -108,6 +108,8 @@
     Movie *movieToModify = movie;
     
     DLog(@"info mises à jour lors de la modif: %@", [info description]);
+    
+    //DLog(@"tmdb_rate: %@", [info valueForKey:@"tmdb_rate"]);
 
     
     NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
@@ -132,7 +134,7 @@
     movieToModify.comment = [info valueForKey:@"comment"];
 
     
-    // DLog(@"new movie inserted: %@", [newMovie description]);
+    DLog(@"Modifies movie: %@", [movieToModify description]);
     [self saveContext];
     return movieToModify;
 }

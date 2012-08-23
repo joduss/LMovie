@@ -25,6 +25,7 @@
 @property (nonatomic, weak) UIPopoverController *popover;
 - (IBAction)segmentControlChanged:(UISegmentedControl *)sender;
 @property (nonatomic, strong) NSMutableDictionary *valueEntered;
+//@property (nonatomic, strong) UIImagePickerController *picker;
 
 
 

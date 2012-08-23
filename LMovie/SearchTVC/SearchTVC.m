@@ -14,6 +14,7 @@
 
 @implementation SearchTVC
 
+@synthesize delegate = _delegate;
 
 - (void)viewDidLoad
 {
@@ -159,9 +160,15 @@
 }
 
 - (IBAction)SearchButtonPressed:(UIBarButtonItem *)sender {
+    DLog(@"search button pressé");
+    [self.view endEditing:YES];
+    DLog(@"info: %@", self.valueEntered);
+    [self.delegate executeSearchWithInfo:self.valueEntered];
 }
 
 - (IBAction)resetButtonPressed:(UIBarButtonItem *)sender {
+    self.valueEntered = nil;
+    [self.tableView reloadData];
 }
 
 

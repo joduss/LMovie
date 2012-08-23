@@ -149,7 +149,7 @@
             
         }
         //pour user_rate et tmdb_rate
-        else if ([key isEqualToString:@"user_rate"] || [key isEqualToString:@"tmdb_rate"]){
+        else if ([key isEqualToString:@"user_rate"]){
             identifier = @"rateView cell";
             RateViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             
@@ -350,13 +350,11 @@
     [mediaUI setAllowsEditing:NO];
     
 #warning Voir pour ajouter un bouton annuler
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"back"
-                                                                   style:UIBarButtonItemStyleBordered 
-                                                                  target:self                                                                             
-                                                                  action:@selector(ha:)];
+
     
-    mediaUI.navigationItem.leftBarButtonItem = backButton;
-    mediaUI.navigationController.navigationItem.leftBarButtonItem = backButton;
+    
+    //mediaUI.navigationItem.leftBarButtonItem = backButton;
+    //mediaUI.navigationController.navigationItem.leftBarButtonItem = backButton;
     
     
     UIPopoverController *pc = [[UIPopoverController alloc] initWithContentViewController:mediaUI];
@@ -364,15 +362,18 @@
     fr.origin.y = fr.origin.y + 50;
     [pc presentPopoverFromRect:fr inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
     
-    
+    //_picker = mediaUI;
     _pc = pc;
+    //[picker toolbar]
 }
 
 - (void) imagePickerController: (UIImagePickerController *) picker
  didFinishPickingMediaWithInfo: (NSDictionary *) info {
-    
     UIImage *originalImage;//, *editedImage, *imageToUse;
     
+    
+
+        
     // Handle a still image picked from a photo album
     //if (CFStringCompare ((CFStringRef) mediaType, kUTTypeImage, 0)
         //== kCFCompareEqualTo) {
@@ -423,6 +424,23 @@
 
 
 
+#pragma mark - Methode pour fermer picker
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissModalViewControllerAnimated:YES];
+}
+
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    //viewController.title = @"connard";
+    viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelPicker:)];
+}
+
+
+
+
+-(IBAction)cancelPicker:(id)sender{
+    [_pc dismissPopoverAnimated:YES];
+}
 
 
 

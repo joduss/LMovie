@@ -17,28 +17,17 @@
 
 @synthesize valueEntered = _valueEntered;
 
-
-
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
+-(NSMutableDictionary*)valueEntered{
+    DLog(@"dans valueEntered");
+    if(_valueEntered){
+        return _valueEntered;
     }
-    return self;
+        _valueEntered = [[NSMutableDictionary alloc] init];
+    
+    return _valueEntered;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
 
 - (void)viewDidUnload
 {
@@ -58,8 +47,13 @@
 {
     MovieEditorGeneralCell *cell = (MovieEditorGeneralCell *) [[textField superview] superview];
     if(cell != nil && cell.associatedKey != nil){
-        [_valueEntered setValue:textField.text forKey:cell.associatedKey];
+        [self.valueEntered setValue:textField.text forKey:cell.associatedKey];
+        if ([textField.text isEqualToString:@""]) {
+            DLog(@"removed last entry");
+            [_valueEntered removeObjectForKey:cell.associatedKey];
+        }
         DLog(@"Value Entered set for: key: %@ and value: %@", cell.associatedKey, textField.text);
+        
     }
 }
 

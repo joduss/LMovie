@@ -24,6 +24,7 @@
             NSString *value = [[self valueForKey:key] description];
             if(value != nil){
                 [dico setObject:value forKey:key];
+                DLog(@"value in Movie+Info: %@ for key: %@", value, key);
             }
         }
     }

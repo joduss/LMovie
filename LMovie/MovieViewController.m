@@ -11,6 +11,7 @@
 @interface MovieViewController ()
 @property BOOL panelUsed;
 @property (nonatomic, strong) MovieManager* movieManager;
+@property (nonatomic, strong) NSDictionary *searchInfo;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 @end
@@ -96,6 +97,82 @@
 }
 
 
+-(void)executeSearchWithInfo:(NSDictionary *)info
+{
+    _fetchedResultsController.delegate = nil;
+    _fetchedResultsController = nil;
+    //DLog(@"executeSearchWithInfo: %@", [info description]);
+    if(info){
+
+        //DLog(@"executeSearchWithInfo: %@", [info description]);
+        _searchInfo = info;
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        // Edit the entity name as appropriate.
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Movie" inManagedObjectContext:_movieManager.managedObjectContext];
+        [fetchRequest setEntity:entity];
+        
+        // Set the batch size to a suitable number.
+        [fetchRequest setFetchBatchSize:20];
+        
+        // Edit the sort key as appropriate.
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
+        NSArray *sortDescriptors = [NSArray arrayWithObjects:sortDescriptor, nil];
+        
+        [fetchRequest setSortDescriptors:sortDescriptors];
+        
+        //FILTRAGE:
+        NSPredicate *filterPredicate;
+        NSMutableArray *predicateArray = [NSMutableArray array];
+        if(info){
+            
+            for(NSString *key in [info allKeys]){
+                
+                if([key isEqualToString:@"user_rate"] || [key isEqualToString:@"tmdb_rate"] || [key isEqualToString:@"year"]){
+                    [predicateArray addObject:[NSPredicate predicateWithFormat:@"%K >= %@",  key, [info valueForKey:key]]];
+                }
+                else {
+                    [predicateArray addObject:[NSPredicate predicateWithFormat:@"%K contains[cd] %@",  key, [info valueForKey:key]]];
+                }
+                if(([key isEqualToString:@"viewed"] && [[info valueForKey:@"viewed"] intValue] == 3) || [[info valueForKey:@"viewed"] isEqualToString:@""]){
+                    DLog(@"last deleted");
+                    [predicateArray removeLastObject];
+                }
+                //DLog(@"écriture des predicates: %@", [ NSString stringWithFormat:@"%@ CONTAINS[cd] %@", key, [info valueForKey:key]]);
+            }
+
+            
+            DLog(@"Tous les predicates: %@", [predicateArray description]);
+            filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicateArray];
+
+        }
+        
+        [fetchRequest setPredicate:filterPredicate];
+        
+        
+        
+        
+        // Edit the section name key path and cache name if appropriate.
+        // nil for section name key path means "no sections".
+        [NSFetchedResultsController deleteCacheWithName:nil];
+        NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:_movieManager.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+        aFetchedResultsController.delegate = self;
+        self.fetchedResultsController = aFetchedResultsController;
+        
+        
+        NSError *error = nil;
+        if (![self.fetchedResultsController performFetch:&error]) {
+            // Replace this implementation with code to handle the error appropriately.
+            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            DLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }
+    }
+    [self.tableView reloadData];
+    //[self.tableView beginUpdates];
+
+}
+
+
 
 
 
@@ -131,6 +208,9 @@
     else if ([segue.identifier isEqualToString:@"segue to searchTVC"]) {
         UINavigationController *nav = segue.destinationViewController;
         [[nav.childViewControllers lastObject] setMovieManager:self.movieManager];
+        [[nav.childViewControllers lastObject] setDelegate:self];
+        [[nav.childViewControllers lastObject] setValueEntered:[_searchInfo mutableCopy]];
+        _searchInfo = nil;
     }
 
 
@@ -205,7 +285,7 @@
     NSString *identifier = @"movie cell";
     MovieCellHorizontal *cell = [tableView dequeueReusableCellWithIdentifier:identifier]; 
     
-    DLog(@"Cell for row MovieVC -> Cell: %@",cell);
+    //DLog(@"Cell for row MovieVC -> Cell: %@",cell);
     
     Movie *movie = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
