@@ -12,7 +12,7 @@
         <attribute name="resolution" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="subtitle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="tmdb_rate" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="tmdb_rate" optional="YES" attributeType="Float" defaultValueString="0" syncable="YES"/>
         <attribute name="user_rate" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="viewed" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="year" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
