@@ -70,7 +70,7 @@
     
     
     if(movie.mini_picture == nil){
-        DLog(@"Picture nil");
+        //DLog(@"Picture nil");
         [_picture setImage:nil];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSString *file = [[NSBundle mainBundle] pathForResource:@"emptyartwork_mini" ofType:@"jpg"];
@@ -81,7 +81,7 @@
         });
     }
     else {
-        DLog(@"Picture non nil");
+        //DLog(@"Picture non nil");
         [_picture setImage:nil];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             UIImage * img = [UIImage imageWithData:movie.mini_picture];
