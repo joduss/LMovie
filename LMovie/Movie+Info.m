@@ -10,6 +10,9 @@
 #import "MovieManager.h"
 
 @implementation Movie (Info)
+
+//Deprecated
+#warning Méthode à supprimer
 - (NSDictionary *)formattedInfoInDictionnary{
     NSMutableDictionary *dico= [[NSMutableDictionary alloc] init];
       
@@ -27,10 +30,62 @@
                 DLog(@"value in Movie+Info: %@ for key: %@", value, key);
             }
         }
+        
+        if([dico valueForKey:key] == nil){
+            [dico removeObjectForKey:key];
+        }
+        else if([[dico valueForKey:key] respondsToSelector:@selector(isEqualToString:)] && [[dico valueForKey:key] isEqualToString:@""] ){
+            [dico removeObjectForKey:key];
+        }
+
+
     }
+    
 
            
     DLog(@"dico renvoyé avec les info formatée: %@", [dico description]);
     return dico;
 }
+
+
+- (NSDictionary *)formattedInfoInDictionnaryWithImage:(ImageSize)imageSize{
+    NSMutableDictionary *dico= [[NSMutableDictionary alloc] init];
+    
+    for(NSString *key in [[self.entity propertiesByName] allKeys]){
+        if([key isEqualToString:@"mini_picture"] && [self valueForKey:key] != nil){
+            if(imageSize != ImageSizeBig){
+                [dico setObject:[UIImage imageWithData:self.mini_picture] forKey:@"mini_picture"];
+            }
+        }
+        else if([key isEqualToString:@"big_picture"] && [self valueForKey:key] != nil){
+            if(imageSize != ImageSizeMini){
+                [dico setObject:[UIImage imageWithData:self.big_picture] forKey:@"big_picture"];
+            }
+        }
+        else {
+            NSString *value = [[self valueForKey:key] description];
+            if(value != nil){
+                [dico setObject:value forKey:key];
+                DLog(@"value in Movie+Info: %@ for key: %@", value, key);
+            }
+        }
+        
+        if([dico valueForKey:key] == nil){
+            [dico removeObjectForKey:key];
+        }
+        else if([[dico valueForKey:key] respondsToSelector:@selector(isEqualToString:)] && [[dico valueForKey:key] isEqualToString:@""] ){
+            [dico removeObjectForKey:key];
+        }
+        
+        
+    }
+    
+    
+    
+    DLog(@"dico renvoyé avec les info formatée: %@", [dico description]);
+    return dico;
+}
+
+
+
 @end

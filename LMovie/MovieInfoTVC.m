@@ -10,6 +10,8 @@
 
 @interface MovieInfoTVC ()
 @property (nonatomic, strong) NSMutableArray *infoArray;
+@property (nonatomic, strong) NSMutableArray *keyArray;
+@property (nonatomic, strong) NSDictionary *infos;
 @end
 
 @implementation MovieInfoTVC
@@ -34,79 +36,31 @@
     [super viewWillAppear:animated];
     [self.navigationController setToolbarHidden:NO ];
     [self.tableView setAllowsSelection:NO];
-}
--(void)setMovie:(Movie *)movie
-{
-    _movie = movie;
-    DLog(@"setMovie");
-    [self setInfo:[_movie formattedInfoInDictionnary]];
+    [self prepareData];
+    [self.tableView reloadData];
 }
 
-
--(void)setInfo:(NSDictionary *)info
+-(void)prepareData
 {
-    DLog(@"info dans MovieInfoTVC: %@", [info description]);
+    _infos = [[_movie formattedInfoInDictionnaryWithImage:ImageSizeBig] mutableCopy];
+        
+    _keyArray = [[NSMutableArray alloc] initWithObjects:
+                 [[NSMutableArray alloc] init],
+                 [[NSMutableArray alloc] init], nil];
     
-    
-    for(NSString * key in [_movieManager orderedKey
-                           ]){
-        
-        //DLog(@"coucou clé: %@", key);
-        BOOL isFirst = YES;
-        int section = [_movieManager sectionForKey:key];
-        
-        
-        if([key isEqualToString:@"big_picture"]){
-            UIImage *image = [info valueForKey:key];
-            infoFormattedForArray *infoFormatted = [[infoFormattedForArray alloc] init];
-            infoFormatted.isFirst = isFirst;
-            infoFormatted.value = image;
-            infoFormatted.key = key; 
-            [[self.infoArray objectAtIndex:0] addObject:infoFormatted];
-        }
-        else if ([key isEqualToString:@"viewed"]){
-            int value = [[info valueForKey:key] intValue];
-            DLog(@"movieInfoTVT: value: %@    for key: %@",[info valueForKey:key], key);
-            NSString *text = @"";
-            
-            switch (value) {
-                case 0:
-                    text = @"No";
-                    break;
-                case 1:
-                    text = @"Yes";
-                    break;
-                default:
-                    text = @"?";
-                    break;
-            }
-            infoFormattedForArray *infoFormatted = [[infoFormattedForArray alloc] init];
-            infoFormatted.isFirst = YES;
-            infoFormatted.value = text;
-            infoFormatted.key = key;
-            [[self.infoArray objectAtIndex:section] addObject:infoFormatted];
-
-        }
-        
-        else {
-            NSString *value = [info valueForKey:key];
-            if([value isEqualToString:@""]){
-                value = nil;
-            }
-            DLog(@"movieInfoTVT: value: %@    for key: %@",[info valueForKey:key], key);
-            NSArray *valueArray =[value componentsSeparatedByString:@", "];
-            for(NSString *formattedValue in valueArray){
-                infoFormattedForArray *infoFormatted = [[infoFormattedForArray alloc] init];
-                infoFormatted.isFirst = isFirst;
-                infoFormatted.value = formattedValue;
-                infoFormatted.key = key;
-                [[self.infoArray objectAtIndex:section] addObject:infoFormatted];
-                isFirst = NO;
-            }
+    for(NSString *key in [_movieManager orderedKey]){
+        if([_infos valueForKey:key] != nil){
+            int section = [_movieManager sectionForKey:key];
+            [[_keyArray objectAtIndex:section]addObject:key];
         }
     }
-    DLog(@"count après set info: %d", [_infoArray count]);
+    
+    DLog(@"infos du film: %@", [_infos description]);
+    DLog(@"keyArray: %@", [_keyArray description]);
+
 }
+
+
 
 
 -(NSMutableArray *)infoArray
@@ -137,35 +91,54 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    DLog(@"count: %d", [_infoArray count]);
-    return [_infoArray count];
+    int section = 0;
+    for(NSString *key in [_movieManager allKey]){
+        if([_infos valueForKey:key] != nil){
+            int thisSection = [_movieManager sectionForKey:key] + 1;
+            if(thisSection > section){
+                section = thisSection;
+            }
+        }
+    }
+    return section;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    return [[_infoArray objectAtIndex:section] count];
+    int n = [[_keyArray objectAtIndex:section] count];
+    /*NSArray *AllKeys = [[_movieManager keyOrderedBySection] objectAtIndex:section];
+    for(NSString *key in AllKeys){
+        if([_infos valueForKey:key] != nil){
+            n++;
+            DLog(@"Pour la clé: %@  l'info: %@", key, [[_infos valueForKey:key] description]);
+        }
+    }*/
     
+    
+    // Return the number of rows in the section.
+    //return [[_infoArray objectAtIndex:section] count];
+    return n;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"";
-    infoFormattedForArray *infoToUse = [[_infoArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    UITableViewCell *cell;
-    NSString *key = infoToUse.key;
     
-    if(indexPath.row == 0 && indexPath .section == 0){
+    static NSString *CellIdentifier = @"";
+    //infoFormattedForArray *infoToUse = [[_infoArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    UITableViewCell *cell;
+    NSString *key = [[_keyArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    
+    if(indexPath.row == 0 && indexPath.section == 0){
+        key = @"big_picture";
         CellIdentifier = @"picture cell";
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         UIImage *image;
-        if(infoToUse.value == nil){
+        if([_infos valueForKey:key] == nil){
             image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"emptyartwork_big" ofType:@"jpg"]];
         }
         else {
-            image = infoToUse.value;
+            image = [_infos valueForKey:key];
         }
-        DLog(@"infoToUse key: %@", infoToUse.key);
         
         //[imageView re];
         [(MovieEditorPictureCell *)cell setCellImage:image];
@@ -175,11 +148,11 @@
             CellIdentifier = @"rateView cell";
             RateViewCell *thisCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
             
-            thisCell.infoLabel.text = [_movieManager labelForKey:infoToUse.key];
+            thisCell.infoLabel.text = [_movieManager labelForKey:key];
             //DLog(@"rateViewCell: %@ et rateView:%@", cell, cell.rateView);
             
             thisCell.key =  key;
-            [thisCell configureCellWithRate:[infoToUse.value intValue]];
+            [thisCell configureCellWithRate:[[_infos valueForKey:key] intValue]];
             thisCell.rateView.editable = NO;
             cell = thisCell;
             
@@ -190,12 +163,10 @@
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         UILabel *rightLabel = (UILabel *)[cell viewWithTag:101];
         UILabel *leftLabel = (UILabel *)[cell viewWithTag:100];
-        NSString *rightLabelText = @"";
+        NSString *rightLabelText = [_movieManager labelForKey:key];
         
-        if(infoToUse.isFirst){
-            rightLabelText = [_movieManager labelForKey:infoToUse.key];
-        }
-        rightLabel.text = infoToUse.value;
+            DLog(@"key: %@", [_keyArray description]);
+        rightLabel.text = [_infos valueForKey:key];
         leftLabel.text = rightLabelText;
         }
         
@@ -238,9 +209,9 @@
     if(indexPath.row == 0 && indexPath.section == 0){
         return 330;
     }
-    else if (((infoFormattedForArray *)[[_infoArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]).isFirst == false){
+    /*else if (((infoFormattedForArray *)[[_infoArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]).isFirst == false){
         return 35;
-    }
+    }*/
     else {
         return 45;
     }
@@ -290,6 +261,12 @@
     [_movieManager deleteMovie:_movie];
     [self.popover dismissPopoverAnimated:YES];
 }
+
+
+
+
+
+
 
 
 

@@ -8,10 +8,6 @@
 
 #import "Movie.h"
 
-@interface Movie (Info)
-- (NSDictionary *)formattedInfoInDictionnary;
-@end
-
 
 typedef enum {
     ViewedNO = 0,
@@ -19,5 +15,21 @@ typedef enum {
     ViewedMAYBE = 2,
     ViewedAll = 3 //utilisée uniquement pour la recherche
 } ViewedState;
+
+typedef enum {
+    ImageSizeBig = 0,
+    ImageSizeMini = 1,
+    ImageSizeBigAndMini = 2
+} ImageSize;
+
+
+
+@interface Movie (Info)
+- (NSDictionary *)formattedInfoInDictionnary;
+- (NSDictionary *)formattedInfoInDictionnaryWithImage:(ImageSize)imageSize;
+@end
+
+
+
 
 
