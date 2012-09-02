@@ -106,4 +106,70 @@
     
 }
 
+
++(UIImage *)resizeImage:(UIImage *)image ToSizeMax:(int)size{
+    if(image.size.width > size || image.size.width > size){
+        double ratio = image.size.height / image.size.width;
+        float newWidth;
+        float newHeith;
+        
+        if(image.size.width > image.size.height){
+            newWidth = MAX_SIZE_BIG;
+            newHeith = newWidth * ratio;
+        }
+        else {
+            newHeith = MAX_SIZE_BIG;
+            newWidth = newHeith / ratio;
+        }
+        
+        //resize l'image:
+        CGRect newRect = CGRectIntegral(CGRectMake(0, 0, newWidth, newHeith));
+        CGImageRef imageRef = image.CGImage;
+        
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(newWidth, newHeith), NO, 0);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        
+        // Set the quality level to use when rescaling
+        CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+        CGAffineTransform flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0, newHeith);
+        
+        CGContextConcatCTM(context, flipVertical);
+        // Draw into the context; this scales the image
+        CGContextDrawImage(context, newRect, imageRef);
+        
+        // Get the resized image from the context and a UIImage
+        CGImageRef newImageRef = CGBitmapContextCreateImage(context);
+        UIImage *newImage = [UIImage imageWithCGImage:newImageRef];
+        
+        CGImageRelease(newImageRef);
+        UIGraphicsEndImageContext();
+        
+        return newImage;
+    }
+    else {
+        return image;
+    }
+    
+}
+
+
+
+/*
+ *Méthode qui prend chaque élément d'un array et qui les séparent par des "," (virgule). Plus propre que [array description]
+ */
++(NSString *)stringFromArray:(NSArray *)array
+{
+    NSString *string;
+    if(array != nil && [array count] > 0){
+        string = [[array objectAtIndex:0] description];
+        for(int i = 1; i < [array count]; i++){
+            string = [string stringByAppendingFormat:@", %@", [[array objectAtIndex:i] description]];
+        }
+        
+    }
+    return string;
+}
+
+
+
 @end

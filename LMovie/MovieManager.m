@@ -107,7 +107,7 @@
 {
     Movie *movieToModify = movie;
     
-    DLog(@"info mises à jour lors de la modif: %@", [info description]);
+    DLog(@"MovieManager | Mise à jour de Movie avec ces nouvelles info: %@", [info description]);
     
     //DLog(@"tmdb_rate: %@", [info valueForKey:@"tmdb_rate"]);
 
@@ -134,7 +134,7 @@
     movieToModify.comment = [info valueForKey:@"comment"];
 
     
-    DLog(@"Modifies movie: %@", [movieToModify description]);
+    DLog(@"MovieManager | résultat de la modification de Movie: %@", [movieToModify description]);
     [self saveContext];
     return movieToModify;
 }

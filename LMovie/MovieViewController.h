@@ -21,7 +21,7 @@
 - (IBAction)addAMovieButtonPressed:(UIBarButtonItem *)sender;
 @property IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *bouton;
-@property (strong, nonatomic) IBOutlet MovieEditorTVC *movieEditor;
+@property (weak, nonatomic) id movieEditor;
 -(void)executeSearchWithInfo:(NSDictionary *)info;
 
 

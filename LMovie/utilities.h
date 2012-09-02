@@ -21,5 +21,8 @@ typedef enum ActionDoneIn {
 +(UIImage *)resizeImageToMini:(UIImage *)image;
 
 
++(NSString *)stringFromArray:(NSArray *)array;
+
+
 
 @end

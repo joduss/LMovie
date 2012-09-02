@@ -21,7 +21,7 @@
 @synthesize bouton = _bouton;
 @synthesize movieManager = _movieManager;
 @synthesize fetchedResultsController = _fetchedResultsController;
-@synthesize movieEditor = _movieEditor;
+@synthesize movieEditor = _movieEditorOrTMDBSearchTVC;
 
 
 
@@ -192,7 +192,9 @@
         if([sender isKindOfClass:[Movie class]]){
             view.movieToEdit = sender;
         }
-        _movieEditor = view;
+        _movieEditorOrTMDBSearchTVC = view;
+        
+        
     }
     else if ([segue.identifier isEqualToString:@"segue to movieInfoTVC"]) {
         [(SeguePopoverMovieInfoTVC *)segue setRec:[_tableView rectForRowAtIndexPath:[_tableView indexPathForSelectedRow]]];
@@ -212,13 +214,21 @@
         [[nav.childViewControllers lastObject] setValueEntered:[_searchInfo mutableCopy]];
         _searchInfo = nil;
     }
+    else if ([segue.identifier isEqualToString:@"segue to TMDBSearchTVC"]){
+        id view = [[segue.destinationViewController viewControllers] lastObject];
+        _movieEditorOrTMDBSearchTVC = view;
+    }
 
 
         
 }
 
 - (IBAction)addAMovieButtonPressed:(UIBarButtonItem *)sender {
-    [self performSegueWithIdentifier:@"segue to MovieEditorTVC to create movie" sender:sender];
+    //[self performSegueWithIdentifier:@"segue to MovieEditorTVC to create movie" sender:sender];
+    if(_movieEditorOrTMDBSearchTVC == nil){
+        [self performSegueWithIdentifier:@"segue to TMDBSearchTVC" sender:sender];
+    }
+
 }
 
 

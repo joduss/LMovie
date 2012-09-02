@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C8137B5815E7D50A00DAA7A5 /* TMDBSearchTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8137B5715E7D50A00DAA7A5 /* TMDBSearchTVC.m */; };
+		C8137B5D15E7DA0E00DAA7A5 /* TMDBSearchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C8137B5C15E7DA0E00DAA7A5 /* TMDBSearchCell.m */; };
 		C81F60CB15B49022000703EF /* SeguePopoverMovieInfoTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C81F60CA15B49022000703EF /* SeguePopoverMovieInfoTVC.m */; };
 		C824DBD915BC1A890041B0D8 /* File.rtf in Resources */ = {isa = PBXBuildFile; fileRef = C824DBD815BC1A890041B0D8 /* File.rtf */; };
 		C8252E7615AC93F900DF0F96 /* MovieEditorTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8252E7515AC93F900DF0F96 /* MovieEditorTVC.m */; };
@@ -14,6 +16,7 @@
 		C84F427215D8194900ECC2E3 /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = C84F427115D8194900ECC2E3 /* Movie.m */; };
 		C8559D5815DAB4B10027B75E /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C8559D5715DAB4B10027B75E /* MBProgressHUD.m */; };
 		C8559D5F15DAC8220027B75E /* README.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C8559D5E15DAC8220027B75E /* README.pdf */; };
+		C856B7C115F38EA9006C746F /* NSMutableDictionary+LMMutableDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = C856B7C015F38EA9006C746F /* NSMutableDictionary+LMMutableDictionary.m */; };
 		C85AF26E15E663B40007B73C /* migration.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = C85AF26D15E663B40007B73C /* migration.xcmappingmodel */; };
 		C866301D15A9B64900D0723F /* infoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C866301C15A9B64800D0723F /* infoView.xib */; };
 		C866302115A9B78900D0723F /* infoViewPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = C866302015A9B78900D0723F /* infoViewPanel.m */; };
@@ -36,6 +39,7 @@
 		C8BB2E1915BDE1EE004E8CE2 /* middle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C8BB2E1615BDE1EE004E8CE2 /* middle.jpg */; };
 		C8C42A5E15D0539D0006C59F /* RateViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C42A5D15D0539D0006C59F /* RateViewCell.m */; };
 		C8C58F8E15B1C1F6005C921A /* emptyartwork_mini.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C8C58F8C15B1C1F5005C921A /* emptyartwork_mini.jpg */; };
+		C8D101D415E9061800212AFC /* TMDBMovie.m in Sources */ = {isa = PBXBuildFile; fileRef = C8D101D315E9061800212AFC /* TMDBMovie.m */; };
 		C8DAD3EF15ACC1D7004BFCEA /* MovieEditorGeneralCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DAD3EE15ACC1D6004BFCEA /* MovieEditorGeneralCell.m */; };
 		C8DAD3F115ACC5CA004BFCEA /* keyOrder.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8DAD3F015ACC5CA004BFCEA /* keyOrder.plist */; };
 		C8DE8BC815D4432D00B251B6 /* settings_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C8DE8BC615D4432D00B251B6 /* settings_icon@2x.png */; };
@@ -62,6 +66,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C8137B5615E7D50A00DAA7A5 /* TMDBSearchTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMDBSearchTVC.h; sourceTree = "<group>"; };
+		C8137B5715E7D50A00DAA7A5 /* TMDBSearchTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMDBSearchTVC.m; sourceTree = "<group>"; };
+		C8137B5B15E7DA0E00DAA7A5 /* TMDBSearchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMDBSearchCell.h; sourceTree = "<group>"; };
+		C8137B5C15E7DA0E00DAA7A5 /* TMDBSearchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMDBSearchCell.m; sourceTree = "<group>"; };
 		C81F60C915B49022000703EF /* SeguePopoverMovieInfoTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeguePopoverMovieInfoTVC.h; sourceTree = "<group>"; };
 		C81F60CA15B49022000703EF /* SeguePopoverMovieInfoTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeguePopoverMovieInfoTVC.m; sourceTree = "<group>"; };
 		C824DBD815BC1A890041B0D8 /* File.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = File.rtf; sourceTree = "<group>"; };
@@ -76,6 +84,8 @@
 		C8559D5615DAB4B10027B75E /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		C8559D5715DAB4B10027B75E /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		C8559D5E15DAC8220027B75E /* README.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = README.pdf; sourceTree = "<group>"; };
+		C856B7BF15F38EA9006C746F /* NSMutableDictionary+LMMutableDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+LMMutableDictionary.h"; sourceTree = "<group>"; };
+		C856B7C015F38EA9006C746F /* NSMutableDictionary+LMMutableDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+LMMutableDictionary.m"; sourceTree = "<group>"; };
 		C85AF26B15E663770007B73C /* LMovie 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "LMovie 5.xcdatamodel"; sourceTree = "<group>"; };
 		C85AF26D15E663B40007B73C /* migration.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = migration.xcmappingmodel; sourceTree = "<group>"; };
 		C866301C15A9B64800D0723F /* infoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = infoView.xib; sourceTree = "<group>"; };
@@ -113,6 +123,8 @@
 		C8C42A5C15D0539D0006C59F /* RateViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RateViewCell.h; sourceTree = "<group>"; };
 		C8C42A5D15D0539D0006C59F /* RateViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RateViewCell.m; sourceTree = "<group>"; };
 		C8C58F8C15B1C1F5005C921A /* emptyartwork_mini.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = emptyartwork_mini.jpg; path = LMovie/icons/emptyartwork_mini.jpg; sourceTree = SOURCE_ROOT; };
+		C8D101D215E9061800212AFC /* TMDBMovie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMDBMovie.h; sourceTree = "<group>"; };
+		C8D101D315E9061800212AFC /* TMDBMovie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMDBMovie.m; sourceTree = "<group>"; };
 		C8D476B315BC8A9D00556020 /* LMovie 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "LMovie 2.xcdatamodel"; sourceTree = "<group>"; };
 		C8DAD3ED15ACC1D6004BFCEA /* MovieEditorGeneralCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieEditorGeneralCell.h; sourceTree = "<group>"; };
 		C8DAD3EE15ACC1D6004BFCEA /* MovieEditorGeneralCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieEditorGeneralCell.m; sourceTree = "<group>"; };
@@ -167,6 +179,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C8137B5A15E7D51100DAA7A5 /* TMDBSearchTVC */ = {
+			isa = PBXGroup;
+			children = (
+				C8D101D215E9061800212AFC /* TMDBMovie.h */,
+				C8D101D315E9061800212AFC /* TMDBMovie.m */,
+				C8137B5B15E7DA0E00DAA7A5 /* TMDBSearchCell.h */,
+				C8137B5C15E7DA0E00DAA7A5 /* TMDBSearchCell.m */,
+				C8137B5615E7D50A00DAA7A5 /* TMDBSearchTVC.h */,
+				C8137B5715E7D50A00DAA7A5 /* TMDBSearchTVC.m */,
+			);
+			name = TMDBSearchTVC;
+			sourceTree = "<group>";
+		};
 		C8252E7B15ACAF9000DF0F96 /* MovieEditorCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -184,6 +209,8 @@
 		C846114615AD895F005A2D6C /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				C856B7BF15F38EA9006C746F /* NSMutableDictionary+LMMutableDictionary.h */,
+				C856B7C015F38EA9006C746F /* NSMutableDictionary+LMMutableDictionary.m */,
 				C8F3C87115AF639A004D7A9E /* utilities.h */,
 				C8F3C87215AF639A004D7A9E /* utilities.m */,
 			);
@@ -385,6 +412,7 @@
 				C87ADF3215B322850011B412 /* pourri */,
 				C8F369E715AAE8EE0024F2CD /* original */,
 				C8F30C2515A210C7000AB421 /* MainStoryboard.storyboard */,
+				C8137B5A15E7D51100DAA7A5 /* TMDBSearchTVC */,
 				C8A4D2AC15DC1EB00082BFD4 /* SearchTVC */,
 				C8A4D2B315DC27810082BFD4 /* EditableCell */,
 				C8DE8BCE15D44B1900B251B6 /* SettingTVC */,
@@ -560,6 +588,10 @@
 				C8A4D2AF15DC1EE20082BFD4 /* SearchTVC.m in Sources */,
 				C8A4D2B215DC27780082BFD4 /* EditableCellForMovieTVC.m in Sources */,
 				C85AF26E15E663B40007B73C /* migration.xcmappingmodel in Sources */,
+				C8137B5815E7D50A00DAA7A5 /* TMDBSearchTVC.m in Sources */,
+				C8137B5D15E7DA0E00DAA7A5 /* TMDBSearchCell.m in Sources */,
+				C8D101D415E9061800212AFC /* TMDBMovie.m in Sources */,
+				C856B7C115F38EA9006C746F /* NSMutableDictionary+LMMutableDictionary.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

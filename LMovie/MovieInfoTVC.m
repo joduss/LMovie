@@ -165,7 +165,7 @@
         UILabel *leftLabel = (UILabel *)[cell viewWithTag:100];
         NSString *rightLabelText = [_movieManager labelForKey:key];
         
-            DLog(@"key: %@", [_keyArray description]);
+            //DLog(@"key: %@", [_keyArray description]);
         rightLabel.text = [_infos valueForKey:key];
         leftLabel.text = rightLabelText;
         }
@@ -248,8 +248,10 @@
 #pragma mark - MovieEditorDelegate methods
 - (void)actualizeWithMovie:(Movie *)movie
 {
+    DLog(@"Mise à jour des info");
     _infoArray = nil;
-    [self setMovie:movie];
+    _movie = movie;
+    [self prepareData];
     [self.tableView reloadData];
 }
 

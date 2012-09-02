@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2549" systemVersion="12A269" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="Xpb-Q0-7qr">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2549" systemVersion="12B19" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="Xpb-Q0-7qr">
     <dependencies>
+        <deployment defaultVersion="1296" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1498"/>
     </dependencies>
     <scenes>
@@ -173,6 +174,9 @@
                             <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                         </segue>
                         <segue destination="deN-AX-emF" kind="custom" identifier="segue to movieInfoTVC" customClass="SeguePopoverMovieInfoTVC" id="mIJ-ex-LsA"/>
+                        <segue destination="Yeh-ZB-YWj" kind="popover" identifier="segue to TMDBSearchTVC" popoverAnchorBarButtonItem="blY-H0-mxX" id="T8y-r6-pO1">
+                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                        </segue>
                     </connections>
                 </viewController>
             </objects>
@@ -689,6 +693,138 @@
             </objects>
             <point key="canvasLocation" x="-25" y="3246"/>
         </scene>
+        <!--SearchTVC - Root View Controller-->
+        <scene sceneID="JSm-4q-KIU">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8m1-Ny-39L" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tableViewController id="LjC-lu-ni8" customClass="TMDBSearchTVC" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="99" sectionHeaderHeight="22" sectionFooterHeight="22" id="goS-ra-E8w">
+                        <rect key="frame" x="0.0" y="44" width="600" height="660"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Enter the movie's title" id="IZM-Lv-QCK">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <color key="tintColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <scopeButtonTitles>
+                                <string>Title</string>
+                                <string>Title</string>
+                            </scopeButtonTitles>
+                        </searchBar>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TMDBSearchTVC cell" rowHeight="99" id="R32-5c-0xf" customClass="TMDBSearchCell">
+                                <rect key="frame" x="0.0" y="66" width="600" height="99"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="98"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" id="4E7-A5-mao">
+                                            <rect key="frame" x="20" y="4" width="79" height="90"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Loading....." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="OnR-dw-b22">
+                                            <rect key="frame" x="107" y="4" width="473" height="32"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Loading...." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="16W-ZH-7Kr">
+                                            <rect key="frame" x="107" y="37" width="473" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Loading......" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="9CI-7s-Dnb">
+                                            <rect key="frame" x="107" y="66" width="473" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <connections>
+                                    <outlet property="directorLabel" destination="9CI-7s-Dnb" id="e4M-X4-b5W"/>
+                                    <outlet property="posterView" destination="4E7-A5-mao" id="N50-HT-uRF"/>
+                                    <outlet property="titleAndYearLabel" destination="OnR-dw-b22" id="ylD-i4-JOs"/>
+                                    <outlet property="yearLabel" destination="16W-ZH-7Kr" id="LjX-6k-TqE"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="TMDBSearchTVC cell no result" id="AQC-G5-cwB">
+                                <rect key="frame" x="0.0" y="165" width="600" height="99"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="98"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="88" contentMode="left" text="No Movie found with this title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="TcE-z1-C9C">
+                                            <rect key="frame" x="20" y="20" width="560" height="58"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                            </tableViewCell>
+                        </prototypes>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Root View Controller" id="Qnj-Tb-Wg5"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="600" height="660"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="searchBar" destination="IZM-Lv-QCK" id="XSE-k9-Q73"/>
+                        <outlet property="searchDisplayController" destination="8fZ-nJ-RTw" id="Hzx-Qs-9X7"/>
+                    </connections>
+                </tableViewController>
+                <searchDisplayController id="8fZ-nJ-RTw">
+                    <connections>
+                        <outlet property="delegate" destination="LjC-lu-ni8" id="Cmh-pa-MjG"/>
+                        <outlet property="searchContentsController" destination="LjC-lu-ni8" id="3D3-YQ-mso"/>
+                        <outlet property="searchResultsDataSource" destination="LjC-lu-ni8" id="5Zs-bP-Cmo"/>
+                        <outlet property="searchResultsDelegate" destination="LjC-lu-ni8" id="0lc-Fn-W9Z"/>
+                    </connections>
+                </searchDisplayController>
+            </objects>
+            <point key="canvasLocation" x="1216" y="4130"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="nV8-8g-YNR">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mxh-lH-id1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController definesPresentationContext="YES" toolbarHidden="NO" id="Yeh-ZB-YWj" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="knX-HH-Nvr"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="uuX-qT-4KH">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="ayc-7V-2XG">
+                        <rect key="frame" x="0.0" y="724" width="1024" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="bwf-iH-Dn5" id="3cu-As-B62"/>
+                        <segue destination="LjC-lu-ni8" kind="relationship" relationship="rootViewController" id="Wqm-FP-sDh"/>
+                    </connections>
+                </navigationController>
+                <searchDisplayController id="bwf-iH-Dn5">
+                    <connections>
+                        <outlet property="delegate" destination="Yeh-ZB-YWj" id="wW5-6G-pxO"/>
+                        <outlet property="searchContentsController" destination="Yeh-ZB-YWj" id="PvG-Js-XkD"/>
+                        <outlet property="searchResultsDataSource" destination="Yeh-ZB-YWj" id="Fka-pM-Gka"/>
+                        <outlet property="searchResultsDelegate" destination="Yeh-ZB-YWj" id="HBB-CE-w7g"/>
+                    </connections>
+                </searchDisplayController>
+            </objects>
+            <point key="canvasLocation" x="-22" y="4130"/>
+        </scene>
         <!--SettingTVC-->
         <scene sceneID="JdX-bO-wUX">
             <objects>
@@ -781,7 +917,7 @@
                     </connections>
                 </tableViewController>
             </objects>
-            <point key="canvasLocation" x="929" y="4168"/>
+            <point key="canvasLocation" x="971" y="5100"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="KBD-oZ-Fxi">
@@ -799,7 +935,7 @@
                     </connections>
                 </navigationController>
             </objects>
-            <point key="canvasLocation" x="-301" y="4168"/>
+            <point key="canvasLocation" x="-279" y="5018"/>
         </scene>
     </scenes>
     <resources>
@@ -851,6 +987,7 @@
         <class className="MovieEditorTVC" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieEditorTVC.h"/>
             <relationships>
+                <relationship kind="action" name="cancelPicker:"/>
                 <relationship kind="action" name="pickImage:"/>
                 <relationship kind="action" name="resetButtonPressed:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="action" name="saveButtonPressed:" candidateClass="UIBarButtonItem"/>
@@ -903,6 +1040,21 @@
                 <relationship kind="action" name="okButtonPressed:"/>
                 <relationship kind="outlet" name="exportCell" candidateClass="UITableViewCell"/>
                 <relationship kind="outlet" name="importCell" candidateClass="UITableViewCell"/>
+            </relationships>
+        </class>
+        <class className="TMDBSearchCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TMDBSearchCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="directorLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="posterView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="titleAndYearLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="yearLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="TMDBSearchTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TMDBSearchTVC.h"/>
+            <relationships>
+                <relationship kind="outlet" name="searchBar" candidateClass="UISearchBar"/>
             </relationships>
         </class>
     </classes>

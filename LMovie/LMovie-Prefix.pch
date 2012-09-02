@@ -4,6 +4,9 @@
 
 #import <Availability.h>
 
+#define TMDB_API_KEY @"e892ef686dde8dbc5972b3eda282c5a9"
+
+
 #ifndef __IPHONE_5_0
 #warning "This project uses features only available in iOS SDK 5.0 and later."
 #endif
