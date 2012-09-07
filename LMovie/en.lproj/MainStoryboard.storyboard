@@ -399,7 +399,6 @@
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="101" contentMode="left" text="James Bond: Le Monde ne suffit pas" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="FZz-Zq-MLO">
                                             <rect key="frame" x="177" y="0.0" width="338" height="43"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" red="0.70802528342773008" green="0.85268766983695654" blue="0.39201669493068375" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -856,17 +855,21 @@
                                             <rect key="frame" x="31" y="1" width="478" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Use TMDB rate" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="Ip7-zH-oxd">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="App Language" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="Ip7-zH-oxd">
                                                     <rect key="frame" x="20" y="0.0" width="246" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="Vm2-F6-FRx">
-                                                    <rect key="frame" x="379" y="8" width="79" height="27"/>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="HgD-KJ-8Us">
+                                                    <rect key="frame" x="261" y="7" width="207" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </switch>
+                                                    <segments>
+                                                        <segment title="English"/>
+                                                        <segment title="Français"/>
+                                                    </segments>
+                                                </segmentedControl>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -941,6 +944,7 @@
                     <navigationItem key="navigationItem" id="c7M-Rb-Oad"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="appLanguageChooser" destination="HgD-KJ-8Us" id="W2t-Fn-eNe"/>
                         <outlet property="downloadMoviePosterCell" destination="CKr-Bp-z8b" id="bTb-wf-JES"/>
                         <outlet property="exportCell" destination="ohA-W9-HQW" id="pjr-at-mxc"/>
                         <outlet property="importCell" destination="7hX-06-rEB" id="MFO-0I-uoR"/>
@@ -1137,6 +1141,7 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingTVC.h"/>
             <relationships>
                 <relationship kind="action" name="okButtonPressed:"/>
+                <relationship kind="outlet" name="appLanguageChooser" candidateClass="UISegmentedControl"/>
                 <relationship kind="outlet" name="downloadMoviePosterCell" candidateClass="UITableViewCell"/>
                 <relationship kind="outlet" name="exportCell" candidateClass="UITableViewCell"/>
                 <relationship kind="outlet" name="importCell" candidateClass="UITableViewCell"/>
