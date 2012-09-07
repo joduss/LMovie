@@ -25,11 +25,19 @@
     _arrayOfMovieID = [[NSMutableArray alloc] init];
     
     
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    _popover.delegate = self;
+
 }
 
 - (void)viewDidUnload
@@ -139,23 +147,33 @@
     TMDBMovie *movie = [ [TMDBMovie alloc] initWithMovieID:[_arrayOfMovieID objectAtIndex:indexPath.row]];
     __block NSDictionary *infoDico;
     
+    MBProgressHUD *progressView = [[MBProgressHUD alloc] initWithView:self.view];
+    [progressView setMode:MBProgressHUDModeIndeterminate];
+    progressView.labelText = @"Loading Informations";
+    [self.view addSubview:progressView];
+    [progressView showUsingAnimation:YES];
+    [progressView setMinShowTime:1];
+    
     dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         [movie loadBasicInfoFromTMDB];
         infoDico = movie.infosDictionnaryFormatted;
         
         dispatch_async( dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            [self performSegueWithIdentifier:@"segue to MovieEditorTVC" sender:infoDico];
             DLog(@"On va ajouter un film avec ces infos: %@", [infoDico description]);
         });
     });
-    
-    
-    
-    
-    
-    
 }
 
+/*
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+
+{
+    return @"My Title";
+}
+*/
 
 
 #pragma mark - SearchBar delegate
@@ -214,5 +232,29 @@
     }
     [self.tableView reloadData];
 }
+
+
+
+#pragma mark - prepareForSegue
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:@"segue to MovieEditorTVC"])
+    {
+        MovieEditorTVC *vc = segue.destinationViewController;
+        vc.addedFromTMDB = YES;
+        vc.valueEntered = sender;
+        vc.movieManager = _movieManager;
+        vc.popover = self.popover;
+    }
+}
+
+
+
+#pragma mark - PopoverDelegate
+-(BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)thePopoverController{
+    DLog(@"Clic dehors");
+    return NO;
+}
+
 
 @end

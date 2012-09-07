@@ -14,6 +14,8 @@
 @property (nonatomic, strong) NSDictionary *searchInfo;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+@property (nonatomic, strong) UIPopoverController *openedPopover;
+
 @end
 
 @implementation MovieViewController
@@ -21,7 +23,6 @@
 @synthesize bouton = _bouton;
 @synthesize movieManager = _movieManager;
 @synthesize fetchedResultsController = _fetchedResultsController;
-@synthesize movieEditor = _movieEditorOrTMDBSearchTVC;
 
 
 
@@ -192,9 +193,6 @@
         if([sender isKindOfClass:[Movie class]]){
             view.movieToEdit = sender;
         }
-        _movieEditorOrTMDBSearchTVC = view;
-        
-        
     }
     else if ([segue.identifier isEqualToString:@"segue to movieInfoTVC"]) {
         [(SeguePopoverMovieInfoTVC *)segue setRec:[_tableView rectForRowAtIndexPath:[_tableView indexPathForSelectedRow]]];
@@ -215,8 +213,9 @@
         _searchInfo = nil;
     }
     else if ([segue.identifier isEqualToString:@"segue to TMDBSearchTVC"]){
-        id view = [[segue.destinationViewController viewControllers] lastObject];
-        _movieEditorOrTMDBSearchTVC = view;
+        TMDBSearchTVC *view = [[segue.destinationViewController viewControllers] lastObject];
+        view.popover = [(UIStoryboardPopoverSegue *)segue popoverController];
+        view.movieManager = self.movieManager;
     }
 
 
@@ -225,10 +224,27 @@
 
 - (IBAction)addAMovieButtonPressed:(UIBarButtonItem *)sender {
     //[self performSegueWithIdentifier:@"segue to MovieEditorTVC to create movie" sender:sender];
-    if(_movieEditorOrTMDBSearchTVC == nil){
-        [self performSegueWithIdentifier:@"segue to TMDBSearchTVC" sender:sender];
-    }
+    
+    UIActionSheet *popupQuery = [[UIActionSheet alloc] initWithTitle:@"Choose a way to add a new Movie" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Manual", @"Info from TMDB", nil];
+        popupQuery.actionSheetStyle = UIActionSheetStyleBlackOpaque;
 
+        [popupQuery showFromBarButtonItem:sender animated:YES];
+}
+
+#pragma mark - UIActionSheetDelegate
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex) {
+        case 0:
+            [self performSegueWithIdentifier:@"segue to MovieEditorTVC to create movie" sender:self];
+            break;
+            
+        case 1:
+            [self performSegueWithIdentifier:@"segue to TMDBSearchTVC" sender:self];
+            break;
+        default:
+            break;
+    }
 }
 
 
@@ -240,6 +256,7 @@
 #pragma mark - MovieEditorDelegate method
 - (void)actionExecuted:(ActionDone)action
 {
+    DLog(@"ACTION EXECUTED")
     if(action == ActionReset){
     }
     else if(action == ActionSaveModification){

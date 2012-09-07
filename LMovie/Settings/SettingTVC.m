@@ -12,10 +12,12 @@
 
 @interface SettingTVC ()
 @property MBProgressHUD *progressView;
+@property (nonatomic) BOOL stopImageCompletition;
 @end
 
 @implementation SettingTVC
 @synthesize importCell;
+@synthesize downloadMoviePosterCell = _downloadMoviePosterCell;
 @synthesize exportCell = _exportCell;
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -30,10 +32,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
- 
+    
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
@@ -42,6 +44,7 @@
 {
     [self setExportCell:nil];
     [self setImportCell:nil];
+    [self setDownloadMoviePosterCell:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -102,12 +105,17 @@
                 [self export];
             }
             
+            
             // Hide the HUD in the main tread
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD hideHUDForView:self.view animated:YES];
                 _progressView = nil;
             });
         });
+    }
+    else if (cell == self.downloadMoviePosterCell){
+        DLog(@"downloadMoviePosterCell pressed");
+        [self downloadMoviePoster];
     }
     
     
@@ -144,15 +152,15 @@
     NSFileHandle *fileHandler = [NSFileHandle fileHandleForUpdatingAtPath:filePath];
     
     
-
-
+    
+    
     
     DLog(@"fichier écrit vers: %@", filePath);
     float percentDonePerMovie = 1.0/[movies count];
     dispatch_async(dispatch_get_main_queue(), ^{
         [_progressView setDetailsLabelText:[NSString stringWithFormat:@"%d movies", [movies count]]];
     });
-
+    
     NSMutableArray *keys = [[_movieManager orderedKey] mutableCopy];
     [keys removeObjectAtIndex:0];
     
@@ -171,7 +179,7 @@
                         break;
                     case 1:
                         info = @"✓";
-                        break;                        
+                        break;
                     default:
                         info = @"?";
                         break;
@@ -196,7 +204,7 @@
     [fileHandler closeFile];
     //DLog(@"string: %@", string);
     
-   // [self dismissModalViewControllerAnimated:YES];
+    // [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)import
@@ -223,7 +231,7 @@
         if(error){
             DLog(@"error lecture fichier: %@", [error localizedDescription]);
         }
-         
+        
     }
     
     //décomposition: 1 ligne du tableau = 1 film
@@ -269,7 +277,7 @@
                 _progressView.progress = now;
             });
             //NSLog(@"now: %f", now-_progressView.progress);
-
+            
         }
     }
     
@@ -283,5 +291,119 @@
     
     //[self dismissModalViewControllerAnimated:YES];
 }
+
+
+
+
+
+
+- (void)downloadMoviePoster
+{
+    int numberPages = 0;
+    int numberResults = 0;
+    [self setStopImageCompletition:NO];
+    
+    NSManagedObjectContext *context = [_movieManager managedObjectContext];
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Movie" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    NSError *error = nil;
+    NSArray *movies = [context executeFetchRequest:fetchRequest error:&error];
+    if (movies == nil) {
+        DLog(@"error lors du fetch dans Setting");
+    }
+    
+    
+    //execute la recherche:
+    NSMutableArray *json = [[NSMutableArray alloc] init];
+    NSDictionary *dico;
+    BOOL success = NO;
+    int try = 0;
+    
+    int numberMovieOk = 0;
+    
+    while(numberMovieOk < [movies count] && [self stopImageCompletition] == NO){
+        
+        Movie *currentMovie = [movies objectAtIndex:numberMovieOk];
+        if(currentMovie.big_picture == nil){
+            //chargement du dico des résultats
+            while(!success){
+                @try {
+                    NSString *search = currentMovie.title;
+                    search = [search stringByAppendingFormat:@" %@", currentMovie.year];
+                    
+                    
+                    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://api.themoviedb.org/3/search/movie?api_key=%@&query=%@", TMDB_API_KEY, [search stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]]];
+                    
+                    
+                    dico = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+                    success = YES;
+                }
+                @catch (NSException *exception) {
+                    try ++;
+                    DLog(@"castch");
+                    if(try > 3){
+                        DLog(@"break");
+                        break;
+                    }
+                }
+            }
+            
+            //On traire selon succes ou non, et  selon résultat ou non
+            if(success){
+                NSMutableArray *moviesResults = [[dico valueForKey:@"results"] mutableCopy];
+                
+                DLog(@"movies Results: %@", [moviesResults description]);
+                
+                //enlève tous les films ayant une date différente ou un titre différent
+                NSDictionary *currentInfos;
+                int currentIndex = 0;
+                
+                while(currentIndex < [moviesResults count]){
+                    currentInfos = [moviesResults objectAtIndex:currentIndex];
+                    int releaseOfCurrentMovie = [currentMovie.year intValue];
+                    
+                    
+                    NSArray *yearDecomposed;
+                    yearDecomposed = [[currentInfos valueForKey:@"release_date"] componentsSeparatedByString:@"-"];
+                    int year = [[yearDecomposed objectAtIndex:0] intValue];
+                    
+                    if(! [[currentInfos valueForKey:@"title"] isEqualToString:currentMovie.title] || (releaseOfCurrentMovie != year) ){
+                        [moviesResults removeObjectAtIndex:currentIndex];
+                    }
+                    else{
+                        currentIndex++;
+                    }
+                }
+                if([moviesResults count] == 1){
+                    currentInfos = [moviesResults lastObject];
+                    
+                    DLog(@"Image trouvée et enregistrée pour le film %@", [currentInfos valueForKey:@"title"]);
+                    NSString *picturePath = [@"http://cf2.imgobject.com/t/p" stringByAppendingFormat:@"/w500%@?api_key=%@",[currentInfos valueForKey:@"poster_path"],TMDB_API_KEY];
+                    UIImage *picture = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:picturePath]]];
+                    
+                    DLog(@"taille: %f, %f", picture.size.height, picture.size.width);
+                    [currentMovie setPictureWithBigPicture:picture];
+                    [_movieManager saveContext];
+                }
+                
+                
+            }
+        }
+        numberMovieOk++;
+    }
+    
+}
+
+
+
+
+
+
+
+
+
 
 @end

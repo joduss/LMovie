@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "TMDBSearchCell.h"
+#import "MBProgressHUD.h"
+#import "MovieEditorTVC.h"
 
-@interface TMDBSearchTVC : UITableViewController <UISearchBarDelegate>
+@interface TMDBSearchTVC : UITableViewController <UISearchBarDelegate, UIPopoverControllerDelegate>
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (strong, nonatomic) UIPopoverController *popover;
+@property (strong, nonatomic) MovieManager *movieManager;
 
 @end

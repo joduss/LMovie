@@ -153,7 +153,7 @@
         
         
         //Load Big_Picture
-        NSString *picturePath = [self.basePath stringByAppendingFormat:@"/original%@?api_key=%@",[_infosGeneral valueForKey:@"poster_path"],TMDB_API_KEY];        
+        NSString *picturePath = [self.basePath stringByAppendingFormat:@"/w500%@?api_key=%@",[_infosGeneral valueForKey:@"poster_path"],TMDB_API_KEY];        
         big_picture = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:picturePath]]];
         
         //load genre
@@ -184,12 +184,12 @@
 
         [info setObjectWithNilControl:big_picture forKey:@"big_picture"];
         [info setObjectWithNilControl:self.titleOriginal forKey:@"title"];
-        [info setObjectWithNilControl:self.year forKey:@"year"];
-        [info setObjectWithNilControl:[self.infosGeneral valueForKey:@"runtime"] forKey:@"duration"];
+        [info setObjectWithNilControl:[NSString stringWithFormat:@"%@", self.year] forKey:@"year"];
+        [info setObjectWithNilControl:[NSString stringWithFormat:@"%@",[self.infosGeneral valueForKey:@"runtime"] ] forKey:@"duration"];
         [info setObjectWithNilControl:genre forKey:@"genre"];
         [info setObjectWithNilControl:[self.directors description] forKey:@"director"];
         [info setObjectWithNilControl:actors forKey:@"actors"];
-        [info setObjectWithNilControl:[self.infosGeneral valueForKey:@"vote_average"] forKey:@"tmdb_rate"];
+        [info setObjectWithNilControl:[NSString stringWithFormat:@"%@",[self.infosGeneral valueForKey:@"vote_average"]] forKey:@"tmdb_rate"];
 
         _infosDictionnaryFormatted = info;
 

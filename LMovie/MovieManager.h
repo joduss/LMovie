@@ -46,4 +46,8 @@
 -(NSArray *)orderedKey;
 -(NSString *)placeholderForKey:(NSString *)key;
 
+
+
+
++(NSString *)resolutionToStringForResolution:(LMResolution)resolution;
 @end

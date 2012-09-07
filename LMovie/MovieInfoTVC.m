@@ -25,7 +25,7 @@
 -(void)awakeFromNib
 {
     DLog(@"APPO 1: taille: %f", self.view.bounds.size.width);
-
+    
 }
 
 -(void)viewDidLoad{
@@ -43,7 +43,7 @@
 -(void)prepareData
 {
     _infos = [[_movie formattedInfoInDictionnaryWithImage:ImageSizeBig] mutableCopy];
-        
+    
     _keyArray = [[NSMutableArray alloc] initWithObjects:
                  [[NSMutableArray alloc] init],
                  [[NSMutableArray alloc] init], nil];
@@ -55,9 +55,10 @@
         }
     }
     
+    
     DLog(@"infos du film: %@", [_infos description]);
     DLog(@"keyArray: %@", [_keyArray description]);
-
+    
 }
 
 
@@ -107,12 +108,12 @@
 {
     int n = [[_keyArray objectAtIndex:section] count];
     /*NSArray *AllKeys = [[_movieManager keyOrderedBySection] objectAtIndex:section];
-    for(NSString *key in AllKeys){
-        if([_infos valueForKey:key] != nil){
-            n++;
-            DLog(@"Pour la clé: %@  l'info: %@", key, [[_infos valueForKey:key] description]);
-        }
-    }*/
+     for(NSString *key in AllKeys){
+     if([_infos valueForKey:key] != nil){
+     n++;
+     DLog(@"Pour la clé: %@  l'info: %@", key, [[_infos valueForKey:key] description]);
+     }
+     }*/
     
     
     // Return the number of rows in the section.
@@ -157,17 +158,69 @@
             cell = thisCell;
             
         }
+        else if([key isEqualToString:@"viewed"])
+        {
+            CellIdentifier = @"info cell viewed";
+            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            UILabel *label = (UILabel *)[cell viewWithTag:200];
+            UIImageView *image = (UIImageView *)[cell viewWithTag:201];
+            label.text = @"Already watched?";
+            
+            NSString *file;
+            switch ([[_infos valueForKey:key] intValue]) {
+                case 0:
+                    file = [[NSBundle mainBundle] pathForResource:@"PasVu" ofType:@"png"];
+                    break;
+                case 1:
+                    file = [[NSBundle mainBundle] pathForResource:@"Vu" ofType:@"png"];
+                    break;
+                default:
+                    file = [[NSBundle mainBundle] pathForResource:@"VuNoIdea" ofType:@"png"];
+                    break;
+            }
+            [image setImage:[UIImage imageWithContentsOfFile:file]];
+        }
         else
         {
-        CellIdentifier = @"info cell";
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        UILabel *rightLabel = (UILabel *)[cell viewWithTag:101];
-        UILabel *leftLabel = (UILabel *)[cell viewWithTag:100];
-        NSString *rightLabelText = [_movieManager labelForKey:key];
-        
+            CellIdentifier = @"info cell";
+            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            UILabel *rightLabel = (UILabel *)[cell viewWithTag:101];
+            UILabel *leftLabel = (UILabel *)[cell viewWithTag:100];
+            NSString *rightLabelText = [_movieManager labelForKey:key];
+            
             //DLog(@"key: %@", [_keyArray description]);
-        rightLabel.text = [_infos valueForKey:key];
-        leftLabel.text = rightLabelText;
+            if([key isEqualToString:@"resolution"])
+            {
+                NSString *title = [MovieManager resolutionToStringForResolution:[[_infos valueForKey:key] intValue]];
+                rightLabel.text = title;
+            }
+            else if([key isEqualToAnyString:@"director", @"actors", @"language", @"subtitle", nil])
+            {
+                rightLabel.numberOfLines = 0;
+                NSString *text = [_infos valueForKey:key];
+                text = [text stringByReplacingOccurrencesOfString:@", " withString:@"\n"];
+                CGSize size = [text sizeWithFont:[UIFont systemFontOfSize:17]];
+                rightLabel.text = text;
+
+                
+                CGRect rec = rightLabel.frame;
+                int height = size.height;
+                
+                if(height < 45){
+                    height = 45;
+                }
+                CGRect new = CGRectMake(rec.origin.x, rec.origin.y, rec.size.width, height);
+                rightLabel.frame = new;
+            }
+            else
+            {
+                rightLabel.text = [_infos valueForKey:key];
+            }
+            
+            leftLabel.text = rightLabelText;
+            
+            
+                
         }
         
         
@@ -177,32 +230,35 @@
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
 
 
 
 /*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
+
+
 
 /*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+ {
+ }
+ */
+
+/*
+ // Override to support conditional rearranging of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the item to be re-orderable.
+ return YES;
+ }
+ */
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -210,13 +266,39 @@
         return 330;
     }
     /*else if (((infoFormattedForArray *)[[_infoArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]).isFirst == false){
-        return 35;
-    }*/
+     return 35;
+     }*/
     else {
-        return 45;
+        NSString *key = [[_keyArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+        
+        if([key isEqualToAnyString:@"director", @"actors", @"language", @"subtitle", nil] )
+        {
+            NSString *text = [_infos valueForKey:key];
+            text = [text stringByReplacingOccurrencesOfString:@", " withString:@"\n"];
+            CGSize size = [text sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:CGSizeMake(338, 1000) lineBreakMode:UILineBreakModeWordWrap];
+
+            DLog(@"SIZE (heigh): %f", size.height);
+            DLog(@"text: %@",text);
+            
+            int height = size.height;
+            if(height < 45)
+            {
+                height = 45;
+            }
+            else
+            {
+                height = size.height + 20;
+            }
+            return height;
+        }
+        else
+        {
+            
+            return 45;
+        }
     }
 }
-
+            
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -237,7 +319,7 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    MovieEditorTVC *view = [[[segue destinationViewController] childViewControllers] lastObject];
+    MovieEditorTVC *view = [segue destinationViewController];
     view.movieManager = _movieManager;
     view.movieToEdit = _movie;
     view.delegate = self;

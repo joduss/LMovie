@@ -3,6 +3,7 @@
 //
 
 #import <Availability.h>
+#import "NSMutableDictionary+LMMutableDictionary.h"
 
 #define TMDB_API_KEY @"e892ef686dde8dbc5972b3eda282c5a9"
 

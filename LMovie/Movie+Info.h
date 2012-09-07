@@ -27,6 +27,7 @@ typedef enum {
 @interface Movie (Info)
 - (NSDictionary *)formattedInfoInDictionnary;
 - (NSDictionary *)formattedInfoInDictionnaryWithImage:(ImageSize)imageSize;
+-(void)setPictureWithBigPicture:(UIImage *)image;
 @end
 
 

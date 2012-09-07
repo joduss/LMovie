@@ -12,6 +12,8 @@
 
 @interface MovieEditorTVC ()
 @property (nonatomic, strong) UIPopoverController *pc;
+
+@property (nonatomic, strong) UIPopoverController *pc2;
 @end
 
 
@@ -22,15 +24,18 @@
 @synthesize popover = _popover; 
 @synthesize valueEntered = _valueEntered;
 @synthesize pc = _pc;
+@synthesize addedFromTMDB = _addedFromTMDB;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.title = @"Add a movie";
-    _valueEntered = [[NSMutableDictionary alloc] init];
+    if(!_valueEntered)
+    {
+        _valueEntered = [[NSMutableDictionary alloc] init];
+    }
     [self.tableView setAllowsSelection:NO];
-    
-    
+    [self.navigationItem setHidesBackButton:YES animated:YES];    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -94,6 +99,7 @@
 {
     DLog(@"section: %d, row: %d ", indexPath.section, indexPath.row);
     
+    
     int row = indexPath.row;
     NSString *identifier = @""; //rempli plus tard
     
@@ -103,13 +109,15 @@
         if([_valueEntered valueForKey:@"big_picture"] == nil){
             NSString *file = [[NSBundle mainBundle] pathForResource:@"emptyartwork_big" ofType:@"jpg"];
             cell.cellImage = [UIImage imageWithContentsOfFile:file];
-            [cell.selectButton addTarget:self action:@selector(pickImage:) forControlEvents:UIControlEventTouchUpInside];
+
+
         }
         else {
             DLog(@"Image mise");
             cell.cellImage = [_valueEntered valueForKey:@"big_picture"];
         }
         [cell.selectButton addTarget:self action:@selector(pickImage:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.deleteImageButton addTarget:self action:@selector(deleteImage) forControlEvents:UIControlEventTouchUpInside];
         return cell;
     }
     else {
@@ -172,12 +180,20 @@
         else {
             identifier = @"general cell movieEditor";
             MovieEditorGeneralCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            cell.textField.text = [self.valueEntered valueForKey:key];
+            if([key isEqualToString:@"resolution"])
+            {
+                NSString *title = [MovieManager resolutionToStringForResolution:[[self.valueEntered valueForKey:key] intValue]];
+                cell.textField.text = title;
+            }
+            else
+            {
+                cell.textField.text = [self.valueEntered valueForKey:key];
+            }
             cell.infoLabel.text = [_movieManager labelForKey:key];
             cell.textField.placeholder = [_movieManager placeholderForKey:key];
             [cell setAssociatedKey:key];
             cell.textField.delegate = self;
-            NSPredicate *test = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@" argumentArray:[NSArray arrayWithObjects:@"duration", @"year", @"rate", nil]];
+            NSPredicate *test = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@" argumentArray:[NSArray arrayWithObjects:@"duration", @"year", nil]];
             if([test evaluateWithObject:key]){
                 [cell.textField setKeyboardType:UIKeyboardTypeNumberPad]; //si on entre une année, une durée ou une note -> clavier numérique
             }
@@ -245,12 +261,12 @@
     
     [self.popover dismissPopoverAnimated:YES];
     [self dismissModalViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
 
 - (IBAction)saveButtonPressed:(UIBarButtonItem *)sender {
-    
     
     DLog(@"value entered lorsque save est pressé: %@", _valueEntered);
 
@@ -289,7 +305,7 @@
         Movie *movie;
         
         //si le film à éditer existe, on modifie l'objet, sinon, crée un nouveau objet
-        if(_movieToEdit == nil){
+        if(_movieToEdit == nil || _addedFromTMDB){
             [_movieManager insertMovieWithInformations:_valueEntered];
         }
         else {
@@ -308,6 +324,7 @@
         
         [self.popover dismissPopoverAnimated:YES];
         [self dismissModalViewControllerAnimated:YES];
+        [self.navigationController popViewControllerAnimated:YES];
     }
     
     
@@ -326,6 +343,38 @@
     if(cell != nil && cell.associatedKey != nil){
         [_valueEntered setValue:textField.text forKey:cell.associatedKey];
         DLog(@"Value Entered set for: key: %@ and value: %@", cell.associatedKey, textField.text);
+    }
+}
+
+
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    if( [textField.superview.superview isMemberOfClass:[MovieEditorGeneralCell class]])
+    {
+        MovieEditorGeneralCell *cell = (MovieEditorGeneralCell*) textField.superview.superview;
+        
+        if([cell.associatedKey isEqualToString:@"resolution"]){
+            //UIPickerView *picker = [[UIPickerView alloc] init];
+            [textField resignFirstResponder];
+            //[popover presentPopoverFromRect:textField.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+
+            UINavigationController *vc = [storyboard instantiateViewControllerWithIdentifier:@"Resolution Navigation Controller"];
+            //UINavigationController *vcToPresent = [storyboard instantiateViewControllerWithIdentifier:@"Resolution Navigation Controller"];
+            UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:vc];
+            [popover presentPopoverFromRect:textField.frame inView:self.parentViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            _pc2 = popover;
+            [vc.navigationController setHidesBottomBarWhenPushed:YES];
+            
+            ResolutionPickerVC *resolutionPicker = (ResolutionPickerVC *)[vc.childViewControllers lastObject];
+            resolutionPicker.delegate = self;
+            resolutionPicker.popover = popover;
+
+            // either one of the two, depending on if your view controller is the initial one
+            
+        
+        }
     }
 }
 
@@ -391,7 +440,6 @@
         // Do something with imageToUse
     //}
     [_valueEntered setValue:originalImage forKey:@"big_picture"];
-    [_valueEntered setValue:originalImage forKey:@"mini_picture"];
     [self.tableView reloadData];
     
     
@@ -442,6 +490,24 @@
     [_pc dismissPopoverAnimated:YES];
 }
 
+
+-(void)deleteImage
+{
+    DLog(@"deleteImage");
+    [_valueEntered removeObjectForKey:@"big_picture"];
+    [self.tableView reloadData];
+}
+
+
+
+
+#pragma mark - ResolutionPicker Delegate
+-(void)selectedTitle:(LMResolution)resolution
+{
+    DLog(@"resolutionSelected");
+    [_valueEntered setObject:[NSString stringWithFormat:@"%d",resolution] forKey:@"resolution"];
+    [self.tableView reloadData];
+}
 
 
 

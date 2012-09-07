@@ -11,6 +11,7 @@
 #import "infoFormattedForArray.h"
 #import "MovieEditorPictureCell.h"
 #import "MovieEditorTVC.h"
+#import "NSString+MultipleStringCompare.h"
 
 
 @interface MovieInfoTVC : UITableViewController <MovieEditorDelegate>

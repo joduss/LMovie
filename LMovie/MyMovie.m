@@ -5,11 +5,11 @@
 //  Created by Jonathan Duss on 07.07.12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
-
+/*
 #import "MyMovie.h"
 
 @implementation MyMovie
-/*
+
 @synthesize title = _title;
 @synthesize genre = _genre;
 @synthesize year = _year;
@@ -152,7 +152,9 @@
     return _duration;
 }
 
-*/
+
 
 
 @end
+
+*/

@@ -92,7 +92,7 @@
     
     newMovie.language = [info valueForKey:@"language"];
     newMovie.subtitle = [info valueForKey:@"subtitle"];
-    newMovie.resolution = [info valueForKey:@"resolution"];
+    newMovie.resolution = [nf numberFromString:[info valueForKey:@"resolution"]];
     newMovie.user_rate = [nf numberFromString:[info valueForKey:@"user_rate"] ];
     newMovie.viewed = [nf numberFromString:[info valueForKey:@"viewed"] ];
     newMovie.comment = [info valueForKey:@"comment"];
@@ -113,8 +113,9 @@
 
     
     NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
-    UIImage *mini_image = [utilities resizeImageToMini:[info valueForKey:@"mini_picture"]];
+    UIImage *mini_image = [utilities resizeImageToMini:[info valueForKey:@"big_picture"]];
     UIImage *big_image = [utilities resizeImageToBig:[info valueForKey:@"big_picture"]];    
+    
     
     
     movieToModify.big_picture = UIImagePNGRepresentation(big_image);
@@ -128,7 +129,7 @@
     movieToModify.tmdb_rate = [nf numberFromString:[info valueForKey:@"tmdb_rate"] ];
     movieToModify.subtitle = [info valueForKey:@"subtitle"];
     movieToModify.language = [info valueForKey:@"language"];
-    movieToModify.resolution = [info valueForKey:@"resolution"];
+    movieToModify.resolution = [nf numberFromString:[info valueForKey:@"resolution"]];
     movieToModify.user_rate = [nf numberFromString:[info valueForKey:@"user_rate"] ];
     movieToModify.viewed = [nf numberFromString:[info valueForKey:@"viewed"] ];
     movieToModify.comment = [info valueForKey:@"comment"];
@@ -238,6 +239,12 @@
 
 
 
++(NSString *)resolutionToStringForResolution:(LMResolution)resolution
+{
+    NSString *file = [[NSBundle mainBundle] pathForResource:@"MultipleChoices" ofType:@"plist"];
+    NSArray *resolutionChoice = [[NSDictionary dictionaryWithContentsOfFile:file] valueForKey:@"Resolution"];
+    return [resolutionChoice objectAtIndex:resolution];
+}
 
 
 @end

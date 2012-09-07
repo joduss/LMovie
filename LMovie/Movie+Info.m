@@ -29,6 +29,10 @@
                 [dico setObject:value forKey:key];
                 DLog(@"value in Movie+Info: %@ for key: %@", value, key);
             }
+            else if([key isEqualToString:@"viewed"]){
+                //si value est nil et key=viewed
+                [dico setObject:[NSString stringWithFormat:@"%d", ViewedMAYBE] forKey:key];
+            }
         }
         
         if([dico valueForKey:key] == nil){
@@ -84,6 +88,17 @@
     
     DLog(@"dico renvoyé avec les info formatée: %@", [dico description]);
     return dico;
+}
+
+
+
+
+-(void)setPictureWithBigPicture:(UIImage *)image
+{
+    UIImage *mini_image = [utilities resizeImageToMini:image];
+    UIImage *big_image = [utilities resizeImageToBig:image];
+    [self setBig_picture:UIImagePNGRepresentation(big_image)];
+    [self setMini_picture:UIImagePNGRepresentation(mini_image)];
 }
 
 

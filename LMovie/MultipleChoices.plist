@@ -4,12 +4,12 @@
 <dict>
 	<key>Resolution</key>
 	<array>
-		<string>divx/mp4</string>
+		<string>?</string>
+		<string>avi/mp4</string>
+		<string>DVD</string>
 		<string>HD 720p</string>
 		<string>HD 1080p</string>
 		<string>3D</string>
-		<string>DVD</string>
-		<string>?</string>
 	</array>
 </dict>
 </plist>

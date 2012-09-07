@@ -23,15 +23,6 @@
 @synthesize viewedPicture = _viewedPicture;*/
 
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
-
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
@@ -112,10 +103,26 @@
     else {
         _actor.text = [@"Actor: " stringByAppendingString:movie.actors];
     }
+    
+    NSString *file;
+    switch ([movie.viewed intValue]) {
+        case 0:
+            file = [[NSBundle mainBundle] pathForResource:@"PasVu" ofType:@"png"];
+            break;
+        case 1:
+            file = [[NSBundle mainBundle] pathForResource:@"Vu" ofType:@"png"];
+            break;
+        default:
+            file = [[NSBundle mainBundle] pathForResource:@"VuNoIdea" ofType:@"png"];
+            break;
+    }
+    [_viewedPicture setImage:[UIImage imageWithContentsOfFile:file]];
+    
+    
+    
 
     _labelAfterTMDBRate.text = [movie.tmdb_rate stringValue];
     _labelAfterUserRate.text = [movie.user_rate stringValue];
-    _viewed.text = [movie.viewed stringValue];
     
     //VIEWED PICTURe
     

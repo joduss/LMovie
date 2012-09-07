@@ -21,7 +21,6 @@
 @property IBOutlet RateView *tmdbRate;
 @property IBOutlet UILabel *director;
 @property IBOutlet UILabel *actor;
-@property IBOutlet UILabel *viewed;
 @property IBOutlet UIImageView *viewedPicture;
 @property IBOutlet UILabel *labelAfterUserRate;
 @property IBOutlet UILabel *labelAfterTMDBRate;

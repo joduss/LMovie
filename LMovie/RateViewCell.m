@@ -33,9 +33,9 @@
 }
 
 -(void)configureCellWithRate:(int)rate{
-    self.rateView.notSelectedImage = [UIImage imageNamed:@"empty.jpg"];
-    self.rateView.halfSelectedImage = [UIImage imageNamed:@"middle.jpg"];
-    self.rateView.fullSelectedImage = [UIImage imageNamed:@"full.jpg"];
+    self.rateView.notSelectedImage = [UIImage imageNamed:@"empty.png"];
+    self.rateView.halfSelectedImage = [UIImage imageNamed:@"middle.png"];
+    self.rateView.fullSelectedImage = [UIImage imageNamed:@"full.png"];
     self.rateView.rating = rate;
     self.rateView.editable = YES;
     self.rateView.maxRating = 10;
