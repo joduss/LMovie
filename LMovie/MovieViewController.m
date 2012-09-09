@@ -225,7 +225,7 @@
 - (IBAction)addAMovieButtonPressed:(UIBarButtonItem *)sender {
     //[self performSegueWithIdentifier:@"segue to MovieEditorTVC to create movie" sender:sender];
     
-    UIActionSheet *popupQuery = [[UIActionSheet alloc] initWithTitle:@"Choose a way to add a new Movie" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Manual", @"Info from TMDB", nil];
+    UIActionSheet *popupQuery = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose way to add  new Movie KEY", @"") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel KEY", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Manual KEY", @""), NSLocalizedString(@"Info from TMDB", @""), nil];
         popupQuery.actionSheetStyle = UIActionSheetStyleBlackOpaque;
 
         [popupQuery showFromBarButtonItem:sender animated:YES];
@@ -261,7 +261,7 @@
     }
     else if(action == ActionSaveModification){
         NSIndexPath *path = [_tableView indexPathForSelectedRow];
-        MovieCellHorizontal *cell = (MovieCellHorizontal *)[_tableView cellForRowAtIndexPath:path];
+        MainCellHorizontal *cell = (MainCellHorizontal *)[_tableView cellForRowAtIndexPath:path];
         cell.backgroundColor = [UIColor lightGrayColor];
         [_tableView deselectRowAtIndexPath:path animated:NO];
     }
@@ -310,7 +310,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *identifier = @"movie cell";
-    MovieCellHorizontal *cell = [tableView dequeueReusableCellWithIdentifier:identifier]; 
+    MainCellHorizontal *cell = [tableView dequeueReusableCellWithIdentifier:identifier]; 
     
     //DLog(@"Cell for row MovieVC -> Cell: %@",cell);
     
@@ -388,7 +388,7 @@
 {
     Movie *movie = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
-    [(MovieCellHorizontal *)cell configureCellWithMovie:movie];
+    [(MainCellHorizontal *)cell configureCellWithMovie:movie];
     DLog(@"configuration cell après modification");
     
 }

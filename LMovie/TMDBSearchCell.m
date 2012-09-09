@@ -27,7 +27,7 @@
             //DLog(@"image: %@", [UIImage imageWithData:imageData]);
             
             [_posterView setImage:[movie miniPicture]];                        
-            _titleAndYearLabel.text = movie.titleOriginal;
+            _titleAndYearLabel.text = movie.title;
             _yearLabel.text = movie.year;
             _directorLabel.text = movie.directors;
             movie = nil;

@@ -164,7 +164,7 @@
             cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
             UILabel *label = (UILabel *)[cell viewWithTag:200];
             UIImageView *image = (UIImageView *)[cell viewWithTag:201];
-            label.text = @"Already watched?";
+            label.text = [_movieManager labelForKey:key];
             
             NSString *file;
             switch ([[_infos valueForKey:key] intValue]) {

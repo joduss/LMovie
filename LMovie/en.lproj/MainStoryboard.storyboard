@@ -19,7 +19,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="movie cell" rowHeight="65" id="n26-nn-UvB" customClass="MovieCellHorizontal">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="movie cell" rowHeight="65" id="n26-nn-UvB" customClass="MainCellHorizontal">
                                         <rect key="frame" x="0.0" y="22" width="1023" height="65"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -277,7 +277,7 @@
                                             <segments>
                                                 <segment title="No"/>
                                                 <segment title="Yes"/>
-                                                <segment title="No idea"/>
+                                                <segment title="?"/>
                                             </segments>
                                             <color key="tintColor" red="0.66115404211956519" green="0.65299164653784214" blue="0.65299164653784214" alpha="1" colorSpace="calibratedRGB"/>
                                         </segmentedControl>
@@ -466,7 +466,7 @@
                         <barButtonItem title="Modify" id="Lvp-lr-v6f">
                             <color key="tintColor" red="0.15941684249999999" green="0.01877089975" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <segue destination="yuP-w1-40X" kind="push" id="XgQ-YE-Hak"/>
+                                <segue destination="yuP-w1-40X" kind="push" identifier="segue to MovieEditorTVC" id="XgQ-YE-Hak"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="kFk-2a-XyM"/>
@@ -482,7 +482,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
-                        <segue destination="LqS-be-lfO" kind="custom" id="MDF-Ou-kE3"/>
+                        <segue destination="LqS-be-lfO" kind="push" identifier="segue vide car popovermanuel" id="MDF-Ou-kE3"/>
                     </connections>
                 </tableViewController>
             </objects>
@@ -563,7 +563,7 @@
                                             <segments>
                                                 <segment title="No"/>
                                                 <segment title="Yes"/>
-                                                <segment title="No idea"/>
+                                                <segment title="?"/>
                                                 <segment title="All"/>
                                             </segments>
                                             <color key="tintColor" red="0.66115404209999995" green="0.65299164649999997" blue="0.65299164649999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -580,6 +580,7 @@
                                 </view>
                                 <connections>
                                     <outlet property="choice" destination="i2W-af-QuA" id="ZTN-jZ-U3P"/>
+                                    <outlet property="infoLabel" destination="Ono-YE-2gK" id="fUv-WP-QKb"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="rateView cell" id="qQB-uw-EV5" customClass="RateViewCell">
@@ -881,8 +882,8 @@
                                             <rect key="frame" x="31" y="0.0" width="478" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Download Movie Poster" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="Xfv-30-K25">
-                                                    <rect key="frame" x="116" y="0.0" width="246" height="43"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Download the missing posters" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="Xfv-30-K25">
+                                                    <rect key="frame" x="0.0" y="0.0" width="478" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -1042,14 +1043,14 @@
         <image name="settings_icon.png" width="30" height="31"/>
     </resources>
     <classes>
-        <class className="EditableCellForMovieTVC" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/EditableCellForMovieTVC.h"/>
+        <class className="CellWithSegmentedButton" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CellWithSegmentedButton.h"/>
             <relationships>
                 <relationship kind="action" name="segmentControlChanged:" candidateClass="UISegmentedControl"/>
             </relationships>
         </class>
-        <class className="MovieCellHorizontal" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieCellHorizontal.h"/>
+        <class className="MainCellHorizontal" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainCellHorizontal.h"/>
             <relationships>
                 <relationship kind="outlet" name="actor" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="director" candidateClass="UILabel"/>
@@ -1084,7 +1085,6 @@
         <class className="MovieEditorTVC" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieEditorTVC.h"/>
             <relationships>
-                <relationship kind="action" name="cancelPicker:"/>
                 <relationship kind="action" name="pickImage:"/>
                 <relationship kind="action" name="resetButtonPressed:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="action" name="saveButtonPressed:" candidateClass="UIBarButtonItem"/>
@@ -1129,12 +1129,11 @@
                 <relationship kind="outlet" name="picker" candidateClass="UIPickerView"/>
             </relationships>
         </class>
-        <class className="SearchTVC" superclassName="EditableCellForMovieTVC">
+        <class className="SearchTVC" superclassName="CellWithSegmentedButton">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchTVC.h"/>
             <relationships>
                 <relationship kind="action" name="SearchButtonPressed:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="action" name="resetButtonPressed:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="segmentControlChanged:" candidateClass="UISegmentedControl"/>
             </relationships>
         </class>
         <class className="SettingTVC" superclassName="UITableViewController">

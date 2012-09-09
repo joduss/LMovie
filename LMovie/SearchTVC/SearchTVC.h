@@ -11,7 +11,7 @@
 #import "MovieEditorGeneralCell.h"
 #import "RateViewCell.h"
 #import "MovieEditorViewedCell.h"
-#import "EditableCellForMovieTVC.h"
+#import "CellWithSegmentedButton.h"
 
 @protocol SearchTVCDelegate <NSObject>
 -(void)executeSearchWithInfo:(NSDictionary *)info;
@@ -19,10 +19,10 @@
 @end
 
 
-@interface SearchTVC : EditableCellForMovieTVC <RateViewCellDelegate>
+@interface SearchTVC : CellWithSegmentedButton <RateViewCellDelegate>
 @property  (nonatomic, strong)  MovieManager *movieManager;
 @property (nonatomic, strong) id <SearchTVCDelegate> delegate;
-- (IBAction)segmentControlChanged:(UISegmentedControl *)sender;
+//- (IBAction)segmentControlChanged:(UISegmentedControl *)sender;
 - (IBAction)SearchButtonPressed:(UIBarButtonItem *)sender;
 - (IBAction)resetButtonPressed:(UIBarButtonItem *)sender;
 

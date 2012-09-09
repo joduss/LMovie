@@ -12,7 +12,6 @@
 #import "MovieEditorGeneralCell.h"
 #import "Utilities.h"
 #import "MovieEditorDelegate.h"
-#import "MovieEditorRateCellCell.h"
 #import "RateViewCell.h"
 #import "ResolutionPickerVC.h"
 

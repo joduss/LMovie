@@ -7,11 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MovieCellHorizontal.h"
-#import "infoViewPanel.h"
+#import "MainCellHorizontal.h"
 #import "Utilities.h"
 #import "MovieEditorTVC.h"
-#import "PanelSegue.h"
 #import "MovieInfoTVC.h"
 #import "SeguePopoverMovieInfoTVC.h"
 #import "SearchTVC.h"

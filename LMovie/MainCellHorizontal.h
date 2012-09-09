@@ -10,7 +10,7 @@
 #import "Movie.h"
 #import "RateView.h"
 
-@interface MovieCellHorizontal : UITableViewCell <RateViewDelegate>
+@interface MainCellHorizontal : UITableViewCell <RateViewDelegate>
 @property IBOutlet UIImageView *picture;
 @property IBOutlet UILabel *title;
 @property IBOutlet UILabel *year;

@@ -153,8 +153,6 @@
             
             cellToReturn = cell;
             
-            
-            
         }
         //pour user_rate et tmdb_rate
         else if ([key isEqualToString:@"user_rate"]){

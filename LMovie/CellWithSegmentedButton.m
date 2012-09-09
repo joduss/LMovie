@@ -6,13 +6,13 @@
 //
 //
 
-#import "EditableCellForMovieTVC.h"
+#import "CellWithSegmentedButton.h"
 
-@interface EditableCellForMovieTVC ()
+@interface CellWithSegmentedButton ()
 
 @end
 
-@implementation EditableCellForMovieTVC
+@implementation CellWithSegmentedButton
 
 
 @synthesize valueEntered = _valueEntered;

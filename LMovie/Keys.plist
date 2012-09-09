@@ -116,5 +116,71 @@
 		<key>comment</key>
 		<string>Enter Comment</string>
 	</dict>
+	<key>placeholder-fr</key>
+	<dict>
+		<key>mini_picture</key>
+		<string></string>
+		<key>big_picture</key>
+		<string></string>
+		<key>title</key>
+		<string>Entrez le titre</string>
+		<key>year</key>
+		<string>Entrez la date de sortie</string>
+		<key>duration</key>
+		<string>Entrez la durée</string>
+		<key>genre</key>
+		<string>Entrez le genre</string>
+		<key>director</key>
+		<string>Entrez le nom du/des directeurs</string>
+		<key>actors</key>
+		<string>Entrez le nom du/des acteurs</string>
+		<key>tmdb_rate</key>
+		<string>Entrer la note de TMDB</string>
+		<key>language</key>
+		<string>Entrer les langues</string>
+		<key>subtitle</key>
+		<string>Entrer les langues des sous-titres</string>
+		<key>resolution</key>
+		<string>Entrer la résolution du film</string>
+		<key>user_rate</key>
+		<string>Entrer votre note</string>
+		<key>viewed</key>
+		<string>L&apos;avez-vous déjà vu?</string>
+		<key>comment</key>
+		<string>Entrez éventuellement un commentaire</string>
+	</dict>
+	<key>label-fr</key>
+	<dict>
+		<key>mini_picture</key>
+		<string></string>
+		<key>big_picture</key>
+		<string></string>
+		<key>title</key>
+		<string>Titre</string>
+		<key>year</key>
+		<string>Date de sortie</string>
+		<key>duration</key>
+		<string>Durée</string>
+		<key>genre</key>
+		<string>Genre</string>
+		<key>director</key>
+		<string>Directeur</string>
+		<key>actors</key>
+		<string>Acteurs</string>
+		<key>tmdb_rate</key>
+		<string>Note sur TMDB</string>
+		<key>language</key>
+		<string>Langue</string>
+		<key>subtitle</key>
+		<string>Sous-titre</string>
+		<key>resolution</key>
+		<string>Résolution</string>
+		<key>user_rate</key>
+		<string>Votre note</string>
+		<key>viewed</key>
+		<string>Déjà vu?</string>
+		<key>comment</key>
+		<string>Commentaire</string>
+	</dict>
 </dict>
 </plist>

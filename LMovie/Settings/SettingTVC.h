@@ -10,11 +10,14 @@
 #import "MovieManager.h"
 #import "utilities.h"
 
-@interface SettingTVC : UITableViewController
+#define MAX_TRY 3
+
+@interface SettingTVC : UITableViewController 
 @property (weak, nonatomic) IBOutlet UITableViewCell *exportCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *importCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *downloadMoviePosterCell;
 @property (weak, nonatomic) MovieManager *movieManager;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *appLanguageChooser;
 
 - (void)export;
 - (void)import;

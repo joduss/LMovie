@@ -13,6 +13,23 @@
 #import "AppDelegate.h"
 #import "utilities.h"
 
+typedef enum LMResolution {
+    LMResolutionUnknown = 0,
+    LMResolutionAVI = 1,
+    LMResolutionDVD = 2,
+    LMResolution720 = 3,
+    LMResolution1080 = 4,
+    LMResolution3D = 5
+} LMResolution;
+
+
+typedef enum LMViewed {
+    LMViewedNO = 0,
+    LMViewedYES = 1,
+    LMViewedUnknown = 2
+} LMViewed;
+
+
 @interface MovieManager : NSObject
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;

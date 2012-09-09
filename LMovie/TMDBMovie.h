@@ -22,7 +22,7 @@
 
 @property (strong, nonatomic) UIImage *miniPicture;
 @property (strong, nonatomic) NSString *directors;
-@property (strong, nonatomic) NSString *titleOriginal;
+@property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSString *year;
 
 @property (strong, nonatomic) NSDictionary *basicInfosDictionnaryFormatted;

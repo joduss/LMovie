@@ -21,7 +21,7 @@
     [super viewDidLoad];
     _picker.delegate = self;
     _picker.dataSource = self;
-    self.title = @"Choose resolution";
+    self.title = NSLocalizedString(@"Choose resolution KEY", @"");
     [self.navigationController setToolbarHidden:NO animated:NO];
     DLog(@"blabla: %@", self.navigationController);
 }

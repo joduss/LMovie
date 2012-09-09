@@ -6,4 +6,34 @@
 
 */
 
-"General Information KEY" = "Informations Personnelles";
+//ANGLAIS
+
+
+//********    MovieEditor && ResolutionPicker
+/**********/
+"General Information KEY" = "General informations";
+"Personal info KEY" = "Personal Informations";
+"ERROR KEY" = "ERROR !";
+"Title cannot be empty KEY" = "The title cannot be empty";
+"Error KEY" = "ERROR !";
+"Cancel KEY" = "Cancel";
+"Modify movie KEY" = "Modification of movie informations";
+"Choose resolution KEY" = "Choose a resolution";
+
+
+
+//********    Settings
+/**********/
+"Settings KEY" = "Settings";
+"Importing KEY" = "Importing...";
+"ExportedMovies KEY" = "ExportedMovies";
+
+
+
+//********    Main
+/**********/
+"Choose way to add  new Movie KEY" = "Choose a way to add a new Movie";
+"Manual KEY" = "Manually";
+"Info from TMDB" = "With infos from TMDB";
+"Actors : KEY" = "Actors: ";
+"Director : KEY" = "Director: ";

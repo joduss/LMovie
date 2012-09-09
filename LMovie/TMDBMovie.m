@@ -107,8 +107,34 @@
 }
 
 
--(NSString *)titleOriginal{
-    return [_infosGeneral valueForKey:@"original_title"];
+-(NSString *)title{
+    if(_title == nil){
+        if([[SettingsLoader settings] language] == LMLanguageFrench)
+        {
+            NSURL *alternativeTitlesUrl = [NSURL URLWithString:[NSString stringWithFormat:@"http://api.themoviedb.org/3/movie/%@/alternative_titles?api_key=%@", _movieID, TMDB_API_KEY]];
+            NSData *alternativeTitlesJsonData = [NSData dataWithContentsOfURL:alternativeTitlesUrl];
+            DLog(@"castsURL: %@", [alternativeTitlesUrl description]);
+            
+            
+            NSDictionary *alternativeTitlesDico = [NSJSONSerialization JSONObjectWithData:alternativeTitlesJsonData options:kNilOptions error:nil];
+            
+            NSString *title = [alternativeTitlesDico objectForKey:@"FR"];
+            
+            if(title == nil){
+                _title = [_infosGeneral valueForKey:@"original_title"];
+            }
+            else
+            {
+                _title = title;
+            }
+            
+        }
+        else
+        {
+            _title = [_infosGeneral valueForKey:@"original_title"];
+        }
+    }
+    return _title;
 }
 
 
@@ -131,7 +157,7 @@
     if(_basicInfosDictionnaryFormatted == nil){
         NSMutableDictionary *info = [[NSMutableDictionary alloc] init];
 
-        [info setObject:self.titleOriginal forKey:@"title"];
+        [info setObject:self.title forKey:@"title"];
         [info setObject:self.year forKey:@"year"];
         [info setObject:self.directors forKey:@"director"];
             
@@ -183,14 +209,16 @@
         NSMutableDictionary *info = [[NSMutableDictionary alloc] init];
 
         [info setObjectWithNilControl:big_picture forKey:@"big_picture"];
-        [info setObjectWithNilControl:self.titleOriginal forKey:@"title"];
+        [info setObjectWithNilControl:self.title forKey:@"title"];
         [info setObjectWithNilControl:[NSString stringWithFormat:@"%@", self.year] forKey:@"year"];
         [info setObjectWithNilControl:[NSString stringWithFormat:@"%@",[self.infosGeneral valueForKey:@"runtime"] ] forKey:@"duration"];
         [info setObjectWithNilControl:genre forKey:@"genre"];
         [info setObjectWithNilControl:[self.directors description] forKey:@"director"];
         [info setObjectWithNilControl:actors forKey:@"actors"];
         [info setObjectWithNilControl:[NSString stringWithFormat:@"%@",[self.infosGeneral valueForKey:@"vote_average"]] forKey:@"tmdb_rate"];
-
+        [info setObjectWithNilControl:[NSString stringWithFormat:@"%@",[_infosGeneral valueForKey:@"id"]] forKey:@"tmdb_ID"];
+        
+        
         _infosDictionnaryFormatted = info;
 
     }

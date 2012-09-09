@@ -199,6 +199,8 @@
         @try {
             NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://api.themoviedb.org/3/search/movie?api_key=%@&query=%@", TMDB_API_KEY, [searchBar.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]]];
             
+            //Accès au movie avec l'ID 27205 (inception)
+            //DLog(@"URL: %@", [NSString stringWithFormat:@"http://api.themoviedb.org/3/movie/27205?api_key=e892ef686dde8dbc5972b3eda282c5a9", TMDB_API_KEY);
             
             dico = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
             success = YES;

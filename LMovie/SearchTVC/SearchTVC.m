@@ -84,6 +84,7 @@
         identifier = @"viewed cell movieEditor";
         MovieEditorViewedCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         [cell.infoLabel setText:[_movieManager labelForKey:key]];
+        DLog(@"infolabel: %@", cell.infoLabel);
         [cell.choice addTarget:self action:@selector(segmentControlChanged:) forControlEvents:UIControlEventValueChanged];
         int viewedValue = [[self.valueEntered valueForKey:@"viewed"] intValue];
         if(viewedValue < 0 || viewedValue > 3 || ![self.valueEntered valueForKey:@"viewed"]){

@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "MovieCellHorizontal.h"
+#import "MainCellHorizontal.h"
 
-@implementation MovieCellHorizontal
+@implementation MainCellHorizontal
 /*@synthesize picture = _picture;
 @synthesize title = _title;
 @synthesize year = _year;
@@ -31,19 +31,18 @@
 
 
 -(void)configureCellWithMovie:(Movie *)movie{
-#warning - uncomplete definition
     
-    self.userRate.notSelectedImage = [UIImage imageNamed:@"empty.jpg"];
-    self.userRate.halfSelectedImage = [UIImage imageNamed:@"middle.jpg"];
-    self.userRate.fullSelectedImage = [UIImage imageNamed:@"full.jpg"];
+    self.userRate.notSelectedImage = [UIImage imageNamed:@"empty.png"];
+    self.userRate.halfSelectedImage = [UIImage imageNamed:@"middle.png"];
+    self.userRate.fullSelectedImage = [UIImage imageNamed:@"full.png"];
     self.userRate.rating = [movie.user_rate floatValue];
     self.userRate.editable = NO;
     self.userRate.maxRating = 10;
     self.userRate.delegate = self;
     
-    self.tmdbRate.notSelectedImage = [UIImage imageNamed:@"empty.jpg"];
-    self.tmdbRate.halfSelectedImage = [UIImage imageNamed:@"middle.jpg"];
-    self.tmdbRate.fullSelectedImage = [UIImage imageNamed:@"full.jpg"];
+    self.tmdbRate.notSelectedImage = [UIImage imageNamed:@"empty.png"];
+    self.tmdbRate.halfSelectedImage = [UIImage imageNamed:@"middle.png"];
+    self.tmdbRate.fullSelectedImage = [UIImage imageNamed:@"full.png"];
     self.tmdbRate.rating = [movie.tmdb_rate floatValue];
     self.tmdbRate.editable = NO;
     self.tmdbRate.maxRating = 10;
@@ -91,17 +90,27 @@
     //TMDBRATE
     
     if(movie.director == nil){
-        _director.text = @"Director: ";
+        _director.text = NSLocalizedString(@"Director : KEY",@"");
     }
     else {
-        _director.text = [@"Director: " stringByAppendingString:movie.director];
+        _director.text = [NSLocalizedString(@"Director : KEY",@"") stringByAppendingString:movie.director];
 
     }
     if(movie.actors == nil){
-        _actor.text = @"Actor";
+        _actor.text = NSLocalizedString(@"Actors : KEY",@"");
     }
     else {
-        _actor.text = [@"Actor: " stringByAppendingString:movie.actors];
+        NSString *actorsString = movie.actors;
+        NSArray *actorsArray = [actorsString componentsSeparatedByString:@", "];
+        NSString *actorsToShow;
+        if([actorsArray count] >= 2){
+            actorsToShow = [[actorsArray objectAtIndex:0] stringByAppendingFormat:@", %@",[actorsArray objectAtIndex:1]];
+        }
+        else{
+            actorsToShow = [actorsArray objectAtIndex:0];
+        }
+        
+        _actor.text = [NSLocalizedString(@"Actors : KEY",@"") stringByAppendingString:actorsToShow];
     }
     
     NSString *file;

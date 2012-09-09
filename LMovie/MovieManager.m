@@ -11,7 +11,7 @@
 
 @interface MovieManager ()
 -(NSDictionary *)loadPlistValueOfKey:(NSString *)key;
-
+- (void)controlInfoDico:(NSMutableDictionary *)info;
 @end
 
 @implementation MovieManager
@@ -57,9 +57,11 @@
     
 }
 
-- (void)insertWithoutSavingMovieWithInformations:(NSDictionary *)info
+- (void)insertWithoutSavingMovieWithInformations:(NSDictionary *)infoAboutMovie
 {
-    
+    NSMutableDictionary *info = [infoAboutMovie mutableCopy];
+    [self controlInfoDico:info];
+
     Movie* newMovie = (Movie *)[NSEntityDescription insertNewObjectForEntityForName:@"Movie" inManagedObjectContext:self.managedObjectContext];
     DLog(@"info: %@", [info description]);
     UIImage *mini_image = [utilities resizeImageToMini:[info valueForKey:@"mini_picture"]];
@@ -68,15 +70,6 @@
     
     NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
     
-    if([[info valueForKey:@"viewed"] isEqualToString:@"✕"]){
-        [info setValue:@"0" forKey:@"viewed"];
-    }
-    else if([[info valueForKey:@"viewed"] isEqualToString:@"✓"]){
-        [info setValue:@"1" forKey:@"viewed"];
-    }
-    else if([[info valueForKey:@"viewed"] isEqualToString:@"?"]){
-        [info setValue:@"2" forKey:@"viewed"];
-    }
     
     
     newMovie.mini_picture = UIImagePNGRepresentation(mini_image);
@@ -89,6 +82,7 @@
     newMovie.director = [info valueForKey:@"director"];
     newMovie.actors = [info valueForKey:@"actors"];
     newMovie.tmdb_rate = [nf numberFromString:[info valueForKey:@"tmdb_rate"] ];
+    newMovie.tmdb_ID = [nf numberFromString:[info valueForKey:@"tmdb_ID"] ];
     
     newMovie.language = [info valueForKey:@"language"];
     newMovie.subtitle = [info valueForKey:@"subtitle"];
@@ -103,19 +97,22 @@
 
 
 
--(Movie *)modifyMovie:(Movie *)movie WithInformations:(NSDictionary *)info
+-(Movie *)modifyMovie:(Movie *)movie WithInformations:(NSDictionary *)infoAboutMovie
 {
     Movie *movieToModify = movie;
     
-    DLog(@"MovieManager | Mise à jour de Movie avec ces nouvelles info: %@", [info description]);
     
     //DLog(@"tmdb_rate: %@", [info valueForKey:@"tmdb_rate"]);
-
+    NSMutableDictionary *info = [infoAboutMovie mutableCopy];
+    DLog(@"MovieManager | Mise à jour de Movie avec ces nouvelles info: %@", [info description]);
+    
     
     NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
     UIImage *mini_image = [utilities resizeImageToMini:[info valueForKey:@"big_picture"]];
     UIImage *big_image = [utilities resizeImageToBig:[info valueForKey:@"big_picture"]];    
     
+   
+
     
     
     movieToModify.big_picture = UIImagePNGRepresentation(big_image);
@@ -127,6 +124,7 @@
     movieToModify.director = [info valueForKey:@"director"];
     movieToModify.actors = [info valueForKey:@"actors"];
     movieToModify.tmdb_rate = [nf numberFromString:[info valueForKey:@"tmdb_rate"] ];
+    movieToModify.tmdb_ID = [nf numberFromString:[info valueForKey:@"tmdb_ID"] ];
     movieToModify.subtitle = [info valueForKey:@"subtitle"];
     movieToModify.language = [info valueForKey:@"language"];
     movieToModify.resolution = [nf numberFromString:[info valueForKey:@"resolution"]];
@@ -178,6 +176,21 @@
 
 
 
+
+- (void)controlInfoDico:(NSMutableDictionary *)info
+{
+    if([info valueForKey:@"viewed"] == nil){
+        [info setValue:[NSString stringWithFormat:@"%d", LMViewedUnknown] forKey:@"viewed"];
+    }
+    if([info valueForKey:@"resolution"] == nil){
+        [info setValue:[NSString stringWithFormat:@"%d", LMResolutionUnknown] forKey:@"resolution"];
+    }
+}
+
+
+
+
+
 #pragma mark - gestion des clé, de leur ordre, section associée etc
 //Retourne soit le dico de la section associée à une variable d'un film, soit de l'ordre
 -(NSDictionary *)loadPlistValueOfKey:(NSString *)key
@@ -225,13 +238,25 @@
 
 -(NSString *)labelForKey:(NSString *)key
 {
+    DLog(@"langue label: %d", [[SettingsLoader settings] language]);
+
+    
+    DLog(@"Langue: %d", [[SettingsLoader settings] language]);
+    if([[SettingsLoader settings] language] == LMLanguageFrench){
+        return [[self loadPlistValueOfKey:@"label-fr"] valueForKey:key];
+    }
     return [[self loadPlistValueOfKey:@"label"] valueForKey:key];
 }
 
 -(NSString *)placeholderForKey:(NSString *)key
 {
-    return [[self loadPlistValueOfKey:@"placeholder"] valueForKey:key];
-}
+    
+    DLog(@"langue placeholder: %d", [[SettingsLoader settings] language]);
+    
+    if([[SettingsLoader settings] language] == LMLanguageFrench){
+        return [[self loadPlistValueOfKey:@"placeholder-fr"] valueForKey:key];
+    }
+    return [[self loadPlistValueOfKey:@"placeholder"] valueForKey:key];}
 
 
 

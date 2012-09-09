@@ -6,3 +6,36 @@
 
 */
 
+//FRANCAIS
+
+
+
+
+//********    MovieEditor && ResolutionPicker
+/**********/
+"General info KEY" = "Informations générales";
+"Personal info KEY" = "Informations personnelles";
+"ERROR KEY" = "ERREUR !";
+"Title cannot be empty KEY" = "Le titre ne peut pas être vide!";
+"Error KEY" = "ERREUR !";
+"Cancel KEY" = "Annuler";
+"Modify movie KEY" = "Modification des infos du film";
+"Choose resolution KEY" = "Choisissez une résolution";
+
+
+
+//********    Settings
+/**********/
+"Settings KEY" = "Paramètres";
+"Importing KEY" = "Importation en cours...";
+"ExportedMovies KEY" = "FilmsExportes";
+
+
+
+//********    Main et MainCellHorizontal
+/**********/
+"Choose way to add  new Movie KEY" = "Selectionner un moyen d'ajouter un nouveau film";
+"Manual KEY" = "Manuellement";
+"Info from TMDB" = "Info depuis TMDB";
+"Actors : KEY" = "Acteurs: ";
+"Director : KEY" = "Directeur: ";

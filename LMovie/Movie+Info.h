@@ -7,6 +7,7 @@
 //
 
 #import "Movie.h"
+#import "NSString+MultipleStringCompare.h"
 
 
 typedef enum {
@@ -25,9 +26,8 @@ typedef enum {
 
 
 @interface Movie (Info)
-- (NSDictionary *)formattedInfoInDictionnary;
 - (NSDictionary *)formattedInfoInDictionnaryWithImage:(ImageSize)imageSize;
--(void)setPictureWithBigPicture:(UIImage *)image;
+-(void)setPicturesWithBigPicture:(UIImage *)image;
 @end
 
 
