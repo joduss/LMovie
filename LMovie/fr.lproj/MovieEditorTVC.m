@@ -29,7 +29,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = NSLocalizedString(@"Add movie KEY", @"");
+    self.title = @"Add a movie";
     if(!_valueEntered)
     {
         _valueEntered = [[NSMutableDictionary alloc] init];
@@ -42,7 +42,7 @@
 {
     [super viewWillAppear:animated];
     if(_movieToEdit != nil){
-        self.title = NSLocalizedString(@"Modify movie KEY", @"");
+        self.title = @"Modify informations";
         for(NSString *key in _movieManager.allKey){
             if([key isEqualToString:@"big_picture"]){
                 [_valueEntered setValue:[UIImage imageWithData:_movieToEdit.big_picture] forKey:key];
@@ -231,13 +231,13 @@
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-        return NSLocalizedString(@"General info KEY", @"");
+        return @"General informations";
     }
     else if (section == 1) {
-        return NSLocalizedString(@"Personal info KEY", @"");
+        return @"Personal informations";
     }
     else {
-        return NSLocalizedString(@"ERROR KEY", @"");
+        return @"ERROR";
     }
 }
 
@@ -282,8 +282,8 @@
     error1 = [test1 isEqualToString:@""] || test1 == nil || [predicate evaluateWithObject:test1]; 
     
     if(error1){
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Error KEY", @"")  
-                                                       message:NSLocalizedString(@"Title cannot be empty KEY", @"") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Erreur" 
+                                                       message:@"Title cannot be empty" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     } else {
         
@@ -293,8 +293,8 @@
         error2 = ([formatter numberFromString:test2] == nil);
         //DLog(@"From %@ -> formater -> %@", test2, [formatter numberFromString:test2]);
         if (error2) {
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Error KEY", @"") 
-                                                           message:NSLocalizedString(@"Year must be a number", @"") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Erreur" 
+                                                           message:@"Year must be a number" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
         }
     }
@@ -480,7 +480,7 @@
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
     //viewController.title = @"connard";
-    viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel KEY", @"") style:UIBarButtonItemStylePlain target:self action:@selector(cancelPicker:)];
+    viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelPicker:)];
 }
 
 

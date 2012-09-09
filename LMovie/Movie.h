@@ -2,7 +2,7 @@
 //  Movie.h
 //  LMovie
 //
-//  Created by Jonathan Duss on 04.09.12.
+//  Created by Jonathan Duss on 07.09.12.
 //
 //
 
@@ -23,6 +23,7 @@
 @property (nonatomic, retain) NSNumber * resolution;
 @property (nonatomic, retain) NSString * subtitle;
 @property (nonatomic, retain) NSString * title;
+@property (nonatomic, retain) NSNumber * tmdb_ID;
 @property (nonatomic, retain) NSNumber * tmdb_rate;
 @property (nonatomic, retain) NSNumber * user_rate;
 @property (nonatomic, retain) NSNumber * viewed;

@@ -2,7 +2,7 @@
 //  Movie.m
 //  LMovie
 //
-//  Created by Jonathan Duss on 04.09.12.
+//  Created by Jonathan Duss on 07.09.12.
 //
 //
 
@@ -22,6 +22,7 @@
 @dynamic resolution;
 @dynamic subtitle;
 @dynamic title;
+@dynamic tmdb_ID;
 @dynamic tmdb_rate;
 @dynamic user_rate;
 @dynamic viewed;
