@@ -8,17 +8,24 @@
 
 #import <UIKit/UIKit.h>
 #import "MovieManager.h"
-#import "infoFormattedForArray.h"
 #import "MovieEditorPictureCell.h"
 #import "MovieEditorTVC.h"
 #import "NSString+MultipleStringCompare.h"
 
 
-@interface MovieInfoTVC : UITableViewController <MovieEditorDelegate>
+
+
+
+@interface MovieInfoTVC : UITableViewController <MovieEditorDelegate, UIPopoverControllerDelegate>
 @property (nonatomic, strong) MovieManager *movieManager;
 @property (nonatomic, strong) Movie *movie;
-- (IBAction)deleteButtonPressed:(UIBarButtonItem *)sender;
 @property (strong, nonatomic) UIPopoverController *popover;
 
+- (IBAction)deleteButtonPressed:(UIBarButtonItem *)sender;
+
 -(void)prepareData;
+
+
 @end
+
+

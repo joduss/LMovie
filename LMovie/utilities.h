@@ -27,5 +27,5 @@ typedef enum ActionDoneIn {
 +(NSString *)stringFromArray:(NSArray *)array;
 
 
-
++(CGRect)getScreenBoundsForOrientation:(UIInterfaceOrientation)orientation;
 @end

@@ -21,6 +21,8 @@
 "Cancel KEY" = "Annuler";
 "Modify movie KEY" = "Modification des infos du film";
 "Choose resolution KEY" = "Choisissez une résolution";
+"Add movie KEY" = "Ajout d'un film";
+"All KEY" = "Toutes les résolutions";
 
 
 
@@ -29,6 +31,7 @@
 "Settings KEY" = "Paramètres";
 "Importing KEY" = "Importation en cours...";
 "ExportedMovies KEY" = "FilmsExportes";
+"Clic to stop KEY" = "Cliquer pour stopper";
 
 
 

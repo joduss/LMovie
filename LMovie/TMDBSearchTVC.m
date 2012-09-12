@@ -20,17 +20,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"Add Movie";
+    self.title = NSLocalizedString(@"Add movie KEY",@"");
     [self.searchBar setDelegate:self];
     _arrayOfMovieID = [[NSMutableArray alloc] init];
-    
-    
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -44,6 +36,8 @@
 {
     [self setSearchBar:nil];
     [super viewDidUnload];
+    [self setPopover:nil];
+    [self setSearchBar:nil];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
@@ -53,6 +47,33 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+
+/****************************************
+ POPOVER - Delegate
+ ****************************************/
+#pragma mark - Popover Delegate
+
+//Permet de libérer la mémoire allouée VC.
+-(void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    self.popover = nil;
+}
+
+-(BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)thePopoverController{
+    DLog(@"Clic dehors");
+    return NO;
+}
+
+
+- (IBAction)cancelButtonPressed:(UIBarButtonItem *)sender {
+    [self.popover dismissPopoverAnimated:YES];
+}
+
+
+
+/****************************************
+ TABLEVIEW
+ ****************************************/
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -167,15 +188,13 @@
     });
 }
 
-/*
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-
-{
-    return @"My Title";
-}
-*/
 
 
+
+
+/****************************************
+ SEARCH_BAR - Delegate
+ ****************************************/
 #pragma mark - SearchBar delegate
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -184,12 +203,14 @@
     DLog(@"Recherche en cours");
     [_arrayOfMovieID removeAllObjects];
     [self.tableView reloadData];
+    
+#warning éventuellement ajouter plus de résultats que une seulement une page
     //execute la recherche:
-    int numberPages = 0;
-    int numberResults = 0;
+    //int numberPages = 0;
+    //int numberResults = 0;
     
     //execute la recherche:
-    NSMutableArray *json = [[NSMutableArray alloc] init];
+    //NSMutableArray *json = [[NSMutableArray alloc] init];
     NSDictionary *dico;
     BOOL success = NO;
     int try = 0;
@@ -236,7 +257,9 @@
 }
 
 
-
+/****************************************
+ PREPARE_FOR_SEGUE
+ ****************************************/
 #pragma mark - prepareForSegue
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -251,12 +274,6 @@
 }
 
 
-
-#pragma mark - PopoverDelegate
--(BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)thePopoverController{
-    DLog(@"Clic dehors");
-    return NO;
-}
 
 
 @end

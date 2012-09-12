@@ -9,6 +9,7 @@
 #import "SearchTVC.h"
 
 @interface SearchTVC ()
+@property (nonatomic, strong) UIPopoverController *pc2;
 
 @end
 
@@ -129,6 +130,11 @@
         if([test evaluateWithObject:key]){
             [cell.textField setKeyboardType:UIKeyboardTypeNumberPad]; //si on entre une année, une durée ou une note -> clavier numérique
         }
+        if([key isEqualToString:@"resolution"])
+        {
+            NSString *title = [MovieManager resolutionToStringForResolution:[[self.valueEntered valueForKey:key] intValue]];
+            cell.textField.text = title;
+        }
         
         cellToReturn = cell;
     }
@@ -160,6 +166,43 @@
      */
 }
 
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    if( [textField.superview.superview isMemberOfClass:[MovieEditorGeneralCell class]])
+    {
+        MovieEditorGeneralCell *cell = (MovieEditorGeneralCell*) textField.superview.superview;
+        CGRect rec = textField.superview.frame;
+        rec = [self.parentViewController.view convertRect:rec fromView:textField.superview.superview];
+        if([cell.associatedKey isEqualToString:@"resolution"]){
+            //UIPickerView *picker = [[UIPickerView alloc] init];
+            [textField resignFirstResponder];
+            //[popover presentPopoverFromRect:textField.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+            
+            UINavigationController *vc = [storyboard instantiateViewControllerWithIdentifier:@"Resolution Navigation Controller"];
+            //UINavigationController *vcToPresent = [storyboard instantiateViewControllerWithIdentifier:@"Resolution Navigation Controller"];
+            UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:vc];
+            DLog(@"FRAME: o.x:%f, o.y:%f, h:%f, w:%f", rec.origin.x, rec.origin.y, rec.size.height, rec.size.width);
+            [popover presentPopoverFromRect:rec inView:self.parentViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            _pc2 = popover;
+            [vc.navigationController setHidesBottomBarWhenPushed:YES];
+            
+            ResolutionPickerVC *resolutionPicker = (ResolutionPickerVC *)[vc.childViewControllers lastObject];
+            resolutionPicker.delegate = self;
+            resolutionPicker.popover = popover;
+            [resolutionPicker setForSearch:YES];
+            
+            // either one of the two, depending on if your view controller is the initial one
+            
+            
+        }
+    }
+}
+
+
+
+
 - (IBAction)SearchButtonPressed:(UIBarButtonItem *)sender {
     DLog(@"search button pressé");
     [self.view endEditing:YES];
@@ -173,6 +216,19 @@
 }
 
 
+
+/****************************************
+ ResolutionPicker - Delegate
+ ****************************************/
+
+#pragma mark - ResolutionPicker Delegate
+
+-(void)selectedResolution:(LMResolution)resolution
+{
+    DLog(@"resolutionSelected");
+    [self.valueEntered setObject:[NSString stringWithFormat:@"%d",resolution] forKey:@"resolution"];
+    [self.tableView reloadData];
+}
 
 
 

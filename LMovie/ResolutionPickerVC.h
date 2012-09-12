@@ -12,7 +12,7 @@
 
 @protocol ResolutionPickerVC <NSObject>
 
--(void)selectedTitle:(LMResolution)resolution;
+-(void)selectedResolution:(LMResolution)resolution;
 
 @end
 
@@ -23,8 +23,7 @@
 @property (strong, nonatomic) id<ResolutionPickerVC> delegate;
 @property (nonatomic, strong) UIPopoverController *popover;
 - (IBAction)saveResolutionButtonPressed:(UIBarButtonItem *)sender;
-
-
+@property (nonatomic) BOOL forSearch;
 @end
 
 

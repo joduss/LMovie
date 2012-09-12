@@ -24,6 +24,9 @@
     self.title = NSLocalizedString(@"Choose resolution KEY", @"");
     [self.navigationController setToolbarHidden:NO animated:NO];
     DLog(@"blabla: %@", self.navigationController);
+    if(_forSearch != YES){
+        _forSearch = NO;
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -44,18 +47,21 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-
--(NSArray *)resolutionChoice
+-(void)setForSearch:(BOOL)forSearch
 {
-    if(_resolutionChoice == nil)
-    {
-        NSString *file = [[NSBundle mainBundle] pathForResource:@"MultipleChoices" ofType:@"plist"];
-        _resolutionChoice = [[NSDictionary dictionaryWithContentsOfFile:file] valueForKey:@"Resolution"];
-    }
-    return _resolutionChoice;
+    _forSearch = forSearch;
+    _resolutionChoice = nil;
+    [_picker reloadAllComponents];
 }
 
 
+
+
+
+
+/****************************************
+ PICKER delegate
+ ****************************************/
 #pragma mark - Picker Delegate et Datasource
 -(int)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
@@ -77,21 +83,48 @@
 }
 
 
-
-
-
-#pragma mark - Popover Delegate
--(BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)thePopoverController{
-    return NO;
+//chargement du choix des résolutions
+-(NSArray *)resolutionChoice
+{
+    if(_resolutionChoice == nil)
+    {
+        NSString *file = [[NSBundle mainBundle] pathForResource:@"MultipleChoices" ofType:@"plist"];
+        NSMutableArray *array = [[[NSDictionary dictionaryWithContentsOfFile:file] valueForKey:@"Resolution"] mutableCopy];
+        if(_forSearch){
+            [array addObject:NSLocalizedString(@"All KEY", @"")];
+        }
+        _resolutionChoice = [array copy];
+    }
+    return _resolutionChoice;
 }
 
 
 
 
 
+/****************************************
+ POPOVER delegate
+ ****************************************/
+#pragma mark - Popover Delegate
+-(BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)thePopoverController{
+    return NO;
+}
+
+-(void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    self.popover = nil;
+}
+
+
+
+
+/****************************************
+ IBACTIONS
+ ****************************************/
+#pragma mark - IBAction
 - (IBAction)saveResolutionButtonPressed:(UIBarButtonItem *)sender {
     DLog(@"coucou");
-    [_delegate selectedTitle:[_picker selectedRowInComponent:0]];
+    [_delegate selectedResolution:[_picker selectedRowInComponent:0]];
     [_popover dismissPopoverAnimated:YES];
 }
 @end

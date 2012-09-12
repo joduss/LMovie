@@ -64,11 +64,27 @@
 
     Movie* newMovie = (Movie *)[NSEntityDescription insertNewObjectForEntityForName:@"Movie" inManagedObjectContext:self.managedObjectContext];
     DLog(@"info: %@", [info description]);
-    UIImage *mini_image = [utilities resizeImageToMini:[info valueForKey:@"mini_picture"]];
+    UIImage *mini_image = [utilities resizeImageToMini:[info valueForKey:@"big_picture"]];
     UIImage *big_image = [utilities resizeImageToBig:[info valueForKey:@"big_picture"]];
     
     
     NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+    
+    int user_rate;
+    if(! [info valueForKey:@"user_rate"]){
+        user_rate = 0;
+    }
+    else{
+        user_rate = [[info valueForKey:@"user_rate"] intValue];
+    }
+    
+    int tmdb_rate;
+    if(! [info valueForKey:@"tmdb_rate"]){
+        tmdb_rate = 0;
+    }
+    else{
+        tmdb_rate = [[info valueForKey:@"tmd_rate"] intValue];
+    }
     
     
     
@@ -81,13 +97,13 @@
     newMovie.genre = [info valueForKey:@"genre"];
     newMovie.director = [info valueForKey:@"director"];
     newMovie.actors = [info valueForKey:@"actors"];
-    newMovie.tmdb_rate = [nf numberFromString:[info valueForKey:@"tmdb_rate"] ];
+    newMovie.tmdb_rate = [NSNumber numberWithInt:tmdb_rate];
     newMovie.tmdb_ID = [nf numberFromString:[info valueForKey:@"tmdb_ID"] ];
     
     newMovie.language = [info valueForKey:@"language"];
     newMovie.subtitle = [info valueForKey:@"subtitle"];
     newMovie.resolution = [nf numberFromString:[info valueForKey:@"resolution"]];
-    newMovie.user_rate = [nf numberFromString:[info valueForKey:@"user_rate"] ];
+    newMovie.user_rate = [NSNumber numberWithInt:user_rate];
     newMovie.viewed = [nf numberFromString:[info valueForKey:@"viewed"] ];
     newMovie.comment = [info valueForKey:@"comment"];
     
@@ -112,7 +128,21 @@
     UIImage *big_image = [utilities resizeImageToBig:[info valueForKey:@"big_picture"]];    
     
    
-
+    int user_rate;
+    if(! [info valueForKey:@"user_rate"]){
+        user_rate = 0;
+    }
+    else{
+        user_rate = [[info valueForKey:@"user_rate"] intValue];
+    }
+        
+        int tmdb_rate;
+        if(! [info valueForKey:@"tmdb_rate"]){
+            tmdb_rate = 0;
+        }
+        else{
+            tmdb_rate = [[info valueForKey:@"tmd_rate"] intValue];
+        }
     
     
     movieToModify.big_picture = UIImagePNGRepresentation(big_image);
@@ -123,12 +153,12 @@
     movieToModify.genre = [info valueForKey:@"genre"];
     movieToModify.director = [info valueForKey:@"director"];
     movieToModify.actors = [info valueForKey:@"actors"];
-    movieToModify.tmdb_rate = [nf numberFromString:[info valueForKey:@"tmdb_rate"] ];
+    movieToModify.tmdb_rate = [NSNumber numberWithInt:tmdb_rate];
     movieToModify.tmdb_ID = [nf numberFromString:[info valueForKey:@"tmdb_ID"] ];
     movieToModify.subtitle = [info valueForKey:@"subtitle"];
     movieToModify.language = [info valueForKey:@"language"];
     movieToModify.resolution = [nf numberFromString:[info valueForKey:@"resolution"]];
-    movieToModify.user_rate = [nf numberFromString:[info valueForKey:@"user_rate"] ];
+    movieToModify.user_rate = [NSNumber numberWithInt:user_rate];
     movieToModify.viewed = [nf numberFromString:[info valueForKey:@"viewed"] ];
     movieToModify.comment = [info valueForKey:@"comment"];
 

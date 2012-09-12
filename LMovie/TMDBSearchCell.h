@@ -11,10 +11,10 @@
 #import "TMDBMovie.h"
 
 @interface TMDBSearchCell : UITableViewCell
-@property (nonatomic, strong) IBOutlet UIImageView *posterView;
-@property (nonatomic, strong) IBOutlet UILabel *titleAndYearLabel;
-@property (nonatomic, strong) IBOutlet UILabel *yearLabel;
-@property (nonatomic, strong) IBOutlet UILabel *directorLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *posterView;
+@property (nonatomic, weak) IBOutlet UILabel *titleAndYearLabel;
+@property (nonatomic, weak) IBOutlet UILabel *yearLabel;
+@property (nonatomic, weak) IBOutlet UILabel *directorLabel;
 -(void)setInfosWithTMDBMovieID:(NSString *)movieID;
 -(void)resetCell;
 

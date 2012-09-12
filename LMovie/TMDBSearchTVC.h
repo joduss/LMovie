@@ -15,5 +15,6 @@
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) UIPopoverController *popover;
 @property (strong, nonatomic) MovieManager *movieManager;
+- (IBAction)cancelButtonPressed:(UIBarButtonItem *)sender;
 
 @end

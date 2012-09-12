@@ -94,6 +94,7 @@
 
     NSArray *crew = [_infosCasts valueForKey:@"crew"];
     
+    
     NSMutableArray *directors = [[NSMutableArray alloc] init];
     
     for(NSDictionary *member in crew){

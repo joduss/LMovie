@@ -12,7 +12,8 @@
 
 @interface SettingTVC ()
 @property MBProgressHUD *progressView;
-@property (nonatomic) BOOL stopImageCompletition;
+@property (nonatomic)  BOOL stopImageCompletition;
+@property (nonatomic, strong) UIView *blackViewPictureLoading;
 @end
 
 @implementation SettingTVC
@@ -34,11 +35,6 @@
 {
     [super viewDidLoad];
     self.title = NSLocalizedString(@"Settings KEY",@"Titre de la fenêtre settings");
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -58,12 +54,16 @@
 
 - (void)viewDidUnload
 {
+    [super viewDidUnload];
     [self setExportCell:nil];
     [self setImportCell:nil];
     [self setDownloadMoviePosterCell:nil];
     [self setAppLanguageChooser:nil];
-    [super viewDidUnload];
+    [self setBlackViewPictureLoading:nil];
+    [self setProgressView:nil];
+    [self setAppLanguageChooser:nil];
 }
+
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -76,6 +76,7 @@
 
 -(IBAction)okButtonPressed:(id)sender
 {
+    
     [self dismissModalViewControllerAnimated:YES];
 }
 
@@ -300,7 +301,6 @@
                 _progressView.progress = now;
             });
             //NSLog(@"now: %f", now-_progressView.progress);
-            
         }
     }
     
@@ -309,7 +309,8 @@
         _progressView.progress = 1;
     });
     //DLog(@"Import ok, sauvegarde du contexte demandé");
-    //[_movieManager saveContext];
+    
+    [_movieManager saveContext];
     
     
     //[self dismissModalViewControllerAnimated:YES];
@@ -323,15 +324,40 @@
 - (void)downloadMoviePoster
 {
 #warning pas complet: ajouter état d'avancement
-    int numberPages = 0;
-    int numberResults = 0;
+    //int numberPages = 0;
+    //int numberResults = 0;
     [self setStopImageCompletition:NO];
+    
+    
+    
+    //UIWindow *win = [[UIApplication sharedApplication].windows lastObject];
+    CGRect winFrame =       [self parentViewController].view.bounds;
+    
+    _blackViewPictureLoading = [[UIView alloc] initWithFrame:winFrame];
+    _blackViewPictureLoading.alpha = 0;
+    [_blackViewPictureLoading setHidden:NO];
+    UIWindow* window = [UIApplication sharedApplication].keyWindow;
+    [window bringSubviewToFront:_blackViewPictureLoading];
+    [_blackViewPictureLoading setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.5]];
+    [[self parentViewController].view addSubview:_blackViewPictureLoading];
+    [UIView animateWithDuration:0.3 animations:^{
+        [_blackViewPictureLoading setAlpha:1];
+    }];
+    
+    //Ajoute de l'action toucher la vue = stopper
+    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(stopPictureLoading:)];
+    gesture.numberOfTapsRequired = 1;
+    gesture.numberOfTouchesRequired = 1;
+    //gesture.delegate = self;
+    [_blackViewPictureLoading addGestureRecognizer:gesture];
+    
     
     NSManagedObjectContext *context = [_movieManager managedObjectContext];
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Movie" inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
+    
     
     NSError *error = nil;
     NSArray *movies = [context executeFetchRequest:fetchRequest error:&error];
@@ -341,30 +367,90 @@
     
     
     //execute la recherche:
-    NSMutableArray *json = [[NSMutableArray alloc] init];
-    NSDictionary *dico;
-    BOOL success = NO;
-    int try = 0;
+    /*NSMutableArray *json = [[NSMutableArray alloc] init];
+     NSDictionary *dico;
+     BOOL success = NO;
+     int try = 0;*/
     
-    int numberMovieOk = 0;
+    __block int numberMovieOk = 0;
+    __block int indexMovieUsed = 0;
     
-    while(numberMovieOk < [movies count] && [self stopImageCompletition] == NO){
+    if([movies count] > 0){
+        [self setProgressView:nil];
+        _progressView = [[MBProgressHUD alloc] initWithView:_blackViewPictureLoading];
+        [_progressView setMode:MBProgressHUDModeDeterminate];
+        [_progressView addGestureRecognizer:gesture];
+        [_progressView setOpacity:1];
+        [_blackViewPictureLoading addSubview:_progressView];
+        [window bringSubviewToFront:_progressView];
+        [_progressView showUsingAnimation:YES];
+        [_progressView setMinShowTime:2];
+        [_progressView setProgress:0];
+        [_progressView setLabelText:[NSString stringWithFormat:@"0/%d",[movies count]]];
+        _progressView.detailsLabelText = NSLocalizedString(@"Clic to stop KEY", @"");
         
-        DLog(@"no de film traité: %d", numberMovieOk);
-        Movie *currentMovie = [movies objectAtIndex:numberMovieOk];
         
-        if(currentMovie.big_picture == nil){
-            if(currentMovie.tmdb_ID != nil){
-                [self loadMoviePictureForMovieWithTMDB_ID:currentMovie];
+        
+        DLog(@"w: %f, h:%f",_blackViewPictureLoading.frame.size.width, _blackViewPictureLoading.frame.size.height);
+        
+        
+        
+        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            
+            while(indexMovieUsed < [movies count] && [self stopImageCompletition] == NO){
+                int try = 0;
+                while((indexMovieUsed - numberMovieOk) > MAX_DOWNLOADS && try < MAX_TRY_THREAD){
+                    DLog(@"plus que 3");
+                    [NSThread sleepForTimeInterval:2];
+                }
+                try = 0;
+                DLog(@"Nouveau Thread")
+                int index = indexMovieUsed;
+                
+                dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                    Movie *currentMovie = [movies objectAtIndex:index];
+                    
+                    if(currentMovie.big_picture == nil){
+                        if(currentMovie.tmdb_ID != nil){
+                            [self loadMoviePictureForMovieWithTMDB_ID:currentMovie];
+                        }
+                        else
+                        {
+                            [self loadMoviePictureForMovieWithoutTMDB_ID:currentMovie];
+                        }
+                    }
+                    
+                    dispatch_async( dispatch_get_main_queue(), ^{
+                        numberMovieOk++;
+                        [_progressView setLabelText:[NSString stringWithFormat:@"%d/%d",numberMovieOk,[movies count]]];
+                        float progress = (float)numberMovieOk / (float)[movies count];
+                        [_progressView setProgress:progress];
+                        if(progress == 1){
+                            [MBProgressHUD hideHUDForView:_blackViewPictureLoading animated:YES];
+                            //_progressView = nil;
+                            if(_blackViewPictureLoading != nil){
+                                [UIView animateWithDuration:0.3 animations:^{ _blackViewPictureLoading.alpha = 0;
+                                } completion:^(BOOL complet){
+                                    _blackViewPictureLoading = nil;
+                                }];
+                            }
+                        }
+                        DLog(@"avancement: %f", progress );
+                        DLog(@"numberOfMovieok: %d", numberMovieOk);
+                    });
+                });
+                
+                
+                indexMovieUsed ++;
+                DLog(@"no de film traité: %d", indexMovieUsed);
+                
+                
+                
             }
-            else
-            {
-                [self loadMoviePictureForMovieWithoutTMDB_ID:currentMovie];
-            }
-        }
-    numberMovieOk++;
-        
+        });
     }
+    
+    
 }
 
 
@@ -372,14 +458,27 @@
 -(void)loadMoviePictureForMovieWithTMDB_ID:(Movie *)movie
 {
     NSURL *alternativeTitlesUrl = [NSURL URLWithString:[NSString stringWithFormat:@"http://api.themoviedb.org/3/movie/%@?api_key=%@", movie.tmdb_ID, TMDB_API_KEY]];
-    NSData *data = [NSData dataWithContentsOfURL:alternativeTitlesUrl];
-    
-    NSDictionary *dico = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-    
-    NSString *picturePath = [@"http://cf2.imgobject.com/t/p" stringByAppendingFormat:@"/w500%@?api_key=%@",[dico valueForKey:@"poster_path"],TMDB_API_KEY];
-    UIImage *picture = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:picturePath]]];
-    
-    [movie setPicturesWithBigPicture:picture];
+    int try = 0;
+    while(try < MAX_TRY){
+        @try {
+            NSData *data = [NSData dataWithContentsOfURL:alternativeTitlesUrl];
+            
+            NSDictionary *dico = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+            
+            NSString *picturePath = [@"http://cf2.imgobject.com/t/p" stringByAppendingFormat:@"/w500%@?api_key=%@",[dico valueForKey:@"poster_path"],TMDB_API_KEY];
+            UIImage *picture = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:picturePath]]];
+            
+            [movie setPicturesWithBigPicture:picture];
+            DLog(@"Image trouvée et enregistrée pour le film %@", [movie valueForKey:@"title"]);
+            
+        }
+        @catch (NSException *exception) {
+            DLog(@"Error, exception car data certainement null");
+        }
+        @finally {
+            try++;
+        }
+    }
     
 }
 
@@ -444,8 +543,8 @@
         if([moviesResults count] == 1){
             currentInfos = [moviesResults lastObject];
             
-            DLog(@"Image trouvée et enregistrée pour le film %@", [currentInfos valueForKey:@"title"]);
-            NSString *picturePath = [@"http://cf2.imgobject.com/t/p" stringByAppendingFormat:@"/w500%@?api_key=%@",[currentInfos valueForKey:@"poster_path"],TMDB_API_KEY];
+            //DLog(@"Image trouvée et enregistrée pour le film %@", [currentInfos valueForKey:@"title"]);
+            //NSString *picturePath = [@"http://cf2.imgobject.com/t/p" stringByAppendingFormat:@"/w500%@?api_key=%@",[currentInfos valueForKey:@"poster_path"],TMDB_API_KEY];
             [movie setTmdb_ID:[NSNumber numberWithInt:[[currentInfos valueForKey:@"id"] intValue] ]];
             [self loadMoviePictureForMovieWithTMDB_ID:movie];
             
@@ -453,12 +552,21 @@
         
         
     }
-
-
+    
+    
 }
 
 
 
+-(void)stopPictureLoading:(UIGestureRecognizer *)gesture
+{
+    DLog(@"stopLoading PIcture");
+    _stopImageCompletition = YES;
+    [UIView animateWithDuration:0.3 animations:^{ _blackViewPictureLoading.alpha = 0;
+    } completion:^(BOOL complet){
+        _blackViewPictureLoading = nil;
+    }];
+}
 
 
 
@@ -472,12 +580,10 @@
     SettingsLoader *s = [SettingsLoader settings];
     [s changeAppLanguageToLanguage:[self.appLanguageChooser selectedSegmentIndex]];
     
+    
+    
+    
 }
-
-
-
-
-
 
 
 

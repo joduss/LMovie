@@ -12,6 +12,7 @@
 #import "RateViewCell.h"
 #import "MovieEditorViewedCell.h"
 #import "CellWithSegmentedButton.h"
+#import "ResolutionPickerVC.h"
 
 @protocol SearchTVCDelegate <NSObject>
 -(void)executeSearchWithInfo:(NSDictionary *)info;
@@ -19,7 +20,7 @@
 @end
 
 
-@interface SearchTVC : CellWithSegmentedButton <RateViewCellDelegate>
+@interface SearchTVC : CellWithSegmentedButton <RateViewCellDelegate, ResolutionPickerVC>
 @property  (nonatomic, strong)  MovieManager *movieManager;
 @property (nonatomic, strong) id <SearchTVCDelegate> delegate;
 //- (IBAction)segmentControlChanged:(UISegmentedControl *)sender;

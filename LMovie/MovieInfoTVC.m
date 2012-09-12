@@ -9,27 +9,28 @@
 #import "MovieInfoTVC.h"
 
 @interface MovieInfoTVC ()
-@property (nonatomic, strong) NSMutableArray *infoArray;
 @property (nonatomic, strong) NSMutableArray *keyArray;
 @property (nonatomic, strong) NSDictionary *infos;
 @end
 
 @implementation MovieInfoTVC
-@synthesize infoArray = _infoArray;
 @synthesize movieManager = _movieManager;
 @synthesize movie = _movie;
 @synthesize popover = _popover;
 
 
 
--(void)awakeFromNib
+-(void)viewDidLoad
 {
-    DLog(@"APPO 1: taille: %f", self.view.bounds.size.width);
-    
+    NSLog(@"load");
 }
 
--(void)viewDidLoad{
-    [super viewDidLoad];
+-(void)viewDidUnload
+{
+    NSLog(@"unload");
+    [super viewDidUnload];
+    self.popover = nil;
+    self.movie = nil;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -38,8 +39,29 @@
     [self.tableView setAllowsSelection:NO];
     [self prepareData];
     [self.tableView reloadData];
+    self.popover.delegate = self;
+    
 }
 
+-(void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    DLog(@"popoverControllerDidDismiss dans movieinfo");
+    self.popover = nil;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+	return UIInterfaceOrientationIsLandscape(interfaceOrientation);
+}
+
+
+
+/****************************************
+ PREPARE DATA - preparation des données
+ ****************************************/
+#pragma mark - Preparation des données
+
+//Méthode appelée une fois toutes les infos settées. Elle formatte les infos pour leur utilisation. On affiche que les données non nulles. Ainsi, on n'a pas de champs vide.
 -(void)prepareData
 {
     _infos = [[_movie formattedInfoInDictionnaryWithImage:ImageSizeBig] mutableCopy];
@@ -48,6 +70,7 @@
                  [[NSMutableArray alloc] init],
                  [[NSMutableArray alloc] init], nil];
     
+    //On regarde si la valeur associée à la clé n'est pas nulle. Si elle n'est pas nulle, on l'ajoute dans le tableau de clé
     for(NSString *key in [_movieManager orderedKey]){
         if([_infos valueForKey:key] != nil){
             int section = [_movieManager sectionForKey:key];
@@ -64,29 +87,11 @@
 
 
 
--(NSMutableArray *)infoArray
-{
-    if(_infoArray == nil){
-        NSMutableArray *a1 = [[NSMutableArray alloc] init];
-        NSMutableArray *a2 = [[NSMutableArray alloc] init];
-        _infoArray = [[NSMutableArray alloc] initWithObjects:a1, a2, nil];
-    }
-    return _infoArray;
-}
 
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	return YES;
-}
-
+/****************************************
+ TABLEVIEW
+ ****************************************/
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -107,17 +112,6 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     int n = [[_keyArray objectAtIndex:section] count];
-    /*NSArray *AllKeys = [[_movieManager keyOrderedBySection] objectAtIndex:section];
-     for(NSString *key in AllKeys){
-     if([_infos valueForKey:key] != nil){
-     n++;
-     DLog(@"Pour la clé: %@  l'info: %@", key, [[_infos valueForKey:key] description]);
-     }
-     }*/
-    
-    
-    // Return the number of rows in the section.
-    //return [[_infoArray objectAtIndex:section] count];
     return n;
 }
 
@@ -125,7 +119,7 @@
 {
     
     static NSString *CellIdentifier = @"";
-    //infoFormattedForArray *infoToUse = [[_infoArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+
     UITableViewCell *cell;
     NSString *key = [[_keyArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     
@@ -141,7 +135,6 @@
             image = [_infos valueForKey:key];
         }
         
-        //[imageView re];
         [(MovieEditorPictureCell *)cell setCellImage:image];
     }
     else {
@@ -153,7 +146,7 @@
             //DLog(@"rateViewCell: %@ et rateView:%@", cell, cell.rateView);
             
             thisCell.key =  key;
-            [thisCell configureCellWithRate:[[_infos valueForKey:key] intValue]];
+            [thisCell configureCellWithRate:[[_infos valueForKey:key] floatValue]];
             thisCell.rateView.editable = NO;
             cell = thisCell;
             
@@ -218,9 +211,6 @@
             }
             
             leftLabel.text = rightLabelText;
-            
-            
-                
         }
         
         
@@ -231,43 +221,12 @@
 }
 
 
-
-
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
-
-
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.row == 0 && indexPath.section == 0){
         return 330;
     }
-    /*else if (((infoFormattedForArray *)[[_infoArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]).isFirst == false){
-     return 35;
-     }*/
+    
     else {
         NSString *key = [[_keyArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
         
@@ -298,24 +257,15 @@
         }
     }
 }
-            
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
-}
+    
 
 
 
 
-#pragma mark - Segue support
+/****************************************
+ PREPARE_FOR_SEGUE
+ ****************************************/
+#pragma mark - prepareforSegue
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -326,12 +276,13 @@
 }
 
 
-
-#pragma mark - MovieEditorDelegate methods
+/****************************************
+ MOVIE_EDITOR - Delegate
+ ****************************************/
+#pragma mark - MovieEditor delegate
 - (void)actualizeWithMovie:(Movie *)movie
 {
     DLog(@"Mise à jour des info");
-    _infoArray = nil;
     _movie = movie;
     [self prepareData];
     [self.tableView reloadData];
@@ -339,8 +290,11 @@
 
 
 
+/****************************************
+ IBACTION
+ ****************************************/
 #pragma mark - IBAction support
--(void)deleteButtonPressed:(UIBarButtonItem *)sender
+- (IBAction)deleteButtonPressed:(UIBarButtonItem *)sender;
 {
     [_movieManager deleteMovie:_movie];
     [self.popover dismissPopoverAnimated:YES];

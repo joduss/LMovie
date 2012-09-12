@@ -11,8 +11,10 @@
 #import "utilities.h"
 
 #define MAX_TRY 3
+#define MAX_TRY_THREAD 10
+#define MAX_DOWNLOADS 5
 
-@interface SettingTVC : UITableViewController 
+@interface SettingTVC : UITableViewController  <UIGestureRecognizerDelegate>
 @property (weak, nonatomic) IBOutlet UITableViewCell *exportCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *importCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *downloadMoviePosterCell;
@@ -25,5 +27,7 @@
 -(void)downloadMoviePoster;
 
 -(IBAction)okButtonPressed:(id)sender;
+
+-(void)stopPictureLoading:(UIGestureRecognizer *)gesture;
 
 @end

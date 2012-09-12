@@ -172,4 +172,28 @@
 
 
 
+
+
+
+
+
++(CGRect)getScreenBoundsForOrientation:(UIInterfaceOrientation)orientation {
+    
+    UIScreen *screen = [UIScreen mainScreen];
+    CGRect fullScreenRect = screen.bounds; //implicitly in Portrait orientation.
+    
+    if(orientation>UIInterfaceOrientationLandscapeRight) {
+        NSLog(@"getScreenBoundsForOrientation: Face up and Face down Not supported, assuming portrait orientation");
+    } else if (UIInterfaceOrientationIsLandscape(orientation)) {
+        CGRect temp = CGRectZero;
+        temp.size.width = fullScreenRect.size.height;
+        temp.size.height = fullScreenRect.size.width;
+        fullScreenRect = temp;
+    }
+    
+    return fullScreenRect;
+}
+
+
+
 @end

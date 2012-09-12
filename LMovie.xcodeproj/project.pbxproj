@@ -70,6 +70,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C810A0F815FE27D300DE9FB3 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = fr; path = fr.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		C8137B5615E7D50A00DAA7A5 /* TMDBSearchTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMDBSearchTVC.h; sourceTree = "<group>"; };
 		C8137B5715E7D50A00DAA7A5 /* TMDBSearchTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMDBSearchTVC.m; sourceTree = "<group>"; };
 		C8137B5B15E7DA0E00DAA7A5 /* TMDBSearchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMDBSearchCell.h; sourceTree = "<group>"; };
@@ -94,7 +95,6 @@
 		C8252E7515AC93F900DF0F96 /* MovieEditorTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieEditorTVC.m; sourceTree = "<group>"; };
 		C8252E7815ACAEE800DF0F96 /* MovieEditorPictureCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieEditorPictureCell.h; sourceTree = "<group>"; };
 		C8252E7915ACAEE800DF0F96 /* MovieEditorPictureCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieEditorPictureCell.m; sourceTree = "<group>"; };
-		C82A09FC15FA7C0B00C2A80F /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = fr; path = fr.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		C82A0A0215FA7D5300C2A80F /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C82A0A0315FA805F00C2A80F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C83F7A2D15F7E86100CB16B4 /* NSString+MultipleStringCompare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MultipleStringCompare.h"; sourceTree = "<group>"; };
@@ -190,6 +190,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C810A0F915FE811100DE9FB3 /* Devenue Inutile */ = {
+			isa = PBXGroup;
+			children = (
+				C888F00C15B419BF0063164C /* infoFormattedForArray.h */,
+				C888F00D15B419BF0063164C /* infoFormattedForArray.m */,
+			);
+			name = "Devenue Inutile";
+			path = LMovie;
+			sourceTree = "<group>";
+		};
 		C8137B5A15E7D51100DAA7A5 /* TMDBSearchTVC */ = {
 			isa = PBXGroup;
 			children = (
@@ -297,8 +307,6 @@
 				C87ADF2F15B322770011B412 /* MovieInfoTVC.m */,
 				C81F60C915B49022000703EF /* SeguePopoverMovieInfoTVC.h */,
 				C81F60CA15B49022000703EF /* SeguePopoverMovieInfoTVC.m */,
-				C888F00C15B419BF0063164C /* infoFormattedForArray.h */,
-				C888F00D15B419BF0063164C /* infoFormattedForArray.m */,
 			);
 			name = MovieInfoTVC;
 			sourceTree = "<group>";
@@ -388,6 +396,7 @@
 		C8F30C0215A210C6000AB421 = {
 			isa = PBXGroup;
 			children = (
+				C810A0F915FE811100DE9FB3 /* Devenue Inutile */,
 				C8559D5B15DAB4CA0027B75E /* External Classes */,
 				C8F30C1915A210C7000AB421 /* LMovie */,
 				C8F30C1015A210C7000AB421 /* Frameworks */,
@@ -612,7 +621,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				C8F30C2615A210C7000AB421 /* en */,
-				C82A09FC15FA7C0B00C2A80F /* fr */,
+				C810A0F815FE27D300DE9FB3 /* fr */,
 			);
 			name = MainStoryboard.storyboard;
 			sourceTree = "<group>";

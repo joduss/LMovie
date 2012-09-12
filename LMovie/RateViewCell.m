@@ -32,7 +32,7 @@
     // Configure the view for the selected state
 }
 
--(void)configureCellWithRate:(int)rate{
+-(void)configureCellWithRate:(float)rate{
     self.rateView.notSelectedImage = [UIImage imageNamed:@"empty.png"];
     self.rateView.halfSelectedImage = [UIImage imageNamed:@"middle.png"];
     self.rateView.fullSelectedImage = [UIImage imageNamed:@"full.png"];

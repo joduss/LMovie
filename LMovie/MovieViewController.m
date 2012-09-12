@@ -7,6 +7,7 @@
 //
 
 #import "MovieViewController.h"
+#import "MovieInfoTVC.h"
 
 @interface MovieViewController ()
 @property BOOL panelUsed;
@@ -14,9 +15,12 @@
 @property (nonatomic, strong) NSDictionary *searchInfo;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
-@property (nonatomic, strong) UIPopoverController *openedPopover;
+@property (nonatomic, weak) UIPopoverController *openedPopover;
+@property (nonatomic, weak) UIActionSheet *openedActionSheet;
 
 @end
+
+
 
 @implementation MovieViewController
 @synthesize tableView = _tableView;
@@ -37,25 +41,29 @@
     self.tableView.dataSource = self;
     self.title = @"LMovie";
     _movieManager.fetchedResultsController = self.fetchedResultsController;
-
-
-	// Do any additional setup after loading the view.
+    [[NSNotificationCenter defaultCenter] addObserver:self.tableView  selector:@selector(clearS) name:@"Popover over MovieViewController closed" object:nil];
 }
 
 - (void)viewDidUnload
 {
     [self setBouton:nil];
     [super viewDidUnload];
+    [self setOpenedPopover:nil];
+    [self setOpenedActionSheet:nil];
+    [self setSearchInfo:nil];
     // Release any retained subviews of the main view.
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation == UIInterfaceOrientationLandscapeLeft);
+    return UIInterfaceOrientationIsLandscape(interfaceOrientation);
 }
 
 
-
+/****************************************
+ FETCH_RESULT_CONTROLLER - gestion
+ ****************************************/
+#pragma mark - FetchResultController
 - (NSFetchedResultsController *)fetchedResultsController
 {
     if (_fetchedResultsController != nil) {
@@ -131,13 +139,22 @@
                 if([key isEqualToString:@"user_rate"] || [key isEqualToString:@"tmdb_rate"] || [key isEqualToString:@"year"]){
                     [predicateArray addObject:[NSPredicate predicateWithFormat:@"%K >= %@",  key, [info valueForKey:key]]];
                 }
+                else if ([key isEqualToString:@"resolution"]){
+                    //si la résolution "TOUT" est choisi, on l'ignore, ainsi on ne trie pas les résolutions
+                    LMResolution resolution = (LMResolution)[info valueForKey:key];
+                    if(resolution != LMResolutionAll){
+                        [predicateArray addObject:[NSPredicate predicateWithFormat:@"%K == %@",  key, [info valueForKey:key]]];
+                    }
+                }
                 else {
                     [predicateArray addObject:[NSPredicate predicateWithFormat:@"%K contains[cd] %@",  key, [info valueForKey:key]]];
                 }
+                //Choisi pour tout(vu, non vu, ?). Ainsi, en enlevant le predicate, on ne tient pas compte, et c'est recherche pour tout.
                 if(([key isEqualToString:@"viewed"] && [[info valueForKey:@"viewed"] intValue] == 3) || [[info valueForKey:@"viewed"] isEqualToString:@""]){
                     DLog(@"last deleted");
                     [predicateArray removeLastObject];
                 }
+                //Pareil pour les Résolutions
                 //DLog(@"écriture des predicates: %@", [ NSString stringWithFormat:@"%@ CONTAINS[cd] %@", key, [info valueForKey:key]]);
             }
 
@@ -175,9 +192,37 @@
 
 
 
+/****************************************
+ IBACTIONS
+ ****************************************/
+#pragma mark - IBAction
+- (IBAction)modif:(id)sender {
+    self.tableView.editing = !self.tableView.editing;
+}
+
+- (IBAction)searchButtonPressed:(UIBarButtonItem *)sender {
+    if(self.openedPopover == nil){
+        DLog(@"searchButton Pressed: self.popover nil donc");
+        [self performSegueWithIdentifier:@"segue to searchTVC" sender:sender];
+    }
+}
+
+- (IBAction)addAMovieButtonPressed:(UIBarButtonItem *)sender {
+    //[self performSegueWithIdentifier:@"segue to MovieEditorTVC to create movie" sender:sender];
+    
+    UIActionSheet *popupQuery = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose way to add  new Movie KEY", @"") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel KEY", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Manual KEY", @""), NSLocalizedString(@"Info from TMDB", @""), nil];
+    popupQuery.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+    
+    [popupQuery showFromBarButtonItem:sender animated:YES];
+}
 
 
 
+
+/****************************************
+ PREPARE_FOR_SEGUE
+ ****************************************/
+#pragma mark - prepareForSegue
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([segue.identifier isEqualToString:@"segue to MovieEditorTVC to create movie"]){
@@ -211,6 +256,9 @@
         [[nav.childViewControllers lastObject] setDelegate:self];
         [[nav.childViewControllers lastObject] setValueEntered:[_searchInfo mutableCopy]];
         _searchInfo = nil;
+        self.openedPopover = [(UIStoryboardPopoverSegue *)segue popoverController];
+        
+
     }
     else if ([segue.identifier isEqualToString:@"segue to TMDBSearchTVC"]){
         TMDBSearchTVC *view = [[segue.destinationViewController viewControllers] lastObject];
@@ -222,15 +270,10 @@
         
 }
 
-- (IBAction)addAMovieButtonPressed:(UIBarButtonItem *)sender {
-    //[self performSegueWithIdentifier:@"segue to MovieEditorTVC to create movie" sender:sender];
-    
-    UIActionSheet *popupQuery = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose way to add  new Movie KEY", @"") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel KEY", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Manual KEY", @""), NSLocalizedString(@"Info from TMDB", @""), nil];
-        popupQuery.actionSheetStyle = UIActionSheetStyleBlackOpaque;
 
-        [popupQuery showFromBarButtonItem:sender animated:YES];
-}
-
+/****************************************
+ ACTION_SHEET Delegate
+ ****************************************/
 #pragma mark - UIActionSheetDelegate
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -250,10 +293,11 @@
 
 
 
-/*******
- Delegate Methode de MovieEditorDelegate
- *******/
-#pragma mark - MovieEditorDelegate method
+/****************************************
+ MOVIE_EDITOR Delegate
+ ****************************************/
+
+#pragma mark - MovieEditor Delegate
 - (void)actionExecuted:(ActionDone)action
 {
     DLog(@"ACTION EXECUTED")
@@ -272,11 +316,11 @@
 
 
 
-/**************
- GESTION TABLEVIEW
- **************/
+/****************************************
+ TABLEVIEW
+ ****************************************/
 
-#pragma mark - gestion tableview
+#pragma mark - TableView
 
 - (int)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -374,15 +418,7 @@
     [self.tableView endUpdates];
 }
 
-/*
- // Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed. 
- 
- - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
- {
- // In the simplest, most efficient, case, reload the table view.
- [self.tableView reloadData];
- }
- */
+
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
@@ -394,7 +430,7 @@
 }
 
 
-//HANDLIG SELECTION
+//Gère la selection
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self performSegueWithIdentifier:@"segue to movieInfoTVC" sender:_tableView];

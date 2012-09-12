@@ -17,11 +17,16 @@
 
 
 @interface MovieViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MovieEditorDelegate, NSFetchedResultsControllerDelegate, SearchTVCDelegate, UIActionSheetDelegate>
-- (IBAction)addAMovieButtonPressed:(UIBarButtonItem *)sender;
-@property IBOutlet UITableView *tableView;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *bouton;
--(void)executeSearchWithInfo:(NSDictionary *)info;
 
+@property IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *bouton;
+
+
+- (IBAction)addAMovieButtonPressed:(UIBarButtonItem *)sender;
+- (IBAction)modif:(id)sender;
+- (IBAction)searchButtonPressed:(UIBarButtonItem *)sender;
+
+- (void)executeSearchWithInfo:(NSDictionary *)info;
 
 
 @end

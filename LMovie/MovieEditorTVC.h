@@ -15,7 +15,7 @@
 #import "RateViewCell.h"
 #import "ResolutionPickerVC.h"
 
-@interface MovieEditorTVC : UITableViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RateViewCellDelegate, ResolutionPickerVC>
+@interface MovieEditorTVC : UITableViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RateViewCellDelegate, ResolutionPickerVC, UIPopoverControllerDelegate>
 @property Movie *movieToEdit;
 @property MovieManager *movieManager;
 @property (nonatomic, weak) id <MovieEditorDelegate> delegate;
@@ -27,8 +27,8 @@
 @property (nonatomic, strong) NSMutableDictionary *valueEntered;
 @property (nonatomic) BOOL addedFromTMDB;
 -(void)deleteImage;
-//@property (nonatomic, strong) UIImagePickerController *picker;
 
+-(void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController;
 
 
 

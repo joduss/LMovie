@@ -26,10 +26,12 @@
 @synthesize pc = _pc;
 @synthesize addedFromTMDB = _addedFromTMDB;
 
+
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = NSLocalizedString(@"Add movie KEY", @"");
     if(!_valueEntered)
     {
         _valueEntered = [[NSMutableDictionary alloc] init];
@@ -41,6 +43,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.popover.delegate = self;
     if(_movieToEdit != nil){
         self.title = NSLocalizedString(@"Modify movie KEY", @"");
         for(NSString *key in _movieManager.allKey){
@@ -54,6 +57,10 @@
                 [_valueEntered setValue:[[_movieToEdit valueForKey:key] description] forKey:key];
             }
         }
+    }
+    else
+    {
+        self.title = NSLocalizedString(@"Add movie KEY", @"");
     }
     self.modalInPopover = YES;
 }
@@ -69,11 +76,19 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    
-    
+    self.popover = nil;
+    self.delegate = nil;
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
+
+
+-(void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    self.popover.delegate = nil;
+    self.popover = nil;
+}
+
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -81,6 +96,10 @@
 }
 
 
+
+/****************************************
+ TABLEVIEW
+ ****************************************/
 #pragma mark - Table view data source
 
 - (int)numberOfSectionsInTableView:(UITableView *)tableView
@@ -169,7 +188,7 @@
             NSDictionary *keyDico = [NSDictionary dictionaryWithDictionary:[sectionArray objectAtIndex:row]];
             NSString *key = [[keyDico allKeys] objectAtIndex:0];*/
             cell.key =  key;
-            [cell configureCellWithRate:[[_valueEntered valueForKey:key] intValue]];
+            [cell configureCellWithRate:[[_valueEntered valueForKey:key] floatValue]];
             
             
             cellToReturn = cell;
@@ -242,10 +261,6 @@
 
 
 
-
-
-
-#pragma mark - Table view delegate
 
 
 /****************************************
@@ -351,7 +366,8 @@
     if( [textField.superview.superview isMemberOfClass:[MovieEditorGeneralCell class]])
     {
         MovieEditorGeneralCell *cell = (MovieEditorGeneralCell*) textField.superview.superview;
-        
+        CGRect rec = textField.superview.frame;
+        rec = [self.parentViewController.view convertRect:rec fromView:textField.superview.superview];
         if([cell.associatedKey isEqualToString:@"resolution"]){
             //UIPickerView *picker = [[UIPickerView alloc] init];
             [textField resignFirstResponder];
@@ -361,7 +377,8 @@
             UINavigationController *vc = [storyboard instantiateViewControllerWithIdentifier:@"Resolution Navigation Controller"];
             //UINavigationController *vcToPresent = [storyboard instantiateViewControllerWithIdentifier:@"Resolution Navigation Controller"];
             UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:vc];
-            [popover presentPopoverFromRect:textField.frame inView:self.parentViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            DLog(@"FRAME: o.x:%f, o.y:%f, h:%f, w:%f", rec.origin.x, rec.origin.y, rec.size.height, rec.size.width);
+            [popover presentPopoverFromRect:rec inView:self.parentViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             _pc2 = popover;
             [vc.navigationController setHidesBottomBarWhenPushed:YES];
             
@@ -383,6 +400,30 @@
 
 
 
+/****************************************
+ RateViewCell en SegmentedControl
+ ****************************************/
+#pragma mark - methode pour SegmentedControl
+- (IBAction)segmentControlChanged:(UISegmentedControl *)sender;
+{
+    DLog(@"segmentControlChanged !!!");
+    int value = [sender selectedSegmentIndex];
+    DLog(@"value entered: %@", [NSNumber numberWithInt:value]);
+    [_valueEntered setValue:[NSString stringWithFormat:@"%d", value] forKey:@"viewed"];
+}
+
+
+
+#pragma mark - RateViewCellDelegate
+
+-(void)rateChangeForKey:(NSString *)key newRate:(float)rate{
+    DLog(@"rateChageForKey: %@, newRate:%f", key, rate);
+    [_valueEntered setValue:[NSString stringWithFormat:@"%f", rate] forKey:key];
+}
+
+
+
+
 
 /****************************************
  Image picker
@@ -396,8 +437,6 @@
     [mediaUI setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
     [mediaUI setAllowsEditing:NO];
     
-#warning Voir pour ajouter un bouton annuler
-
     
     
     //mediaUI.navigationItem.leftBarButtonItem = backButton;
@@ -418,29 +457,12 @@
  didFinishPickingMediaWithInfo: (NSDictionary *) info {
     UIImage *originalImage;//, *editedImage, *imageToUse;
     
-    
 
-        
-    // Handle a still image picked from a photo album
-    //if (CFStringCompare ((CFStringRef) mediaType, kUTTypeImage, 0)
-        //== kCFCompareEqualTo) {
-        /*
-        editedImage = (UIImage *) [info objectForKey:
-                                   UIImagePickerControllerEditedImage];*/
-        originalImage = (UIImage *) [info objectForKey:
-                                     UIImagePickerControllerOriginalImage];
-        /*
-        if (editedImage) {
-            imageToUse = editedImage;
-        } else {
-            imageToUse = originalImage;
-        }*/
-        // Do something with imageToUse
-    //}
+    originalImage = (UIImage *) [info objectForKey:
+                                 UIImagePickerControllerOriginalImage];
+
     [_valueEntered setValue:originalImage forKey:@"big_picture"];
     [self.tableView reloadData];
-    
-    
     
     [self.pc dismissPopoverAnimated:YES];
     picker = nil;
@@ -448,29 +470,6 @@
 
 
 
-
-#pragma mark - methode pour SegmentedControl
-- (IBAction)segmentControlChanged:(UISegmentedControl *)sender;
-{
-    DLog(@"segmentControlChanged !!!");
-    int value = [sender selectedSegmentIndex];
-    DLog(@"value entered: %@", [NSNumber numberWithInt:value]);
-    [_valueEntered setValue:[NSString stringWithFormat:@"%d", value] forKey:@"viewed"];
-}
-
-
-
-#pragma mark - RateViewCellDelegate méthode
-
--(void)rateChangeForKey:(NSString *)key newRate:(float)rate{
-    DLog(@"rateChageForKey: %@, newRate:%f", key, rate);
-    [_valueEntered setValue:[NSString stringWithFormat:@"%f", rate] forKey:key];
-}
-
-
-
-
-#pragma mark - Methode pour fermer picker
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissModalViewControllerAnimated:YES];
 }
@@ -499,8 +498,14 @@
 
 
 
+
+/****************************************
+ ResolutionPicker - Delegate
+ ****************************************/
+
 #pragma mark - ResolutionPicker Delegate
--(void)selectedTitle:(LMResolution)resolution
+
+-(void)selectedResolution:(LMResolution)resolution
 {
     DLog(@"resolutionSelected");
     [_valueEntered setObject:[NSString stringWithFormat:@"%d",resolution] forKey:@"resolution"];

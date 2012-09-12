@@ -134,7 +134,22 @@
 }
 
 - (void)setRating:(float)rating {
-    _rating = rating;
+    int entier = rating;
+    float diff = rating-(float)entier;
+    float arrondi = 0;
+    
+    if(diff <= 0.25){
+        arrondi = 0;
+    }
+    else if(diff > 0.75){
+        arrondi = 1;
+    }
+    else{
+        arrondi = 0.5;
+    }
+    
+    
+    _rating = entier + arrondi;
     [self refresh];
 }
 

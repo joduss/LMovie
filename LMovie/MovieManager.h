@@ -19,7 +19,8 @@ typedef enum LMResolution {
     LMResolutionDVD = 2,
     LMResolution720 = 3,
     LMResolution1080 = 4,
-    LMResolution3D = 5
+    LMResolution3D = 5,
+    LMResolutionAll = 6
 } LMResolution;
 
 

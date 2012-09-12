@@ -23,7 +23,7 @@
 @property (nonatomic, strong) id<RateViewCellDelegate> delegate;
 @property (nonatomic, strong) NSString *key;
 
--(void)configureCellWithRate:(int)rate;
+-(void)configureCellWithRate:(float)rate;
 @end
 
 
