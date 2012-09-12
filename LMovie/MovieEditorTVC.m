@@ -18,6 +18,8 @@
 
 
 @implementation MovieEditorTVC
+@synthesize saveButton = _saveButton;
+@synthesize cancelButton = _cancelButton;
 @synthesize movieToEdit = _movieToEdit;
 @synthesize movieManager = _movieManager;
 @synthesize delegate = _delegate;
@@ -37,7 +39,12 @@
         _valueEntered = [[NSMutableDictionary alloc] init];
     }
     [self.tableView setAllowsSelection:NO];
-    [self.navigationItem setHidesBackButton:YES animated:YES];    
+    [self.navigationItem setHidesBackButton:YES animated:YES];
+    self.saveButton.title = NSLocalizedString(@"Save KEY", @"");
+    self.cancelButton.title = NSLocalizedString(@"Cancel KEY", @"");
+
+
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -75,6 +82,8 @@
 
 - (void)viewDidUnload
 {
+    [self setSaveButton:nil];
+    [self setCancelButton:nil];
     [super viewDidUnload];
     self.popover = nil;
     self.delegate = nil;
@@ -162,6 +171,13 @@
             identifier = @"viewed cell movieEditor";
             MovieEditorViewedCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             [cell.infoLabel setText:[_movieManager labelForKey:key]];
+            
+            //gère les segments
+            [cell.choice removeAllSegments];
+            [cell.choice insertSegmentWithTitle:NSLocalizedString(@"No KEY", @"") atIndex:ViewedNO animated:NO];
+            [cell.choice insertSegmentWithTitle:NSLocalizedString(@"Yes KEY", @"") atIndex:ViewedYES animated:NO];
+            [cell.choice insertSegmentWithTitle:NSLocalizedString(@"? KEY", @"") atIndex:ViewedMAYBE animated:NO];
+            
             [cell.choice addTarget:self action:@selector(segmentControlChanged:) forControlEvents:UIControlEventValueChanged];
             int viewedValue = [[_valueEntered valueForKey:@"viewed"] intValue];
             if(viewedValue < 0 || viewedValue > 2 || ![_valueEntered valueForKey:@"viewed"]){

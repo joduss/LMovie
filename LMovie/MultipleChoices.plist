@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Resolution</key>
+	<key>Resolution-en</key>
 	<array>
 		<string>?</string>
 		<string>avi/mp4</string>
@@ -10,6 +10,17 @@
 		<string>HD 720p</string>
 		<string>HD 1080p</string>
 		<string>3D</string>
+		<string>All Resolutions</string>
+	</array>
+	<key>Resolution-fr</key>
+	<array>
+		<string>?</string>
+		<string>avi/mp4</string>
+		<string>DVD</string>
+		<string>HD 720p</string>
+		<string>HD 1080p</string>
+		<string>3D</string>
+		<string>Toutes les résolutions</string>
 	</array>
 </dict>
 </plist>

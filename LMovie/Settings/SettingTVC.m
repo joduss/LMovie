@@ -174,6 +174,7 @@
     
     NSMutableArray *keys = [[_movieManager orderedKey] mutableCopy];
     [keys removeObjectAtIndex:0];
+    [keys addObject:@"tmdb_ID"];
     
     for(Movie *movie in movies){
         string = @"";
@@ -218,6 +219,8 @@
     // [self dismissModalViewControllerAnimated:YES];
 }
 
+
+
 - (void)import
 {
     
@@ -260,7 +263,7 @@
     
     //DLog(@"%d movies in txt: %@", [movies count],[movies description]);
     for(NSString *movie in movies){
-        //DLog(@"movie : |%@|", movie);
+        DLog(@"movie : |%@|", movie);
         if(![movie isEqualToString:@"\n"] && ![movie isEqualToString:@""]){
             NSArray *movieInfo = [movie componentsSeparatedByString:@"\t"];
             int i = 0;
@@ -270,37 +273,47 @@
             //on supprime la clé "big_picture" car pas besoin
             NSMutableArray *keys = [[_movieManager orderedKey] mutableCopy];
             [keys removeObjectAtIndex:0];
+            [keys addObject:@"tmdb_ID"];
+            if([keys count] != [movieInfo count]){
+                [keys removeLastObject];
+            }
             
-            for(NSString *key in keys){
-                NSString *info = [movieInfo objectAtIndex:i];
-                [infoForNewMovie setValue:info forKey:key];
-                ++i;
+            //recontrole le nombre de valeur en fonction du nombre de clé. Si à nouveau pas =: on abandonne.
+            if([keys count] == [movieInfo count]){
+                
+                DLog(@"ARRRAY: %@",[movieInfo description]);
+                
+                for(NSString *key in keys){
+                    NSString *info = [movieInfo objectAtIndex:i];
+                    [infoForNewMovie setValue:info forKey:key];
+                    ++i;
+                }
+                //DLog(@"DICO DES INFO: %@", [infoForNewMovie description]);
+                if([[infoForNewMovie valueForKey:@"viewed"] isEqualToString:@"✕"]){
+                    [infoForNewMovie setValue:@"0" forKey:@"viewed"];
+                }
+                else if([[infoForNewMovie valueForKey:@"viewed"] isEqualToString:@"✓"]){
+                    [infoForNewMovie setValue:@"1" forKey:@"viewed"];
+                }
+                else if([[infoForNewMovie valueForKey:@"viewed"] isEqualToString:@"?"]){
+                    [infoForNewMovie setValue:@"2" forKey:@"viewed"];
+                }
+                else
+                {
+                    [infoForNewMovie setValue:@"2" forKey:@"viewed"];
+                }
+                [_movieManager insertWithoutSavingMovieWithInformations:infoForNewMovie];
+                
+                
+                //NSLog(@"dehors2 %@", [NSThread currentThread]);
+                now = now + percentsPerMovie;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    //NSLog(@" dedans 2%@", [NSThread currentThread]);
+                    //NSLog(@"%f", _progressView.progress);
+                    _progressView.progress = now;
+                });
+                //NSLog(@"now: %f", now-_progressView.progress);
             }
-            //DLog(@"DICO DES INFO: %@", [infoForNewMovie description]);
-            if([[infoForNewMovie valueForKey:@"viewed"] isEqualToString:@"✕"]){
-                [infoForNewMovie setValue:@"0" forKey:@"viewed"];
-            }
-            else if([[infoForNewMovie valueForKey:@"viewed"] isEqualToString:@"✓"]){
-                [infoForNewMovie setValue:@"1" forKey:@"viewed"];
-            }
-            else if([[infoForNewMovie valueForKey:@"viewed"] isEqualToString:@"?"]){
-                [infoForNewMovie setValue:@"2" forKey:@"viewed"];
-            }
-            else
-            {
-                [infoForNewMovie setValue:@"2" forKey:@"viewed"];
-            }
-            [_movieManager insertWithoutSavingMovieWithInformations:infoForNewMovie];
-            
-            
-            //NSLog(@"dehors2 %@", [NSThread currentThread]);
-            now = now + percentsPerMovie;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                //NSLog(@" dedans 2%@", [NSThread currentThread]);
-                //NSLog(@"%f", _progressView.progress);
-                _progressView.progress = now;
-            });
-            //NSLog(@"now: %f", now-_progressView.progress);
         }
     }
     

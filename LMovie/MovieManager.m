@@ -297,7 +297,10 @@
 +(NSString *)resolutionToStringForResolution:(LMResolution)resolution
 {
     NSString *file = [[NSBundle mainBundle] pathForResource:@"MultipleChoices" ofType:@"plist"];
-    NSArray *resolutionChoice = [[NSDictionary dictionaryWithContentsOfFile:file] valueForKey:@"Resolution"];
+    NSArray *resolutionChoice = [[NSDictionary dictionaryWithContentsOfFile:file] valueForKey:[@"Resolution-"  stringByAppendingString:[[NSLocale preferredLanguages] objectAtIndex:0]]];
+        
+    DLog(@"réso: %@", [resolutionChoice objectAtIndex:resolution]);
+    
     return [resolutionChoice objectAtIndex:resolution];
 }
 

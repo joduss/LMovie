@@ -9,10 +9,12 @@
 #import "TMDBSearchTVC.h"
 
 @interface TMDBSearchTVC ()
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 @property (strong, nonatomic) NSMutableArray *arrayOfMovieID;
 @end
 
 @implementation TMDBSearchTVC
+@synthesize cancelButton = _cancelButton;
 @synthesize searchBar = _searchBar;
 
 
@@ -21,6 +23,7 @@
 {
     [super viewDidLoad];
     self.title = NSLocalizedString(@"Add movie KEY",@"");
+    [self.cancelButton setTitle:NSLocalizedString(@"Cancel KEY", @"")];
     [self.searchBar setDelegate:self];
     _arrayOfMovieID = [[NSMutableArray alloc] init];
 }
@@ -35,6 +38,7 @@
 - (void)viewDidUnload
 {
     [self setSearchBar:nil];
+    [self setCancelButton:nil];
     [super viewDidUnload];
     [self setPopover:nil];
     [self setSearchBar:nil];
@@ -98,9 +102,9 @@
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         UILabel *label = (UILabel *)[cell viewWithTag:88];
         if([[_arrayOfMovieID objectAtIndex:0] isEqualToString:@"NO RESULT"])
-            label.text = @"No movie found with this title";
+            label.text = NSLocalizedString(@"No movie with this title KEY",@"");
         else
-            label.text = @"Oups, error while searching :(";
+            label.text = NSLocalizedString(@"Error while searching KEY",@"");
         
         cellToReturn = cell;
     }

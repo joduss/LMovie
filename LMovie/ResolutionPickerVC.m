@@ -89,9 +89,9 @@
     if(_resolutionChoice == nil)
     {
         NSString *file = [[NSBundle mainBundle] pathForResource:@"MultipleChoices" ofType:@"plist"];
-        NSMutableArray *array = [[[NSDictionary dictionaryWithContentsOfFile:file] valueForKey:@"Resolution"] mutableCopy];
-        if(_forSearch){
-            [array addObject:NSLocalizedString(@"All KEY", @"")];
+        NSMutableArray *array = [[[NSDictionary dictionaryWithContentsOfFile:file] valueForKey:[@"Resolution-"  stringByAppendingString:[[NSLocale preferredLanguages] objectAtIndex:0]]] mutableCopy];
+        if(!_forSearch){
+            [array removeLastObject];
         }
         _resolutionChoice = [array copy];
     }

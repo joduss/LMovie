@@ -13,4 +13,6 @@
 @synthesize infoLabel = _infoLabel;
 @synthesize choice = _choice;
 
+
+
 @end

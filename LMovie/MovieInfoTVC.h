@@ -17,6 +17,8 @@
 
 
 @interface MovieInfoTVC : UITableViewController <MovieEditorDelegate, UIPopoverControllerDelegate>
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *deleteButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *modifyButton;
 @property (nonatomic, strong) MovieManager *movieManager;
 @property (nonatomic, strong) Movie *movie;
 @property (strong, nonatomic) UIPopoverController *popover;

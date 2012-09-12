@@ -10,6 +10,18 @@
 
 
 
+//********    Traduction générale
+/**********/
+"Cancel KEY" = "Annuler";
+"Save KEY" = "Enregistrer";
+"No KEY" = "Non";
+"Yes KEY" = "Oui";
+"Delete KEY" = "Supprimer";
+"? KEY" = "?";
+
+
+
+
 
 //********    MovieEditor && ResolutionPicker
 /**********/
@@ -18,11 +30,12 @@
 "ERROR KEY" = "ERREUR !";
 "Title cannot be empty KEY" = "Le titre ne peut pas être vide!";
 "Error KEY" = "ERREUR !";
-"Cancel KEY" = "Annuler";
 "Modify movie KEY" = "Modification des infos du film";
 "Choose resolution KEY" = "Choisissez une résolution";
 "Add movie KEY" = "Ajout d'un film";
 "All KEY" = "Toutes les résolutions";
+"Delete picture KEY" = "Supprimer l'image";
+"Select Picture KEY" = "Selectionner une image";
 
 
 
@@ -42,3 +55,20 @@
 "Info from TMDB" = "Info depuis TMDB";
 "Actors : KEY" = "Acteurs: ";
 "Director : KEY" = "Directeur: ";
+
+//********    SearchTVC
+/**********/
+"All Viewed KEY" = "Tout";
+"Reset KEY" = "Vider les champs";
+"Search KEY" = "Rechercher";
+
+//********    TMDBSearch
+/**********/
+"No movie with this title KEY" = "Aucun résultat";
+"Error while searching KEY" = "Oups, il y a eu une erreur :-(";
+
+
+
+//********    MovieInfo
+/**********/
+"Modify KEY" = "Modifier";

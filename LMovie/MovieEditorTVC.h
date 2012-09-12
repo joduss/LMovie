@@ -16,6 +16,8 @@
 #import "ResolutionPickerVC.h"
 
 @interface MovieEditorTVC : UITableViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RateViewCellDelegate, ResolutionPickerVC, UIPopoverControllerDelegate>
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *saveButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 @property Movie *movieToEdit;
 @property MovieManager *movieManager;
 @property (nonatomic, weak) id <MovieEditorDelegate> delegate;

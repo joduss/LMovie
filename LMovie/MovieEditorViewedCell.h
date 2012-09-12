@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface MovieEditorViewedCell : UITableViewCell
-@property (nonatomic, strong) IBOutlet UILabel* infoLabel;
-@property (nonatomic, strong) IBOutlet UISegmentedControl *choice;
+@property (nonatomic, weak) IBOutlet UILabel* infoLabel;
+@property (nonatomic, weak) IBOutlet UISegmentedControl *choice;
+
 
 @end

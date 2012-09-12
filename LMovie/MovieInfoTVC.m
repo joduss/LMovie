@@ -14,6 +14,8 @@
 @end
 
 @implementation MovieInfoTVC
+@synthesize deleteButton = _deleteButton;
+@synthesize modifyButton = _modifyButton;
 @synthesize movieManager = _movieManager;
 @synthesize movie = _movie;
 @synthesize popover = _popover;
@@ -23,11 +25,15 @@
 -(void)viewDidLoad
 {
     NSLog(@"load");
+    self.deleteButton.title = NSLocalizedString(@"Delete KEY", @"");
+    self.modifyButton.title = NSLocalizedString(@"Modify KEY", @"");
 }
 
 -(void)viewDidUnload
 {
     NSLog(@"unload");
+    [self setModifyButton:nil];
+    [self setDeleteButton:nil];
     [super viewDidUnload];
     self.popover = nil;
     self.movie = nil;
@@ -72,7 +78,7 @@
     
     //On regarde si la valeur associée à la clé n'est pas nulle. Si elle n'est pas nulle, on l'ajoute dans le tableau de clé
     for(NSString *key in [_movieManager orderedKey]){
-        if([_infos valueForKey:key] != nil){
+        if([_infos valueForKey:key] != nil || [key isEqualToString:@"big_picture"]){
             int section = [_movieManager sectionForKey:key];
             [[_keyArray objectAtIndex:section]addObject:key];
         }
@@ -122,6 +128,8 @@
 
     UITableViewCell *cell;
     NSString *key = [[_keyArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    
+    DLog(@"KEYS MOVIEINFO: %@", [key description]);
     
     if(indexPath.row == 0 && indexPath.section == 0){
         key = @"big_picture";
@@ -198,8 +206,9 @@
                 
                 CGRect rec = rightLabel.frame;
                 int height = size.height;
+                int numberOccurence = [[text componentsSeparatedByString:@"\n"] count];
                 
-                if(height < 45){
+                if(height < 45 && numberOccurence < 2){
                     height = 45;
                 }
                 CGRect new = CGRectMake(rec.origin.x, rec.origin.y, rec.size.width, height);
@@ -207,6 +216,7 @@
             }
             else
             {
+                DLog(@"KEYS MOVIEINFO: %@", [key description]);
                 rightLabel.text = [_infos valueForKey:key];
             }
             
@@ -240,8 +250,9 @@
             DLog(@"text: %@",text);
             
             int height = size.height;
-            if(height < 45)
-            {
+            int numberOccurence = [[text componentsSeparatedByString:@"\n"] count];
+            
+            if(height < 45 && numberOccurence < 2){
                 height = 45;
             }
             else

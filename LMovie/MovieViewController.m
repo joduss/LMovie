@@ -141,9 +141,10 @@
                 }
                 else if ([key isEqualToString:@"resolution"]){
                     //si la résolution "TOUT" est choisi, on l'ignore, ainsi on ne trie pas les résolutions
-                    LMResolution resolution = (LMResolution)[info valueForKey:key];
+                    LMResolution resolution = (LMResolution)[[info valueForKey:key] intValue];
                     if(resolution != LMResolutionAll){
-                        [predicateArray addObject:[NSPredicate predicateWithFormat:@"%K == %@",  key, [info valueForKey:key]]];
+                        DLog(@"autre résolution: %d",resolution);
+                        [predicateArray addObject:[NSPredicate predicateWithFormat:@"%K == %d",  key, resolution]];
                     }
                 }
                 else {
@@ -154,8 +155,7 @@
                     DLog(@"last deleted");
                     [predicateArray removeLastObject];
                 }
-                //Pareil pour les Résolutions
-                //DLog(@"écriture des predicates: %@", [ NSString stringWithFormat:@"%@ CONTAINS[cd] %@", key, [info valueForKey:key]]);
+                
             }
 
             

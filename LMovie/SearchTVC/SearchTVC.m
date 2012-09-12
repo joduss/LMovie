@@ -14,16 +14,23 @@
 @end
 
 @implementation SearchTVC
+@synthesize searchButton = _searchButton;
+@synthesize resetButton = _resetButton;
 
 @synthesize delegate = _delegate;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.searchButton.title = NSLocalizedString(@"Search KEY", @"");
+    self.resetButton.title = NSLocalizedString(@"Reset KEY", @"");
+
 }
 
 - (void)viewDidUnload
 {
+    [self setSearchButton:nil];
+    [self setResetButton:nil];
     [super viewDidUnload];
 }
 
@@ -84,6 +91,13 @@
         
         identifier = @"viewed cell movieEditor";
         MovieEditorViewedCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        //gère les segments
+        [cell.choice removeAllSegments];
+        [cell.choice insertSegmentWithTitle:NSLocalizedString(@"No KEY", @"") atIndex:ViewedNO animated:NO];
+        [cell.choice insertSegmentWithTitle:NSLocalizedString(@"Yes KEY", @"") atIndex:ViewedYES animated:NO];
+        [cell.choice insertSegmentWithTitle:NSLocalizedString(@"? KEY", @"") atIndex:ViewedMAYBE animated:NO];
+        [cell.choice insertSegmentWithTitle:NSLocalizedString(@"All Viewed KEY", @"") atIndex:ViewedAll animated:NO];
+        
         [cell.infoLabel setText:[_movieManager labelForKey:key]];
         DLog(@"infolabel: %@", cell.infoLabel);
         [cell.choice addTarget:self action:@selector(segmentControlChanged:) forControlEvents:UIControlEventValueChanged];
@@ -132,7 +146,11 @@
         }
         if([key isEqualToString:@"resolution"])
         {
-            NSString *title = [MovieManager resolutionToStringForResolution:[[self.valueEntered valueForKey:key] intValue]];
+            LMResolution reso = [[self.valueEntered valueForKey:key] intValue];
+            if([self.valueEntered valueForKey:key] == nil){
+                reso = LMResolutionAll;
+            }
+            NSString *title = [MovieManager resolutionToStringForResolution:reso];
             cell.textField.text = title;
         }
         
@@ -154,17 +172,6 @@
 }
 
 #pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
-}
 
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField

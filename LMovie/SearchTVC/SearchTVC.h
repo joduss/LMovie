@@ -26,6 +26,8 @@
 //- (IBAction)segmentControlChanged:(UISegmentedControl *)sender;
 - (IBAction)SearchButtonPressed:(UIBarButtonItem *)sender;
 - (IBAction)resetButtonPressed:(UIBarButtonItem *)sender;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *searchButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *resetButton;
 
 @end
 

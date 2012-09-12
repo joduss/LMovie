@@ -15,6 +15,22 @@
 @synthesize keyAssociated = _keyAssociated;
 @synthesize selectButton = _selectButton;
 
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+
+    return self;
+}
+
+-(void)awakeFromNib
+{
+    [self.selectButton setTitle: NSLocalizedString(@"Select Picture KEY", @"") forState:UIControlStateNormal];
+    [self.deleteImageButton setTitle:NSLocalizedString(@"Delete picture KEY", @"") forState:UIControlStateNormal];
+    
+}
+
+
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
