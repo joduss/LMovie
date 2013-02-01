@@ -31,55 +31,47 @@
 
 
 -(void)configureCellWithMovie:(Movie *)movie{
+          
+            self.userRate.notSelectedImage = [[SharedManager getInstance] emptyStar];
+            self.userRate.halfSelectedImage = [[SharedManager getInstance] halfStar];
+            self.userRate.fullSelectedImage = [[SharedManager getInstance] fullStar];
+            self.userRate.rating = [movie.user_rate floatValue];
+            self.userRate.editable = NO;
+            self.userRate.maxRating = 10;
+            self.userRate.delegate = self;
+            
+            self.tmdbRate.notSelectedImage = [[SharedManager getInstance] emptyStar];
+            self.tmdbRate.halfSelectedImage = [[SharedManager getInstance] halfStar];
+            self.tmdbRate.fullSelectedImage = [[SharedManager getInstance] fullStar];
+            self.tmdbRate.rating = [movie.tmdb_rate floatValue];
+            self.tmdbRate.editable = NO;
+            self.tmdbRate.maxRating = 10;
+            self.tmdbRate.delegate = self;
+
     
-    self.userRate.notSelectedImage = [UIImage imageNamed:@"empty.png"];
-    self.userRate.halfSelectedImage = [UIImage imageNamed:@"middle.png"];
-    self.userRate.fullSelectedImage = [UIImage imageNamed:@"full.png"];
-    self.userRate.rating = [movie.user_rate floatValue];
-    self.userRate.editable = NO;
-    self.userRate.maxRating = 10;
-    self.userRate.delegate = self;
+    [_picture setImage:nil];
     
-    self.tmdbRate.notSelectedImage = [UIImage imageNamed:@"empty.png"];
-    self.tmdbRate.halfSelectedImage = [UIImage imageNamed:@"middle.png"];
-    self.tmdbRate.fullSelectedImage = [UIImage imageNamed:@"full.png"];
-    self.tmdbRate.rating = [movie.tmdb_rate floatValue];
-    self.tmdbRate.editable = NO;
-    self.tmdbRate.maxRating = 10;
-    self.tmdbRate.delegate = self;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    if(movie.mini_picture == nil){
-        //DLog(@"Picture nil");
-        [_picture setImage:nil];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            NSString *file = [[NSBundle mainBundle] pathForResource:@"emptyartwork_mini" ofType:@"jpg"];
-            UIImage * img = [UIImage imageWithContentsOfFile:file];
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                [_picture setImage:img];
+        if(movie.mini_picture == nil){
+            //DLog(@"Picture nil");
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSString *file = [[NSBundle mainBundle] pathForResource:@"emptyartwork_mini" ofType:@"jpg"];
+                UIImage * img = [UIImage imageWithContentsOfFile:file];
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    [_picture setImage:img];
+                });
             });
-        });
-    }
-    else {
-        //DLog(@"Picture non nil");
-        [_picture setImage:nil];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            UIImage * img = [UIImage imageWithData:movie.mini_picture];
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                [_picture setImage:img];
+            
+        }
+        else {
+            //DLog(@"Picture non nil");
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                UIImage * img = [UIImage imageWithData:movie.mini_picture];
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    [_picture setImage:img];
+                });
             });
-        });
-    }
+        }
+    
     _title.text = movie.title;
     _year.text = [movie.year stringValue];
     int hour = [movie.duration intValue] / 60;
@@ -104,7 +96,7 @@
         NSArray *actorsArray = [actorsString componentsSeparatedByString:@", "];
         NSString *actorsToShow;
         if([actorsArray count] >= 2){
-            actorsToShow = [[actorsArray objectAtIndex:0] stringByAppendingFormat:@", %@",[actorsArray objectAtIndex:1]];
+            actorsToShow = [[actorsArray objectAtIndex:0] stringByAppendingFormat:@", %@",[actorsArray objectAtIndex:1]]; //On affiche 2 acteurs
         }
         else{
             actorsToShow = [actorsArray objectAtIndex:0];
@@ -113,23 +105,35 @@
         _actor.text = [NSLocalizedString(@"Actors : KEY",@"") stringByAppendingString:actorsToShow];
     }
     
-    NSString *file;
-    switch ([movie.viewed intValue]) {
-        case 0:
-            file = [[NSBundle mainBundle] pathForResource:@"PasVu" ofType:@"png"];
-            break;
-        case 1:
-            file = [[NSBundle mainBundle] pathForResource:@"Vu" ofType:@"png"];
-            break;
-        default:
-            file = [[NSBundle mainBundle] pathForResource:@"VuNoIdea" ofType:@"png"];
-            break;
-    }
-    [_viewedPicture setImage:[UIImage imageWithContentsOfFile:file]];
     
+    //SET OF "VIEWED ICON"
+    __block NSString *viewedIcon;
     
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        switch ([movie.viewed intValue]) {
+            case 0:
+                viewedIcon = [[NSBundle mainBundle] pathForResource:@"PasVu" ofType:@"png"];
+                break;
+            case 1:
+                viewedIcon = [[NSBundle mainBundle] pathForResource:@"Vu" ofType:@"png"];
+                break;
+            default:
+                viewedIcon = [[NSBundle mainBundle] pathForResource:@"VuNoIdea" ofType:@"png"];
+                break;
+        }
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [_viewedPicture setImage:[UIImage imageWithContentsOfFile:viewedIcon]];
+
+        });
+    });
+    
+    viewedIcon = nil;
     
 
+    
+    
+    
+    //SET OF rate in String next to the star notation
     _labelAfterTMDBRate.text = [movie.tmdb_rate stringValue];
     _labelAfterUserRate.text = [movie.user_rate stringValue];
     

@@ -12,50 +12,50 @@
 static SettingsLoader *_globalSettings;
 @synthesize language = _language;
 
--(LMAppLanguage)appLanguage
+-(NSString *)appLanguage
 {
     DLog(@"appLanguage");
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSNumber *language = [defaults valueForKey:@"language"];
+    
+    
+    /*if([defaults isMemberOfClass:[NSString class]] == NO){
+        [defaults removeObjectForKey:@"language"];
+        DLog(@"supression préference langue");
+    }*/
+    NSString *language = [defaults valueForKey:@"language"];
     
 
     
-    DLog(@"NSNumber: %@", [language description]);
+    DLog(@"Langue: %@", language);
     
     if(language == nil){
-        NSString * languageDevice = [[NSLocale preferredLanguages] objectAtIndex:0];
+        _language = [[NSLocale preferredLanguages] objectAtIndex:0];
+        [self changeAppLanguageToLanguage:_language];
         
-        if([languageDevice isEqualToString:@"fr"]){
-            [defaults setValue:[NSNumber numberWithInt:LMLanguageFrench] forKey:@"language"];
-            _language = LMLanguageFrench;
-            DLog(@"franchais");
-            
-        }
-        else{
-            DLog(@"anglais");
-            [defaults setValue:[NSNumber numberWithInt:LMLanguageEnglish] forKey:@"language"];
-            _language = LMLanguageEnglish;
-        }
     }else{
-        _language = [language intValue];
+        _language = language;
     }
     
-    DLog(@"langue après appLanguage: %d", _language);
+    DLog(@"langue après appLanguage: %@", _language);
     return _language;
+}
+
+-(void)setLanguage:(NSString *)language
+{
+    [self changeAppLanguageToLanguage:language];
 }
 
 
 
--(void)changeAppLanguageToLanguage:(LMAppLanguage)language
+-(void)changeAppLanguageToLanguage:(NSString *)language
 {
     DLog(@"Enregistrement du changement de langue");
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSNumber *languageNSNumber = [NSNumber numberWithInt:language];
     _language = language;
     
-    [defaults setValue:languageNSNumber forKey:@"language"];
-    [[NSUserDefaults standardUserDefaults]synchronize];
+    [defaults setValue:language forKey:@"language"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     /*while(true){
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Language change / Changement de langue"
                                                        message:@"You must quit and start again the application now to apply the change \n Vous devez quitter et relancer l'application maintenant pour appliquer le changement de langue" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];

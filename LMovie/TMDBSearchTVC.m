@@ -26,6 +26,7 @@
     [self.cancelButton setTitle:NSLocalizedString(@"Cancel KEY", @"")];
     [self.searchBar setDelegate:self];
     _arrayOfMovieID = [[NSMutableArray alloc] init];
+    _searchBar.placeholder = NSLocalizedString(@"Enter movie title for tmdb search KEY",@"");
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -176,7 +177,7 @@
     [progressView setMode:MBProgressHUDModeIndeterminate];
     progressView.labelText = @"Loading Informations";
     [self.view addSubview:progressView];
-    [progressView showUsingAnimation:YES];
+    [progressView show:YES];
     [progressView setMinShowTime:1];
     
     dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

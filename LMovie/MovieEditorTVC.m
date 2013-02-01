@@ -99,10 +99,13 @@
 }
 
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+-(NSUInteger)supportedInterfaceOrientations
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return UIInterfaceOrientationMaskLandscape;
 }
+
+
+
 
 
 
@@ -226,9 +229,12 @@
             cell.textField.placeholder = [_movieManager placeholderForKey:key];
             [cell setAssociatedKey:key];
             cell.textField.delegate = self;
-            NSPredicate *test = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@" argumentArray:[NSArray arrayWithObjects:@"duration", @"year", nil]];
-            if([test evaluateWithObject:key]){
+            
+            if([key isEqualToAnyString:@"duration", @"year",@"tmdb_rate", nil]){
                 [cell.textField setKeyboardType:UIKeyboardTypeNumberPad]; //si on entre une année, une durée ou une note -> clavier numérique
+            }
+            else {
+                [cell.textField setKeyboardType:UIKeyboardTypeAlphabet];
             }
             
             cellToReturn = cell;
@@ -297,13 +303,15 @@
 
 - (IBAction)saveButtonPressed:(UIBarButtonItem *)sender {
     
-    DLog(@"value entered lorsque save est pressé: %@", _valueEntered);
+    [self.view endEditing:YES];
+
+    
+    DLog(@"value entered lorsque save est pressé: %@", [_valueEntered description]);
 
     
     BOOL error1 = NO;
     BOOL error2 = NO;
     
-    [self.view endEditing:YES];
     
     //test: title est différente de rien
     NSString *test1 = [_valueEntered valueForKey:@"title"];
@@ -351,9 +359,13 @@
             
         }
         
-        [self.popover dismissPopoverAnimated:YES];
-        [self dismissModalViewControllerAnimated:YES];
-        [self.navigationController popViewControllerAnimated:YES];
+        if(self.popover){
+            [self.popover dismissPopoverAnimated:YES];
+        }
+        else{
+            [self dismissModalViewControllerAnimated:YES];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
     }
     
     
@@ -365,24 +377,36 @@
 /****************************************
  Textfield Delegate Methodes
  ****************************************/
+
 #pragma mark - textfield delegate methods
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
     MovieEditorGeneralCell *cell = (MovieEditorGeneralCell *) [[textField superview] superview];
     if(cell != nil && cell.associatedKey != nil){
         [_valueEntered setValue:textField.text forKey:cell.associatedKey];
+        [textField resignFirstResponder];
         DLog(@"Value Entered set for: key: %@ and value: %@", cell.associatedKey, textField.text);
     }
+    DLog(@"coucou2");
+
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    DLog(@"coucou66");
+    return YES;
 }
 
 
-
+/*
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
+    
     if( [textField.superview.superview isMemberOfClass:[MovieEditorGeneralCell class]])
     {
         MovieEditorGeneralCell *cell = (MovieEditorGeneralCell*) textField.superview.superview;
-        CGRect rec = textField.superview.frame;
+        CGRect rec = textField.frame;
         rec = [self.parentViewController.view convertRect:rec fromView:textField.superview.superview];
         if([cell.associatedKey isEqualToString:@"resolution"]){
             //UIPickerView *picker = [[UIPickerView alloc] init];
@@ -394,7 +418,7 @@
             //UINavigationController *vcToPresent = [storyboard instantiateViewControllerWithIdentifier:@"Resolution Navigation Controller"];
             UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:vc];
             DLog(@"FRAME: o.x:%f, o.y:%f, h:%f, w:%f", rec.origin.x, rec.origin.y, rec.size.height, rec.size.width);
-            [popover presentPopoverFromRect:rec inView:self.parentViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            [popover presentPopoverFromRect:rec inView:self.parentViewController.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
             _pc2 = popover;
             [vc.navigationController setHidesBottomBarWhenPushed:YES];
             
@@ -408,6 +432,54 @@
         }
     }
 }
+*/
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    DLog(@"coucou3");
+
+    if( [textField.superview.superview isMemberOfClass:[MovieEditorGeneralCell class]])
+    {
+
+        MovieEditorGeneralCell *cell = (MovieEditorGeneralCell*) textField.superview.superview;
+        
+        if([cell.associatedKey isEqualToString:@"resolution"]){
+            DLog(@"coucou4");
+
+            //UIPickerView *picker = [[UIPickerView alloc] init];
+            //[self.view endEditing:YES];
+            //[self.view endEditing:NO];
+            //[textField resignFirstResponder];
+            //[popover presentPopoverFromRect:textField.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+            
+            CGRect rec = textField.frame;
+            rec = [self.parentViewController.view convertRect:rec fromView:textField.superview.superview];
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+            
+            UINavigationController *vc = [storyboard instantiateViewControllerWithIdentifier:@"Resolution Navigation Controller"];
+
+            UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:vc];
+            DLog(@"FRAME: o.x:%f, o.y:%f, h:%f, w:%f", rec.origin.x, rec.origin.y, rec.size.height, rec.size.width);
+            [popover presentPopoverFromRect:rec inView:self.parentViewController.view permittedArrowDirections:UIPopoverArrowDirectionLeft
+                                   animated:YES];
+            _pc2 = popover;
+            [vc.navigationController setHidesBottomBarWhenPushed:YES];
+            
+            ResolutionPickerVC *resolutionPicker = (ResolutionPickerVC *)[vc.childViewControllers lastObject];
+            resolutionPicker.delegate = self;
+            resolutionPicker.popover = popover;
+            
+            [textField setInputView:(UIView *)resolutionPicker];
+
+            return NO;
+            // either one of the two, depending on if your view controller is the initial one
+            
+            
+        }
+    }
+    return YES;
+}
+
+
 
 
 
@@ -448,24 +520,56 @@
 #pragma mark - image picker
 
 - (IBAction)pickImage:(id)sender{
-    UIImagePickerController *mediaUI = [[UIImagePickerController alloc] init];
-    [mediaUI setDelegate:self];
-    [mediaUI setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-    [mediaUI setAllowsEditing:NO];
+    
+    [ALAssetsLibrary authorizationStatus];
+    
+    ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
+    __block BOOL accessFree = false;
+    
+    
+    [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+        if (*stop) {
+            return ;
+        }
+        // TODO : access granted
+        accessFree = YES;
+        *stop = TRUE;
+    } failureBlock:^(NSError *error) {
+        // TODO: User denied access. Tell them we can't do anything.
+        accessFree = NO;
+    }];
     
     
     
-    //mediaUI.navigationItem.leftBarButtonItem = backButton;
-    //mediaUI.navigationController.navigationItem.leftBarButtonItem = backButton;
     
-    
-    UIPopoverController *pc = [[UIPopoverController alloc] initWithContentViewController:mediaUI];
-    CGRect fr = [sender frame];
-    fr.origin.y = fr.origin.y + 50;
-    [pc presentPopoverFromRect:fr inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
-    
-    //_picker = mediaUI;
-    _pc = pc;
+    if(accessFree == true)
+    {
+        
+        UIImagePickerController *mediaUI = [[UIImagePickerController alloc] init];
+        [mediaUI setDelegate:self];
+        [mediaUI setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        [mediaUI setAllowsEditing:NO];
+        
+        UIViewController *view = [[UIViewController  alloc] init];
+        
+        
+        
+        //mediaUI.navigationItem.leftBarButtonItem = backButton;
+        //mediaUI.navigationController.navigationItem.leftBarButtonItem = backButton;
+        
+        
+        UIPopoverController *pc = [[UIPopoverController alloc] initWithContentViewController:view];
+        CGRect fr = [sender frame];
+        fr.origin.y = fr.origin.y + 50;
+        [pc presentPopoverFromRect:fr inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+        
+        //_picker = mediaUI;
+        _pc = pc;
+    }
+    else
+    {
+        [[[UIAlertView alloc] initWithTitle:@"Access denied" message:@"Please give access to your photo library" delegate:NULL cancelButtonTitle:@"ok" otherButtonTitles:nil] show];
+    }
     //[picker toolbar]
 }
 

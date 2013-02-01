@@ -19,6 +19,7 @@
 
 
 @interface ResolutionPickerVC : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource, UIPopoverControllerDelegate>
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 @property (weak, nonatomic) IBOutlet UIPickerView *picker;
 @property (strong, nonatomic) id<ResolutionPickerVC> delegate;
 @property (nonatomic, strong) UIPopoverController *popover;

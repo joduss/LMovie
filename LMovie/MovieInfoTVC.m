@@ -8,6 +8,9 @@
 
 #import "MovieInfoTVC.h"
 
+
+#define WIDTH_RIGHTLABEL 366
+
 @interface MovieInfoTVC ()
 @property (nonatomic, strong) NSMutableArray *keyArray;
 @property (nonatomic, strong) NSDictionary *infos;
@@ -52,7 +55,9 @@
 -(void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
     DLog(@"popoverControllerDidDismiss dans movieinfo");
+    [self.delegate movieInfoDidHide];
     self.popover = nil;
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -71,6 +76,7 @@
 -(void)prepareData
 {
     _infos = [[_movie formattedInfoInDictionnaryWithImage:ImageSizeBig] mutableCopy];
+    self.title = [_infos valueForKey:@"title"];
     
     _keyArray = [[NSMutableArray alloc] initWithObjects:
                  [[NSMutableArray alloc] init],
@@ -85,8 +91,8 @@
     }
     
     
-    DLog(@"infos du film: %@", [_infos description]);
-    DLog(@"keyArray: %@", [_keyArray description]);
+    DLog2(@"infos du film: %@", [_infos description]);
+    //DLog(@"keyArray: %@", [_keyArray description]);
     
 }
 
@@ -129,7 +135,6 @@
     UITableViewCell *cell;
     NSString *key = [[_keyArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     
-    DLog(@"KEYS MOVIEINFO: %@", [key description]);
     
     if(indexPath.row == 0 && indexPath.section == 0){
         key = @"big_picture";
@@ -167,27 +172,17 @@
             UIImageView *image = (UIImageView *)[cell viewWithTag:201];
             label.text = [_movieManager labelForKey:key];
             
-            NSString *file;
-            switch ([[_infos valueForKey:key] intValue]) {
-                case 0:
-                    file = [[NSBundle mainBundle] pathForResource:@"PasVu" ofType:@"png"];
-                    break;
-                case 1:
-                    file = [[NSBundle mainBundle] pathForResource:@"Vu" ofType:@"png"];
-                    break;
-                default:
-                    file = [[NSBundle mainBundle] pathForResource:@"VuNoIdea" ofType:@"png"];
-                    break;
-            }
-            [image setImage:[UIImage imageWithContentsOfFile:file]];
+            [image setImage:[[SharedManager getInstance] viewedIcon:[[_infos valueForKey:key] intValue]]];
+
         }
         else
         {
             CellIdentifier = @"info cell";
             cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            UILabel *rightLabel = (UILabel *)[cell viewWithTag:101];
+            UITextView *rightLabel = (UITextView *)[cell viewWithTag:101];
             UILabel *leftLabel = (UILabel *)[cell viewWithTag:100];
             NSString *rightLabelText = [_movieManager labelForKey:key];
+            //rightLabel.numberOfLines = 0;
             
             //DLog(@"key: %@", [_keyArray description]);
             if([key isEqualToString:@"resolution"])
@@ -195,28 +190,22 @@
                 NSString *title = [MovieManager resolutionToStringForResolution:[[_infos valueForKey:key] intValue]];
                 rightLabel.text = title;
             }
-            else if([key isEqualToAnyString:@"director", @"actors", @"language", @"subtitle", nil])
+            else if([key isEqualToAnyString:@"director", @"actors", @"language", @"subtitle",@"genre", nil])
             {
-                rightLabel.numberOfLines = 0;
                 NSString *text = [_infos valueForKey:key];
+                //text = @"Jonathan Duss, Jonathan Duss";
                 text = [text stringByReplacingOccurrencesOfString:@", " withString:@"\n"];
-                CGSize size = [text sizeWithFont:[UIFont systemFontOfSize:17]];
+                text = [text stringByReplacingOccurrencesOfString:@" " withString:@"-"];
                 rightLabel.text = text;
-
-                
+    
                 CGRect rec = rightLabel.frame;
-                int height = size.height;
-                int numberOccurence = [[text componentsSeparatedByString:@"\n"] count];
-                
-                if(height < 45 && numberOccurence < 2){
-                    height = 45;
-                }
-                CGRect new = CGRectMake(rec.origin.x, rec.origin.y, rec.size.width, height);
-                rightLabel.frame = new;
+
+                rightLabel.frame = CGRectMake(rec.origin.x, rec.origin.y, rightLabel.frame.size.width, rightLabel.contentSize.height);
+
+
             }
             else
             {
-                DLog(@"KEYS MOVIEINFO: %@", [key description]);
                 rightLabel.text = [_infos valueForKey:key];
             }
             
@@ -233,6 +222,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    DLog2(@"info dans heighforRow: %@", [_infos description]);
+
+    
     if(indexPath.row == 0 && indexPath.section == 0){
         return 330;
     }
@@ -240,25 +232,25 @@
     else {
         NSString *key = [[_keyArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
         
-        if([key isEqualToAnyString:@"director", @"actors", @"language", @"subtitle", nil] )
+        if([key isEqualToAnyString:@"director", @"actors", @"language", @"subtitle", @"genre", nil] )
         {
             NSString *text = [_infos valueForKey:key];
             text = [text stringByReplacingOccurrencesOfString:@", " withString:@"\n"];
             CGSize size = [text sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:CGSizeMake(338, 1000) lineBreakMode:UILineBreakModeWordWrap];
 
-            DLog(@"SIZE (heigh): %f", size.height);
-            DLog(@"text: %@",text);
+            //DLog(@"text: %@",text);
             
-            int height = size.height;
+            CGFloat height = size.height;
             int numberOccurence = [[text componentsSeparatedByString:@"\n"] count];
             
             if(height < 45 && numberOccurence < 2){
-                height = 45;
+                height = 45.0;
             }
             else
             {
-                height = size.height + 20;
+                height = height + 20.0;
             }
+            DLog(@"height for cell: %f", height);
             return height;
         }
         else

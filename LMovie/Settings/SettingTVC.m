@@ -44,9 +44,26 @@
     self.navigationItem.leftBarButtonItem = okButton;
     [_appLanguageChooser addTarget:self action:@selector(AppLanguageChanged) forControlEvents:UIControlEventValueChanged];
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSNumber *language = [defaults valueForKey:@"language"];
-    [_appLanguageChooser setSelectedSegmentIndex:[language intValue]];
+    UILabel *appLanguageLabel = (UILabel *)[self.appLanguageCell viewWithTag:100];
+    UILabel *downloadMoviePosterLabel = (UILabel *)[self.downloadMoviePosterCell viewWithTag:100];
+    UILabel *importLabel = (UILabel *)[self.importCell viewWithTag:100];
+    UILabel *exportLabel = (UILabel *)[self.exportCell viewWithTag:100];
+    appLanguageLabel.text = NSLocalizedString(@"App Language KEY", @"");
+    downloadMoviePosterLabel.text = NSLocalizedString(@"Download Poster KEY", @"");
+    importLabel.text = NSLocalizedString(@"import KEY", @"");
+    exportLabel.text = NSLocalizedString(@"export KEY", @"");
+    
+    int langueChoix;
+    if([[[SettingsLoader settings] language] isEqualToString:@"en"]){
+         langueChoix = 0;
+    }
+    else{
+        langueChoix = 1;
+    }
+    
+    [self.appLanguageChooser setSelectedSegmentIndex:langueChoix];
+
+    
     
 }
 
@@ -54,6 +71,7 @@
 
 - (void)viewDidUnload
 {
+    [self setAppLanguageCell:nil];
     [super viewDidUnload];
     [self setExportCell:nil];
     [self setImportCell:nil];
@@ -97,9 +115,9 @@
     if(cell == self.importCell || cell == self.exportCell){
         _progressView = [[MBProgressHUD alloc] initWithView:self.view];
         [_progressView setMode:MBProgressHUDModeDeterminate];
-        _progressView.labelText = NSLocalizedString(@"Importing KEY",@"");
         [self.view addSubview:_progressView];
-        [_progressView showUsingAnimation:YES];
+        [_progressView show:YES];
+        //[_progressView showUsingAnimation:YES];
         [_progressView setMinShowTime:1];
         
         
@@ -109,17 +127,20 @@
             // Do a taks in the background
             if(cell == self.importCell){
                 DLog(@"import cell");
+                _progressView.labelText = NSLocalizedString(@"Importing KEY",@"");
                 [self import];
             }
             else if (cell == self.exportCell){
                 DLog(@"export cell");
+                _progressView.labelText = NSLocalizedString(@"Exporting KEY",@"");
                 [self export];
             }
             
             
             // Hide the HUD in the main tread
             dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD hideHUDForView:self.view animated:YES];
+                //[MBProgressHUD hideHUDForView:self.view animated:YES];
+                [_progressView hide:YES];
                 _progressView = nil;
             });
         });
@@ -265,7 +286,8 @@
     for(NSString *movie in movies){
         DLog(@"movie : |%@|", movie);
         if(![movie isEqualToString:@"\n"] && ![movie isEqualToString:@""]){
-            NSArray *movieInfo = [movie componentsSeparatedByString:@"\t"];
+            NSMutableArray *movieInfo = [[movie componentsSeparatedByString:@"\t"] mutableCopy];
+            [movieInfo removeLastObject];
             int i = 0;
             NSMutableDictionary *infoForNewMovie = [[NSMutableDictionary alloc] init];
             
@@ -396,7 +418,7 @@
         [_progressView setOpacity:1];
         [_blackViewPictureLoading addSubview:_progressView];
         [window bringSubviewToFront:_progressView];
-        [_progressView showUsingAnimation:YES];
+        [_progressView show:YES];
         [_progressView setMinShowTime:2];
         [_progressView setProgress:0];
         [_progressView setLabelText:[NSString stringWithFormat:@"0/%d",[movies count]]];
@@ -439,7 +461,8 @@
                         float progress = (float)numberMovieOk / (float)[movies count];
                         [_progressView setProgress:progress];
                         if(progress == 1){
-                            [MBProgressHUD hideHUDForView:_blackViewPictureLoading animated:YES];
+                            [_progressView hide:YES];
+                            //[MBProgressHUD hideHUDForView:_blackViewPictureLoading animated:YES];
                             //_progressView = nil;
                             if(_blackViewPictureLoading != nil){
                                 [UIView animateWithDuration:0.3 animations:^{ _blackViewPictureLoading.alpha = 0;
@@ -591,7 +614,19 @@
 {
     DLog(@"User a changé de langue en cliquant");
     SettingsLoader *s = [SettingsLoader settings];
-    [s changeAppLanguageToLanguage:[self.appLanguageChooser selectedSegmentIndex]];
+    int choix = [self.appLanguageChooser selectedSegmentIndex];
+    
+    switch (choix) {
+        case 0:
+            [s setLanguage:@"en"];
+            break;
+        case 1:
+            [s setLanguage:@"fr"];
+            break;
+        default:
+            [s setLanguage:@"en"];
+            break;
+    }
     
     
     

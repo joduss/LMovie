@@ -14,6 +14,7 @@
 #import "MovieEditorDelegate.h"
 #import "RateViewCell.h"
 #import "ResolutionPickerVC.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @interface MovieEditorTVC : UITableViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RateViewCellDelegate, ResolutionPickerVC, UIPopoverControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *saveButton;
@@ -31,6 +32,8 @@
 -(void)deleteImage;
 
 -(void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController;
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField;
 
 
 

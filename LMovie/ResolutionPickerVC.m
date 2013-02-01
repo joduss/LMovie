@@ -13,6 +13,7 @@
 @end
 
 @implementation ResolutionPickerVC
+@synthesize saveButton = _saveButton;
 @synthesize picker = _picker;
 
 
@@ -38,6 +39,7 @@
 - (void)viewDidUnload
 {
     [self setPicker:nil];
+    [self setSaveButton:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }

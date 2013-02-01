@@ -10,11 +10,12 @@
 
 
 #define MAX_SIZE_BIG 850
-#define MAX_SIZE_MINI 150
+#define MAX_SIZE_MINI 130
 
 
 
 @implementation utilities
+
 +(UIImage *)resizeImageToBig:(UIImage *)image{
     if(image.size.width > MAX_SIZE_BIG || image.size.width > MAX_SIZE_BIG){
         double ratio = image.size.height / image.size.width;

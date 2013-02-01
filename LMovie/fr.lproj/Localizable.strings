@@ -43,8 +43,14 @@
 /**********/
 "Settings KEY" = "Paramètres";
 "Importing KEY" = "Importation en cours...";
+"Exporting KEY" = "Exportation en cours...";
 "ExportedMovies KEY" = "FilmsExportes";
 "Clic to stop KEY" = "Cliquer pour stopper";
+"App Language KEY" = "Langue pour TMDB:";
+"Download Poster KEY" = "Télécharger les jaquettes manquantes";
+"import KEY" = "Importer les films d'un fichier txt";
+"export KEY" = "Exporter les films vers un fichier txt";
+
 
 
 
@@ -66,6 +72,7 @@
 /**********/
 "No movie with this title KEY" = "Aucun résultat";
 "Error while searching KEY" = "Oups, il y a eu une erreur :-(";
+"Enter movie title for tmdb search KEY" = "Entrer le titre du film que vous voulez ajouter";
 
 
 

@@ -14,16 +14,23 @@
 
 
 //Retourne les valeurs pour toutes les clés + avec les images de taille désirée, SANS tmdb_ID !!!
+
 - (NSDictionary *)formattedInfoInDictionnaryWithImage:(ImageSize)imageSize{
     NSMutableDictionary *dico= [[NSMutableDictionary alloc] init];
     
     for(NSString *key in [[self.entity propertiesByName] allKeys]){
-        if([key isEqualToString:@"mini_picture"] && [self valueForKey:key] != nil){
-            if(imageSize != ImageSizeBig){
-                [dico setObject:[UIImage imageWithData:self.mini_picture] forKey:@"mini_picture"];
+        
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            if([key isEqualToString:@"mini_picture"] && [self valueForKey:key] != nil){
+                if(imageSize != ImageSizeBig){
+                    
+                    [dico setObject:[UIImage imageWithData:self.mini_picture] forKey:@"mini_picture"];
+                }
             }
-        }
-        else if([key isEqualToString:@"big_picture"] && [self valueForKey:key] != nil){
+        });
+        
+        if([key isEqualToString:@"big_picture"] && [self valueForKey:key] != nil){
             if(imageSize != ImageSizeMini){
                 [dico setObject:[UIImage imageWithData:self.big_picture] forKey:@"big_picture"];
             }
@@ -35,7 +42,7 @@
             NSString *value = [[self valueForKey:key] description];
             if(value != nil){
                 [dico setObject:value forKey:key];
-                DLog(@"value in Movie+Info: %@ for key: %@", value, key);
+                DLog2(@"value in Movie+Info: %@ for key: %@", value, key);
             }
         }
         
@@ -51,7 +58,7 @@
     
     
     
-    DLog(@"dico renvoyé avec les info formatée: %@", [dico description]);
+    DLog2(@"dico renvoyé avec les info formatée: %@", [dico description]);
     return dico;
 }
 

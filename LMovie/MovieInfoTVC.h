@@ -11,9 +11,15 @@
 #import "MovieEditorPictureCell.h"
 #import "MovieEditorTVC.h"
 #import "NSString+MultipleStringCompare.h"
+#import "SharedManager.h"
 
 
 
+@protocol MovieInfoProtocol <NSObject>
+
+-(void)movieInfoDidHide;
+
+@end
 
 
 @interface MovieInfoTVC : UITableViewController <MovieEditorDelegate, UIPopoverControllerDelegate>
@@ -22,6 +28,7 @@
 @property (nonatomic, strong) MovieManager *movieManager;
 @property (nonatomic, strong) Movie *movie;
 @property (strong, nonatomic) UIPopoverController *popover;
+@property (weak, nonatomic) id<MovieInfoProtocol>delegate;
 
 - (IBAction)deleteButtonPressed:(UIBarButtonItem *)sender;
 

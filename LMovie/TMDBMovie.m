@@ -32,7 +32,9 @@
         
         @try {
             
+            NSString *language = [[SettingsLoader settings] appLanguage];
             
+            language = [language uppercaseString];
             
             NSURL *castsUrl = [NSURL URLWithString:[NSString stringWithFormat:@"http://api.themoviedb.org/3/movie/%@/casts?api_key=%@", _movieID, TMDB_API_KEY]];
             NSData *castJsonData = [NSData dataWithContentsOfURL:castsUrl];
@@ -42,8 +44,9 @@
             _infosCasts = [NSJSONSerialization JSONObjectWithData:castJsonData options:kNilOptions error:nil];
             
             
+            DLog(@"language avant recherche : %@", language);
             
-            NSURL *generalUrl = [NSURL URLWithString:[NSString stringWithFormat:@"http://api.themoviedb.org/3/movie/%@?api_key=%@", _movieID, TMDB_API_KEY]];
+            NSURL *generalUrl = [NSURL URLWithString:[NSString stringWithFormat:@"http://api.themoviedb.org/3/movie/%@?api_key=%@&language=%@", _movieID, TMDB_API_KEY, language]];
             NSData *generalJsonData = [NSData dataWithContentsOfURL:generalUrl];
             
             DLog(@"generalURL: %@", [generalUrl description]);
@@ -109,7 +112,8 @@
 
 
 -(NSString *)title{
-    if(_title == nil){
+    
+    /*if(_title == nil){
         if([[SettingsLoader settings] language] == LMLanguageFrench)
         {
             NSURL *alternativeTitlesUrl = [NSURL URLWithString:[NSString stringWithFormat:@"http://api.themoviedb.org/3/movie/%@/alternative_titles?api_key=%@", _movieID, TMDB_API_KEY]];
@@ -120,6 +124,7 @@
             NSDictionary *alternativeTitlesDico = [NSJSONSerialization JSONObjectWithData:alternativeTitlesJsonData options:kNilOptions error:nil];
             
             NSString *title = [alternativeTitlesDico objectForKey:@"FR"];
+            DLog(@"titre alternatifs: %@", alternativeTitlesDico);
             
             if(title == nil){
                 _title = [_infosGeneral valueForKey:@"original_title"];
@@ -131,10 +136,16 @@
             
         }
         else
-        {
+        {*/
+    if(_title == nil)
+    {
+            _title = [_infosGeneral valueForKey:@"title"];
+        if(_title == nil){
             _title = [_infosGeneral valueForKey:@"original_title"];
         }
     }
+        //}
+    //}
     return _title;
 }
 

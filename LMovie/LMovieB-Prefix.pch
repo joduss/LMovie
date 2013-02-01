@@ -20,8 +20,19 @@
 #endif
 
 
+
+
 #ifdef DEBUG
 #   define DLog(...) NSLog(__VA_ARGS__);
 #else 
 #   define DLog(...)
+#endif
+
+
+//#define DEBUG2 @"salut"
+
+#ifdef DEBUG2
+#   define DLog2(...) NSLog(__VA_ARGS__);
+#else
+#   define DLog2(...)
 #endif

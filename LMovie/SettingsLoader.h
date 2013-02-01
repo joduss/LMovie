@@ -9,19 +9,16 @@
 #import <Foundation/Foundation.h>
 
 
-typedef enum language{
-    LMLanguageEnglish = 0,
-    LMLanguageFrench = 1
-} LMAppLanguage;
+
 
 
 @interface SettingsLoader : NSObject
--(LMAppLanguage)appLanguage;
--(void)changeAppLanguageToLanguage:(LMAppLanguage)language;
+-(NSString *)appLanguage;
+-(void)changeAppLanguageToLanguage:(NSString *)language;
 
 +(SettingsLoader *)settings;
 
-@property (nonatomic) LMAppLanguage language;
+@property (nonatomic, strong) NSString * language;
 
 @end
 

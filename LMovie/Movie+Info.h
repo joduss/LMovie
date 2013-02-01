@@ -10,7 +10,11 @@
 #import "NSString+MultipleStringCompare.h"
 
 
+/**
+ State of the value: Viewed, which represent if a movie has already be viewed or not.
+ */
 typedef enum {
+    /** Movie not viewed*/
     ViewedNO = 0,
     ViewedYES = 1,
     ViewedMAYBE = 2,
@@ -24,8 +28,15 @@ typedef enum {
 } ImageSize;
 
 
-
+/**
+ Classe représentant une instance d'un MOVIE.
+ */
 @interface Movie (Info)
+/**
+ Retourne les informations du Movie, avec une image de taille donnée en paramètre. TMDB_ID n'est cependant pas inclus dans ces informations
+ @param imageSize taille de l'image que l'on veut
+ @return Le dictionnaire d'informations
+ */
 - (NSDictionary *)formattedInfoInDictionnaryWithImage:(ImageSize)imageSize;
 -(void)setPicturesWithBigPicture:(UIImage *)image;
 @end

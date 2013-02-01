@@ -9,9 +9,13 @@
 #import "MovieManager.h"
 
 
+
+
+
 @interface MovieManager ()
 -(NSDictionary *)loadPlistValueOfKey:(NSString *)key;
 - (void)controlInfoDico:(NSMutableDictionary *)info;
+@property (nonatomic, strong) NSDictionary *plist;
 @end
 
 @implementation MovieManager
@@ -21,6 +25,8 @@
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 @synthesize allKey = _allKey;
+@synthesize plist = _plist;
+@synthesize keyOrderedBySection = _keyOrderedBySection;
 
 -(id)init
 {
@@ -32,6 +38,7 @@
     
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Movie" inManagedObjectContext:_managedObjectContext ];
     _allKey = [[entity propertiesByName] allKeys];
+    [self plist]; //We access plist one time, so it is initialized;
     
     self = [super init];
     return self;
@@ -78,12 +85,13 @@
         user_rate = [[info valueForKey:@"user_rate"] intValue];
     }
     
-    int tmdb_rate;
+    float tmdb_rate;
     if(! [info valueForKey:@"tmdb_rate"]){
         tmdb_rate = 0;
     }
     else{
-        tmdb_rate = [[info valueForKey:@"tmd_rate"] intValue];
+        tmdb_rate = [[info valueForKey:@"tmdb_rate"] floatValue];
+        DLog(@"MovieManager | tmdb_rate: %f", tmdb_rate);
     }
     
     
@@ -97,7 +105,7 @@
     newMovie.genre = [info valueForKey:@"genre"];
     newMovie.director = [info valueForKey:@"director"];
     newMovie.actors = [info valueForKey:@"actors"];
-    newMovie.tmdb_rate = [NSNumber numberWithInt:tmdb_rate];
+    newMovie.tmdb_rate = [NSNumber numberWithFloat:tmdb_rate];
     newMovie.tmdb_ID = [nf numberFromString:[info valueForKey:@"tmdb_ID"] ];
     
     newMovie.language = [info valueForKey:@"language"];
@@ -107,8 +115,9 @@
     newMovie.viewed = [nf numberFromString:[info valueForKey:@"viewed"] ];
     newMovie.comment = [info valueForKey:@"comment"];
     
-    
-    // DLog(@"new movie inserted: %@", [newMovie description]);    
+    DLog(@"MovieManager | résultat de l'ajout Movie: %@", [newMovie description]);
+
+    // DLog(@"new movie inserted: %@", [newMovie description]);
 }
 
 
@@ -135,14 +144,15 @@
     else{
         user_rate = [[info valueForKey:@"user_rate"] intValue];
     }
-        
-        int tmdb_rate;
-        if(! [info valueForKey:@"tmdb_rate"]){
-            tmdb_rate = 0;
-        }
-        else{
-            tmdb_rate = [[info valueForKey:@"tmd_rate"] intValue];
-        }
+    
+    float tmdb_rate;
+    if(! [info valueForKey:@"tmdb_rate"]){
+        tmdb_rate = 0;
+    }
+    else{
+        tmdb_rate = [[info valueForKey:@"tmdb_rate"] floatValue];
+        DLog(@"tmdb_rate enregistré: %f",tmdb_rate);
+    }
     
     
     movieToModify.big_picture = UIImagePNGRepresentation(big_image);
@@ -153,7 +163,7 @@
     movieToModify.genre = [info valueForKey:@"genre"];
     movieToModify.director = [info valueForKey:@"director"];
     movieToModify.actors = [info valueForKey:@"actors"];
-    movieToModify.tmdb_rate = [NSNumber numberWithInt:tmdb_rate];
+    movieToModify.tmdb_rate = [NSNumber numberWithFloat:tmdb_rate];
     movieToModify.tmdb_ID = [nf numberFromString:[info valueForKey:@"tmdb_ID"] ];
     movieToModify.subtitle = [info valueForKey:@"subtitle"];
     movieToModify.language = [info valueForKey:@"language"];
@@ -163,8 +173,9 @@
     movieToModify.comment = [info valueForKey:@"comment"];
 
     
-    DLog(@"MovieManager | résultat de la modification de Movie: %@", [movieToModify description]);
     [self saveContext];
+    DLog(@"MovieManager | résultat de la modification de Movie: %@", [movieToModify description]);
+
     return movieToModify;
 }
 
@@ -222,14 +233,34 @@
 
 
 #pragma mark - gestion des clé, de leur ordre, section associée etc
+/*
+    On se base sur Keys.plist. Ce Plist définit le nom des clés (qui sont ceux définit dans CoreData), et on leur associe:
+    - un ordre selon l'affichage que l'on veut dans nos TableView
+    - une section
+    - les placeholder (FR et EN) à mettre
+    - les "labels" (FR et EN) (label: genre si on a "Sous-titre: FR, EN", Sous-titre et le label)
+ */
+
+
 //Retourne soit le dico de la section associée à une variable d'un film, soit de l'ordre
+
+-(NSDictionary *)plist{
+    DLog(@"PLIST ACCESS");
+    if(_plist == nil){
+        NSString *file = [[NSBundle mainBundle] pathForResource:@"Keys" ofType:@"plist"];
+        NSDictionary *dico = [NSDictionary dictionaryWithContentsOfFile:file];
+        _plist = dico;
+    }
+    return _plist;
+}
+
+
 -(NSDictionary *)loadPlistValueOfKey:(NSString *)key
 {
-    NSString *file = [[NSBundle mainBundle] pathForResource:@"Keys" ofType:@"plist"];  
-    NSDictionary *dico = [NSDictionary dictionaryWithContentsOfFile:file];
-    
-    return [dico valueForKey:key];
+    DLog(@"PLIST: %@", _plist);
+    return [_plist valueForKey:key];
 }
+
 
 -(NSArray *)orderedKey
 {
@@ -237,20 +268,23 @@
 }
 
 -(NSArray *)keyOrderedBySection{
-    NSMutableArray *indexPathOrdered = [[NSMutableArray alloc] init];
-    [indexPathOrdered addObject:[[NSMutableArray alloc] init]];
-    [indexPathOrdered addObject:[[NSMutableArray alloc] init]];
-    
-    NSDictionary *sectionInfo = [self loadPlistValueOfKey:@"section"];
-     NSArray *keyOrdered = (NSArray *)[self loadPlistValueOfKey:@"order"];
-    
-    for(NSString *key in keyOrdered){
-        int section = [[sectionInfo valueForKey:key] intValue];
-        [[indexPathOrdered objectAtIndex:section] addObject:key];
-        //[indexPathOrdered insertObject:key atIndex:section];
+    if(_keyOrderedBySection == nil){
+        NSMutableArray *indexPathOrdered = [[NSMutableArray alloc] init];
+        [indexPathOrdered addObject:[[NSMutableArray alloc] init]];
+        [indexPathOrdered addObject:[[NSMutableArray alloc] init]];
+        
+        NSDictionary *sectionInfo = [self loadPlistValueOfKey:@"section"];
+        NSArray *keyOrdered = (NSArray *)[self loadPlistValueOfKey:@"order"];
+        
+        for(NSString *key in keyOrdered){
+            int section = [[sectionInfo valueForKey:key] intValue];
+            [[indexPathOrdered objectAtIndex:section] addObject:key];
+            //[indexPathOrdered insertObject:key atIndex:section];
+        }
+        
+        _keyOrderedBySection = [indexPathOrdered copy];
     }
-    
-    return [indexPathOrdered copy];
+    return _keyOrderedBySection;
 
 }
 
@@ -268,25 +302,26 @@
 
 -(NSString *)labelForKey:(NSString *)key
 {
-    DLog(@"langue label: %d", [[SettingsLoader settings] language]);
+    DLog(@"langue label for key in MOVIEMANAGER: %@", [[SettingsLoader settings] language]);
 
-    
-    DLog(@"Langue: %d", [[SettingsLoader settings] language]);
-    if([[SettingsLoader settings] language] == LMLanguageFrench){
+    if([[[SettingsLoader settings] language] isEqualToString:@"fr"]){
         return [[self loadPlistValueOfKey:@"label-fr"] valueForKey:key];
     }
     return [[self loadPlistValueOfKey:@"label"] valueForKey:key];
 }
 
+
+
 -(NSString *)placeholderForKey:(NSString *)key
 {
     
-    DLog(@"langue placeholder: %d", [[SettingsLoader settings] language]);
+    DLog(@"langue placeholder: %@", [[SettingsLoader settings] language]);
     
-    if([[SettingsLoader settings] language] == LMLanguageFrench){
+    if([[[SettingsLoader settings] language] isEqualToString:@"fr"]){
         return [[self loadPlistValueOfKey:@"placeholder-fr"] valueForKey:key];
     }
-    return [[self loadPlistValueOfKey:@"placeholder"] valueForKey:key];}
+    return [[self loadPlistValueOfKey:@"placeholder"] valueForKey:key];
+}
 
 
 

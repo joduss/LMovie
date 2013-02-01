@@ -9,6 +9,10 @@
 #import "MovieViewController.h"
 #import "MovieInfoTVC.h"
 
+
+/**
+ This is SPARTA !!!
+ */
 @interface MovieViewController ()
 @property BOOL panelUsed;
 @property (nonatomic, strong) MovieManager* movieManager;
@@ -39,7 +43,7 @@
         
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.title = @"LMovie";
+    self.title = @"LMovie Test";
     _movieManager.fetchedResultsController = self.fetchedResultsController;
     [[NSNotificationCenter defaultCenter] addObserver:self.tableView  selector:@selector(clearS) name:@"Popover over MovieViewController closed" object:nil];
 }
@@ -76,17 +80,18 @@
     [fetchRequest setEntity:entity];
     
     // Set the batch size to a suitable number.
-    [fetchRequest setFetchBatchSize:20];
+    [fetchRequest setFetchBatchSize:10];
     
     // Edit the sort key as appropriate.
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
     NSArray *sortDescriptors = [NSArray arrayWithObjects:sortDescriptor, nil];
     
     [fetchRequest setSortDescriptors:sortDescriptors];
+    [fetchRequest setPropertiesToFetch:[NSArray arrayWithObjects:@"title", @"year", @"duration", @"tmdb_rate", @"user_rate", @"actors", @"viewed", @"director", @"mini_picture", nil]];
     
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
-    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:_movieManager.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:_movieManager.managedObjectContext sectionNameKeyPath:nil cacheName:@"MainCache"];
     self.fetchedResultsController = aFetchedResultsController;
     _fetchedResultsController.delegate = self;
     
@@ -242,7 +247,7 @@
     else if ([segue.identifier isEqualToString:@"segue to movieInfoTVC"]) {
         [(SeguePopoverMovieInfoTVC *)segue setRec:[_tableView rectForRowAtIndexPath:[_tableView indexPathForSelectedRow]]];
         
-        
+        [[[[segue destinationViewController] childViewControllers] lastObject]setDelegate:self];
         [[[[segue destinationViewController] childViewControllers] lastObject]setMovieManager:_movieManager];
         [[[[segue destinationViewController] childViewControllers] lastObject] setMovie:[_fetchedResultsController objectAtIndexPath:[_tableView indexPathForSelectedRow]]];
     }
@@ -300,7 +305,7 @@
 #pragma mark - MovieEditor Delegate
 - (void)actionExecuted:(ActionDone)action
 {
-    DLog(@"ACTION EXECUTED")
+    /*DLog(@"ACTION EXECUTED")
     if(action == ActionReset){
     }
     else if(action == ActionSaveModification){
@@ -308,7 +313,10 @@
         MainCellHorizontal *cell = (MainCellHorizontal *)[_tableView cellForRowAtIndexPath:path];
         cell.backgroundColor = [UIColor lightGrayColor];
         [_tableView deselectRowAtIndexPath:path animated:NO];
-    }
+    }*/
+    
+    
+#warning - ajouter par exemple l'ouverture automatique des infos du films qui vient d'être créer.
 }
 
 
@@ -438,6 +446,18 @@
 
 
 
+
+/****************************************
+ MovieInfoTVC Delegate
+ ****************************************/
+
+#pragma mark - MovieInfoDelegate
+-(void)movieInfoDidHide
+{
+    NSIndexPath * index = [self.tableView indexPathForSelectedRow];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:index];
+    [cell setSelected:NO animated:NO];
+}
 
 
 

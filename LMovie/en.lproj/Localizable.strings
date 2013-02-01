@@ -39,8 +39,13 @@
 /**********/
 "Settings KEY" = "Settings";
 "Importing KEY" = "Importing...";
+"Exporting KEY" = "Exporting...";
 "ExportedMovies KEY" = "ExportedMovies";
 "Clic to stop KEY" = "Touch to stop";
+"App Language KEY" = "Language for TMDB:";
+"Download Poster KEY" = "Download the missing posters";
+"import KEY" = "Import movies from a txt";
+"export KEY" = "Export movies to a txt";
 
 
 //********    Main
@@ -62,6 +67,7 @@
 /**********/
 "No movie with this title KEY" = "No result";
 "Error while searching KEY" = "Oups, an error occured :-(";
+"Enter movie title for tmdb search KEY" = "Enter the title of the movie you want to add";
 
 
 //********    MovieInfo

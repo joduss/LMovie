@@ -16,7 +16,7 @@
 #import "TMDBSearchTVC.h"
 
 
-@interface MovieViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MovieEditorDelegate, NSFetchedResultsControllerDelegate, SearchTVCDelegate, UIActionSheetDelegate>
+@interface MovieViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MovieEditorDelegate, NSFetchedResultsControllerDelegate, SearchTVCDelegate, UIActionSheetDelegate, MovieInfoProtocol>
 
 @property IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *bouton;
