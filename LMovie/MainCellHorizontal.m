@@ -50,27 +50,15 @@
 
     
     [_picture setImage:nil];
-    
-        if(movie.mini_picture == nil){
-            //DLog(@"Picture nil");
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                NSString *file = [[NSBundle mainBundle] pathForResource:@"emptyartwork_mini" ofType:@"jpg"];
-                UIImage * img = [UIImage imageWithContentsOfFile:file];
-                dispatch_sync(dispatch_get_main_queue(), ^{
-                    [_picture setImage:img];
-                });
-            });
-            
-        }
-        else {
             //DLog(@"Picture non nil");
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                UIImage * img = [UIImage imageWithData:movie.mini_picture];
+                
+                UIImage * img = movie.mini_cover;
                 dispatch_sync(dispatch_get_main_queue(), ^{
                     [_picture setImage:img];
                 });
             });
-        }
+        
     
     _title.text = movie.title;
     _year.text = [movie.year stringValue];

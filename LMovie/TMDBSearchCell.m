@@ -26,7 +26,7 @@
         dispatch_async( dispatch_get_main_queue(), ^{
             //DLog(@"image: %@", [UIImage imageWithData:imageData]);
             
-            [_posterView setImage:[movie miniPicture]];                        
+            [_posterView setImage:[movie miniCover]];                        
             _titleAndYearLabel.text = movie.title;
             _yearLabel.text = movie.year;
             _directorLabel.text = movie.directors;

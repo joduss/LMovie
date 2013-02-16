@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "MovieManager.h"
 #import "utilities.h"
+#import "ImportExport.h"
 
 #define MAX_TRY 3
 #define MAX_TRY_THREAD 10
@@ -29,8 +30,7 @@
 /**
  Export all movie to a .txt
  */
-- (void)export;
-- (void)import;
+
 
 -(void)downloadMoviePoster;
 

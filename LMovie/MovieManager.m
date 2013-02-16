@@ -13,9 +13,7 @@
 
 
 @interface MovieManager ()
--(NSDictionary *)loadPlistValueOfKey:(NSString *)key;
 - (void)controlInfoDico:(NSMutableDictionary *)info;
-@property (nonatomic, strong) NSDictionary *plist;
 @end
 
 @implementation MovieManager
@@ -24,9 +22,24 @@
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
-@synthesize allKey = _allKey;
-@synthesize plist = _plist;
-@synthesize keyOrderedBySection = _keyOrderedBySection;
+@synthesize tempContext = _tempContext;
+
+static MovieManager *_movieManager;
+
+/*
+-(Movie *)backupMovie:(Movie *)movie{
+    [_managedObjectContext re]
+}*/
+
++(MovieManager *)instance{
+    @synchronized(self) {
+        if( !_movieManager){
+            _movieManager = [[MovieManager alloc] init];
+        }
+        return _movieManager;
+    }
+}
+
 
 -(id)init
 {
@@ -35,10 +48,12 @@
     _managedObjectContext = appDel.managedObjectContext;
     _managedObjectModel = appDel.managedObjectModel;
     _persistentStoreCoordinator = appDel.persistentStoreCoordinator;
+    _tempContext = [[NSManagedObjectContext alloc] init];
+    [_tempContext setPersistentStoreCoordinator:_persistentStoreCoordinator];
     
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Movie" inManagedObjectContext:_managedObjectContext ];
-    _allKey = [[entity propertiesByName] allKeys];
-    [self plist]; //We access plist one time, so it is initialized;
+    //NSEntityDescription *entity = [NSEntityDescription entityForName:@"Movie" inManagedObjectContext:_managedObjectContext ];
+    //_allKey = [[entity propertiesByName] allKeys];
+     //We access plist one time, so it is initialized;
     
     self = [super init];
     return self;
@@ -56,23 +71,76 @@
 }
 
 
+/*
 - (void)insertMovieWithInformations:(NSDictionary *)info
 {    
    // DLog(@"new movie inserted: %@", [newMovie description]);
     [self insertWithoutSavingMovieWithInformations:info];
     [self saveContext];
     
+}*/
+
+
+-(Movie *)newMovie{
+    Movie *movie = (Movie *)[NSEntityDescription insertNewObjectForEntityForName:@"Movie" inManagedObjectContext:_managedObjectContext];
+    Cover *cover = (Cover *)[NSEntityDescription insertNewObjectForEntityForName:@"Cover" inManagedObjectContext:_managedObjectContext];
+
+    [movie setCover:cover];
+    
+    DLog(@"MOVIE TEMP: %@", [movie description]);
+    return movie;
 }
 
+/*
+-(void)storeMovie:(Movie *)movie{
+    //[_tempContext save:nil];
+    [_tempContext deleteObject:movie];
+    [_tempContext deleteObject:movie.cover];
+
+    DLog(@"%@", [movie.cover description]);
+    
+    //[_tempContext save:nil];
+    //[_managedObjectContext insertObject:movie.cover];
+    [_managedObjectContext insertObject:movie];
+    //[_managedObjectContext insertObject:movie.cover];
+    [self saveContext];
+}*/
+
+
+
+
+//Method utilisée par SettingTVC lors de l'import
 - (void)insertWithoutSavingMovieWithInformations:(NSDictionary *)infoAboutMovie
 {
     NSMutableDictionary *info = [infoAboutMovie mutableCopy];
     [self controlInfoDico:info];
 
-    Movie* newMovie = (Movie *)[NSEntityDescription insertNewObjectForEntityForName:@"Movie" inManagedObjectContext:self.managedObjectContext];
+    Movie* newMovie = (Movie *)[NSEntityDescription insertNewObjectForEntityForName:@"Movie" inManagedObjectContext:_managedObjectContext];
     DLog(@"info: %@", [info description]);
-    UIImage *mini_image = [utilities resizeImageToMini:[info valueForKey:@"big_picture"]];
-    UIImage *big_image = [utilities resizeImageToBig:[info valueForKey:@"big_picture"]];
+    
+    
+    /*traitement pour l'image:
+     *
+     * On reçoit uniquement une URL vers l'image stocké dans le dossier temporaire. Il faut encore qu'on la traite et enregistre dans des résolutions définies
+     */
+    //UIImage *originalImage = [info valueForKey:@"big_picture"];
+    
+    
+    //UIImage *mini_image = [utilities resizeImageToMini:originalImage];
+    //UIImage *big_image = [utilities resizeImageToBig:originalImage];
+    
+    Cover *newCover = (Cover *)[NSEntityDescription insertNewObjectForEntityForName:@"Cover" inManagedObjectContext:_managedObjectContext
+                                ];
+    
+    [newMovie setCover:newCover];
+    
+    //NSString *mini_image_path = [MovieManagerUtils saveImage:mini_image];
+    //NSString *big_image_path = [MovieManagerUtils saveImage:big_image];
+    
+    
+    
+    
+    
     
     
     NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
@@ -96,8 +164,9 @@
     
     
     
-    newMovie.mini_picture = UIImagePNGRepresentation(mini_image);
-    newMovie.big_picture = UIImagePNGRepresentation(big_image);
+    Cover *cover = (Cover *) newMovie.cover;
+    //cover.big_cover = big_image;
+    //cover.mini_cover = mini_image;
     
     newMovie.title = [info valueForKey:@"title"];
     newMovie.year = [nf numberFromString:[info valueForKey:@"year"] ];
@@ -118,66 +187,91 @@
     DLog(@"MovieManager | résultat de l'ajout Movie: %@", [newMovie description]);
 
     // DLog(@"new movie inserted: %@", [newMovie description]);
+    //[newMovie verifyData];
 }
 
 
 
--(Movie *)modifyMovie:(Movie *)movie WithInformations:(NSDictionary *)infoAboutMovie
-{
-    Movie *movieToModify = movie;
-    
-    
-    //DLog(@"tmdb_rate: %@", [info valueForKey:@"tmdb_rate"]);
-    NSMutableDictionary *info = [infoAboutMovie mutableCopy];
-    DLog(@"MovieManager | Mise à jour de Movie avec ces nouvelles info: %@", [info description]);
-    
-    
-    NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
-    UIImage *mini_image = [utilities resizeImageToMini:[info valueForKey:@"big_picture"]];
-    UIImage *big_image = [utilities resizeImageToBig:[info valueForKey:@"big_picture"]];    
-    
-   
-    int user_rate;
-    if(! [info valueForKey:@"user_rate"]){
-        user_rate = 0;
-    }
-    else{
-        user_rate = [[info valueForKey:@"user_rate"] intValue];
-    }
-    
-    float tmdb_rate;
-    if(! [info valueForKey:@"tmdb_rate"]){
-        tmdb_rate = 0;
-    }
-    else{
-        tmdb_rate = [[info valueForKey:@"tmdb_rate"] floatValue];
-        DLog(@"tmdb_rate enregistré: %f",tmdb_rate);
-    }
-    
-    
-    movieToModify.big_picture = UIImagePNGRepresentation(big_image);
-    movieToModify.mini_picture = UIImagePNGRepresentation(mini_image);
-    movieToModify.title = [info valueForKey:@"title"];
-    movieToModify.year = [nf numberFromString:[info valueForKey:@"year"] ];
-    movieToModify.duration = [nf numberFromString:[info valueForKey:@"duration"] ];
-    movieToModify.genre = [info valueForKey:@"genre"];
-    movieToModify.director = [info valueForKey:@"director"];
-    movieToModify.actors = [info valueForKey:@"actors"];
-    movieToModify.tmdb_rate = [NSNumber numberWithFloat:tmdb_rate];
-    movieToModify.tmdb_ID = [nf numberFromString:[info valueForKey:@"tmdb_ID"] ];
-    movieToModify.subtitle = [info valueForKey:@"subtitle"];
-    movieToModify.language = [info valueForKey:@"language"];
-    movieToModify.resolution = [nf numberFromString:[info valueForKey:@"resolution"]];
-    movieToModify.user_rate = [NSNumber numberWithInt:user_rate];
-    movieToModify.viewed = [nf numberFromString:[info valueForKey:@"viewed"] ];
-    movieToModify.comment = [info valueForKey:@"comment"];
-
-    
-    [self saveContext];
-    DLog(@"MovieManager | résultat de la modification de Movie: %@", [movieToModify description]);
-
-    return movieToModify;
-}
+//-(Movie *)modifyMovie:(Movie *)movie WithInformations:(NSDictionary *)infoAboutMovie
+//{
+//    Movie *movieToModify = movie;
+//    
+//#warning UPDATER CA AUSSI POUR LES IMAGES
+//    //DLog(@"tmdb_rate: %@", [info valueForKey:@"tmdb_rate"]);
+//    NSMutableDictionary *info = [infoAboutMovie mutableCopy];
+//    DLog(@"MovieManager | Mise à jour de Movie avec ces nouvelles info: %@", [info description]);
+//    
+//    
+//    NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+//    
+//    /*traitement pour l'image:
+//     *
+//     * Si l'image n'a pas changée, on ne fait rien, sinon:
+//     * On reçoit uniquement une URL vers l'image stocké dans le dossier temporaire. Il faut encore qu'on la traite et enregistre dans des résolutions définies
+//     */
+//    
+//    NSString *mini_image_path;
+//    NSString *big_image_path;
+//    /*
+//    if([[info valueForKey:@"big_picture_path"] isEqualToString:movie.big_picture_path] == NO){
+//        UIImage *originalImage = [MovieManagerUtils loadImageAtPath:[info valueForKey:@"big_picture_path"]];
+//        
+//        UIImage *mini_image = [utilities resizeImageToMini:originalImage];
+//        UIImage *big_image = [utilities resizeImageToBig:originalImage];
+//        
+//        mini_image_path = [MovieManagerUtils saveImage:mini_image];
+//        big_image_path = [MovieManagerUtils saveImage:big_image];
+//    } else {
+//        mini_image_path = movie.mini_picture_path;
+//        big_image_path = movie.big_picture_path;
+//    }
+//    
+//    int user_rate;
+//    if(! [info valueForKey:@"user_rate"]){
+//        user_rate = 0;
+//    }
+//    else{
+//        user_rate = [[info valueForKey:@"user_rate"] intValue];
+//    }
+//    
+//    float tmdb_rate;
+//    if(! [info valueForKey:@"tmdb_rate"]){
+//        tmdb_rate = 0;
+//    }
+//    else{
+//        tmdb_rate = [[info valueForKey:@"tmdb_rate"] floatValue];
+//        DLog(@"tmdb_rate enregistré: %f",tmdb_rate);
+//    }
+//    
+//    
+//    movieToModify.mini_picture_path = mini_image_path;
+//    movieToModify.big_picture_path = big_image_path;
+//    movieToModify.title = [info valueForKey:@"title"];
+//    movieToModify.year = [nf numberFromString:[info valueForKey:@"year"] ];
+//    movieToModify.duration = [nf numberFromString:[info valueForKey:@"duration"] ];
+//    movieToModify.genre = [info valueForKey:@"genre"];
+//    movieToModify.director = [info valueForKey:@"director"];
+//    movieToModify.actors = [info valueForKey:@"actors"];
+//    movieToModify.tmdb_rate = [NSNumber numberWithFloat:tmdb_rate];
+//    movieToModify.tmdb_ID = [nf numberFromString:[info valueForKey:@"tmdb_ID"] ];
+//    movieToModify.subtitle = [info valueForKey:@"subtitle"];
+//    movieToModify.language = [info valueForKey:@"language"];
+//    movieToModify.resolution = [nf numberFromString:[info valueForKey:@"resolution"]];
+//    movieToModify.user_rate = [NSNumber numberWithInt:user_rate];
+//    movieToModify.viewed = [nf numberFromString:[info valueForKey:@"viewed"] ];
+//    movieToModify.comment = [info valueForKey:@"comment"];
+//
+//    
+//    [self saveContext];
+//    DLog(@"MovieManager | résultat de la modification de Movie: %@", [movieToModify description]);
+//
+//    [movieToModify verifyData];
+//    return movieToModify;
+//     
+//     */
+//    
+//    return movieToModify;
+//}
 
 
 
@@ -195,7 +289,9 @@
 
 -(void)deleteMovie:(Movie *)movie{
     [_managedObjectContext deleteObject:movie];
+    [self saveContext];
 }
+
 
 
 - (void)saveContext
@@ -232,96 +328,6 @@
 
 
 
-#pragma mark - gestion des clé, de leur ordre, section associée etc
-/*
-    On se base sur Keys.plist. Ce Plist définit le nom des clés (qui sont ceux définit dans CoreData), et on leur associe:
-    - un ordre selon l'affichage que l'on veut dans nos TableView
-    - une section
-    - les placeholder (FR et EN) à mettre
-    - les "labels" (FR et EN) (label: genre si on a "Sous-titre: FR, EN", Sous-titre et le label)
- */
-
-
-//Retourne soit le dico de la section associée à une variable d'un film, soit de l'ordre
-
--(NSDictionary *)plist{
-    DLog(@"PLIST ACCESS");
-    if(_plist == nil){
-        NSString *file = [[NSBundle mainBundle] pathForResource:@"Keys" ofType:@"plist"];
-        NSDictionary *dico = [NSDictionary dictionaryWithContentsOfFile:file];
-        _plist = dico;
-    }
-    return _plist;
-}
-
-
--(NSDictionary *)loadPlistValueOfKey:(NSString *)key
-{
-    DLog(@"PLIST: %@", _plist);
-    return [_plist valueForKey:key];
-}
-
-
--(NSArray *)orderedKey
-{
-    return (NSArray *)[self loadPlistValueOfKey:@"order"];
-}
-
--(NSArray *)keyOrderedBySection{
-    if(_keyOrderedBySection == nil){
-        NSMutableArray *indexPathOrdered = [[NSMutableArray alloc] init];
-        [indexPathOrdered addObject:[[NSMutableArray alloc] init]];
-        [indexPathOrdered addObject:[[NSMutableArray alloc] init]];
-        
-        NSDictionary *sectionInfo = [self loadPlistValueOfKey:@"section"];
-        NSArray *keyOrdered = (NSArray *)[self loadPlistValueOfKey:@"order"];
-        
-        for(NSString *key in keyOrdered){
-            int section = [[sectionInfo valueForKey:key] intValue];
-            [[indexPathOrdered objectAtIndex:section] addObject:key];
-            //[indexPathOrdered insertObject:key atIndex:section];
-        }
-        
-        _keyOrderedBySection = [indexPathOrdered copy];
-    }
-    return _keyOrderedBySection;
-
-}
-
-
--(NSString *)keyAtIndexPath:(NSIndexPath *)path
-{
-    return [[[self keyOrderedBySection] objectAtIndex:path.section] objectAtIndex:path.row];
-}
-
-
--(int)sectionForKey:(NSString *)key{
-    NSDictionary *dico = [self loadPlistValueOfKey:@"section"];
-    return [[dico valueForKey:key] floatValue];
-}
-
--(NSString *)labelForKey:(NSString *)key
-{
-    DLog(@"langue label for key in MOVIEMANAGER: %@", [[SettingsLoader settings] language]);
-
-    if([[[SettingsLoader settings] language] isEqualToString:@"fr"]){
-        return [[self loadPlistValueOfKey:@"label-fr"] valueForKey:key];
-    }
-    return [[self loadPlistValueOfKey:@"label"] valueForKey:key];
-}
-
-
-
--(NSString *)placeholderForKey:(NSString *)key
-{
-    
-    DLog(@"langue placeholder: %@", [[SettingsLoader settings] language]);
-    
-    if([[[SettingsLoader settings] language] isEqualToString:@"fr"]){
-        return [[self loadPlistValueOfKey:@"placeholder-fr"] valueForKey:key];
-    }
-    return [[self loadPlistValueOfKey:@"placeholder"] valueForKey:key];
-}
 
 
 
@@ -329,15 +335,11 @@
 
 
 
-+(NSString *)resolutionToStringForResolution:(LMResolution)resolution
-{
-    NSString *file = [[NSBundle mainBundle] pathForResource:@"MultipleChoices" ofType:@"plist"];
-    NSArray *resolutionChoice = [[NSDictionary dictionaryWithContentsOfFile:file] valueForKey:[@"Resolution-"  stringByAppendingString:[[NSLocale preferredLanguages] objectAtIndex:0]]];
-        
-    DLog(@"réso: %@", [resolutionChoice objectAtIndex:resolution]);
-    
-    return [resolutionChoice objectAtIndex:resolution];
-}
+
+
+
+
+
 
 
 @end

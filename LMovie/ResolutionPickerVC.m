@@ -81,7 +81,7 @@
 
 -(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    return [MovieManager resolutionToStringForResolution:row];
+    return [MovieManagerUtils resolutionToStringForResolution:row];
 }
 
 

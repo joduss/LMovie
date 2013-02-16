@@ -4,7 +4,7 @@
 <dict>
 	<key>order</key>
 	<array>
-		<string>big_picture</string>
+		<string>big_cover</string>
 		<string>title</string>
 		<string>year</string>
 		<string>duration</string>
@@ -21,7 +21,7 @@
 	</array>
 	<key>section</key>
 	<dict>
-		<key>big_picture</key>
+		<key>big_cover</key>
 		<integer>0</integer>
 		<key>title</key>
 		<integer>0</integer>
@@ -52,9 +52,9 @@
 	</dict>
 	<key>label</key>
 	<dict>
-		<key>mini_picture</key>
+		<key>mini_cover</key>
 		<string></string>
-		<key>big_picture</key>
+		<key>big_cover</key>
 		<string></string>
 		<key>title</key>
 		<string>Title</string>
@@ -85,9 +85,9 @@
 	</dict>
 	<key>placeholder</key>
 	<dict>
-		<key>mini_picture</key>
+		<key>mini_cover</key>
 		<string></string>
-		<key>big_picture</key>
+		<key>big_cover</key>
 		<string></string>
 		<key>title</key>
 		<string>Enter title</string>
@@ -118,9 +118,9 @@
 	</dict>
 	<key>placeholder-fr</key>
 	<dict>
-		<key>mini_picture</key>
+		<key>mini_cover</key>
 		<string></string>
-		<key>big_picture</key>
+		<key>big_cover</key>
 		<string></string>
 		<key>title</key>
 		<string>Entrez le titre</string>
@@ -151,9 +151,9 @@
 	</dict>
 	<key>label-fr</key>
 	<dict>
-		<key>mini_picture</key>
+		<key>mini_cover</key>
 		<string></string>
-		<key>big_picture</key>
+		<key>big_cover</key>
 		<string></string>
 		<key>title</key>
 		<string>Titre</string>

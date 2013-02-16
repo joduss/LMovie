@@ -113,37 +113,17 @@
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
     if(cell == self.importCell || cell == self.exportCell){
-        _progressView = [[MBProgressHUD alloc] initWithView:self.view];
-        [_progressView setMode:MBProgressHUDModeDeterminate];
-        [self.view addSubview:_progressView];
-        [_progressView show:YES];
-        //[_progressView showUsingAnimation:YES];
-        [_progressView setMinShowTime:1];
         
-        
-        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-            // Show the HUD in the main tread
-            
-            // Do a taks in the background
-            if(cell == self.importCell){
-                DLog(@"import cell");
-                _progressView.labelText = NSLocalizedString(@"Importing KEY",@"");
-                [self import];
-            }
-            else if (cell == self.exportCell){
-                DLog(@"export cell");
-                _progressView.labelText = NSLocalizedString(@"Exporting KEY",@"");
-                [self export];
-            }
-            
-            
-            // Hide the HUD in the main tread
-            dispatch_async(dispatch_get_main_queue(), ^{
-                //[MBProgressHUD hideHUDForView:self.view animated:YES];
-                [_progressView hide:YES];
-                _progressView = nil;
-            });
-        });
+        if(cell == self.importCell){
+            DLog(@"import cell");
+            _progressView.labelText = NSLocalizedString(@"Importing KEY",@"");
+            [[[ImportExport alloc] init] import];
+        }
+        else if (cell == self.exportCell){
+            DLog(@"export cell");
+            _progressView.labelText = NSLocalizedString(@"Exporting KEY",@"");
+            [[[ImportExport alloc] init] export];
+        }
     }
     else if (cell == self.downloadMoviePosterCell){
         DLog(@"downloadMoviePosterCell pressed");
@@ -156,216 +136,15 @@
 
 
 
-
-- (void)export{
-    
-    NSManagedObjectContext *context = [_movieManager managedObjectContext];
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"Movie"];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
-    NSArray *sortDescriptors = [NSArray arrayWithObjects:sortDescriptor, nil];
-    [request setSortDescriptors:sortDescriptors];
-    
-    NSArray *movies = [context executeFetchRequest:request error:nil];
-    
-    NSString *string = @"";
-    NSDate *date;
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd'-'HH'h'mm'm'ss's'"];
-    NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:~ NSTimeZoneCalendarUnit fromDate:[NSDate date]];
-    date = [[NSCalendar currentCalendar] dateFromComponents:dateComponents];
-    
-    NSString *fileName = [[NSLocalizedString(@"ExportedMovies KEY",@"") stringByAppendingString:[dateFormatter stringFromDate:date ]] stringByAppendingString:@".txt"];
-    
-    
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:fileName];
-    [string writeToFile:filePath atomically:TRUE encoding:NSUTF8StringEncoding error:NULL];
-    NSFileHandle *fileHandler = [NSFileHandle fileHandleForUpdatingAtPath:filePath];
-    
-    
-    
-    
-    
-    DLog(@"fichier écrit vers: %@", filePath);
-    float percentDonePerMovie = 1.0/[movies count];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [_progressView setDetailsLabelText:[NSString stringWithFormat:@"%d movies", [movies count]]];
-    });
-    
-    NSMutableArray *keys = [[_movieManager orderedKey] mutableCopy];
-    [keys removeObjectAtIndex:0];
-    [keys addObject:@"tmdb_ID"];
-    
-    for(Movie *movie in movies){
-        string = @"";
-        for(NSString *key in keys){
-            NSString *info = [[movie valueForKey:key] description];
-            if(!info){
-                info = @"";
-            }
-            if([key isEqualToString:@"viewed"]){
-                int a = [info intValue];
-                switch (a) {
-                    case 0:
-                        info = @"✕";
-                        break;
-                    case 1:
-                        info = @"✓";
-                        break;
-                    default:
-                        info = @"?";
-                        break;
-                }
-            }
-            string = [string stringByAppendingString:info];
-            //DLog(@"info: %@", [[movie valueForKey:key] description]);
-            //DLog(@"string: %@", string);
-            string = [string stringByAppendingString:@"\t"];
-        }
-        string = [string stringByAppendingString:@"\n"];
-        //[string writeToFile:filePath atomically:TRUE encoding:NSUTF8StringEncoding error:NULL];
-        [fileHandler seekToEndOfFile];
-        [fileHandler writeData:[string dataUsingEncoding:NSUTF8StringEncoding]];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            _progressView.progress = _progressView.progress + percentDonePerMovie;
-        });
-    }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        _progressView.progress = 1;
-    });
-    [fileHandler closeFile];
-    //DLog(@"string: %@", string);
-    
-    // [self dismissModalViewControllerAnimated:YES];
-}
-
-
-
-- (void)import
-{
-    
-    DLog(@"Import ok, Début de l'import");
-    //NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString *file = [path stringByAppendingString:@"/movies.txt"];
-    
-    NSString *fileContent;
-    
-    
-    if(![[NSFileManager defaultManager] fileExistsAtPath:file]){
-        DLog(@"ERROR: file does not exists for import");
-        DLog(@"chemin: %@",file);
-    }
-    else{
-        NSError *error;
-        //NSStringEncoding enc = 0;
-        //fileContent = [NSString stringWithContentsOfFile:fileContent usedEncoding:NULL error:&error];
-        fileContent = [NSString stringWithContentsOfFile:file encoding:NSUTF8StringEncoding error:&error];
-        //DLog(@"file exist with encoding: %d: \n %@", enc,fileContent);
-        if(error){
-            DLog(@"error lecture fichier: %@", [error localizedDescription]);
-        }
-        
-    }
-    
-    //décomposition: 1 ligne du tableau = 1 film
-    NSArray *movies = [fileContent  componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-    
-    float percentsPerMovie = 1.0/[movies count];
-    float now = 0;
-    
-    //affiche le nombre de films en train d'être importés
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [_progressView setDetailsLabelText:[NSString stringWithFormat:@"%d movies", [movies count]]];
-        _progressView.minShowTime = 2;
-    });
-    
-    
-    //DLog(@"%d movies in txt: %@", [movies count],[movies description]);
-    for(NSString *movie in movies){
-        DLog(@"movie : |%@|", movie);
-        if(![movie isEqualToString:@"\n"] && ![movie isEqualToString:@""]){
-            NSMutableArray *movieInfo = [[movie componentsSeparatedByString:@"\t"] mutableCopy];
-            [movieInfo removeLastObject];
-            int i = 0;
-            NSMutableDictionary *infoForNewMovie = [[NSMutableDictionary alloc] init];
-            
-            
-            //on supprime la clé "big_picture" car pas besoin
-            NSMutableArray *keys = [[_movieManager orderedKey] mutableCopy];
-            [keys removeObjectAtIndex:0];
-            [keys addObject:@"tmdb_ID"];
-            if([keys count] != [movieInfo count]){
-                [keys removeLastObject];
-            }
-            
-            //recontrole le nombre de valeur en fonction du nombre de clé. Si à nouveau pas =: on abandonne.
-            if([keys count] == [movieInfo count]){
-                
-                DLog(@"ARRRAY: %@",[movieInfo description]);
-                
-                for(NSString *key in keys){
-                    NSString *info = [movieInfo objectAtIndex:i];
-                    [infoForNewMovie setValue:info forKey:key];
-                    ++i;
-                }
-                //DLog(@"DICO DES INFO: %@", [infoForNewMovie description]);
-                if([[infoForNewMovie valueForKey:@"viewed"] isEqualToString:@"✕"]){
-                    [infoForNewMovie setValue:@"0" forKey:@"viewed"];
-                }
-                else if([[infoForNewMovie valueForKey:@"viewed"] isEqualToString:@"✓"]){
-                    [infoForNewMovie setValue:@"1" forKey:@"viewed"];
-                }
-                else if([[infoForNewMovie valueForKey:@"viewed"] isEqualToString:@"?"]){
-                    [infoForNewMovie setValue:@"2" forKey:@"viewed"];
-                }
-                else
-                {
-                    [infoForNewMovie setValue:@"2" forKey:@"viewed"];
-                }
-                [_movieManager insertWithoutSavingMovieWithInformations:infoForNewMovie];
-                
-                
-                //NSLog(@"dehors2 %@", [NSThread currentThread]);
-                now = now + percentsPerMovie;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    //NSLog(@" dedans 2%@", [NSThread currentThread]);
-                    //NSLog(@"%f", _progressView.progress);
-                    _progressView.progress = now;
-                });
-                //NSLog(@"now: %f", now-_progressView.progress);
-            }
-        }
-    }
-    
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        _progressView.progress = 1;
-    });
-    //DLog(@"Import ok, sauvegarde du contexte demandé");
-    
-    [_movieManager saveContext];
-    
-    
-    //[self dismissModalViewControllerAnimated:YES];
-}
-
-
-
-
-
-
 - (void)downloadMoviePoster
 {
 #warning pas complet: ajouter état d'avancement
-    //int numberPages = 0;
-    //int numberResults = 0;
     [self setStopImageCompletition:NO];
     
     
     
-    //UIWindow *win = [[UIApplication sharedApplication].windows lastObject];
+    
+    //Obscurci l'arrière (je crois)
     CGRect winFrame =       [self parentViewController].view.bounds;
     
     _blackViewPictureLoading = [[UIView alloc] initWithFrame:winFrame];
@@ -387,6 +166,10 @@
     [_blackViewPictureLoading addGestureRecognizer:gesture];
     
     
+    
+    
+    
+    //On get tous les films stockés
     NSManagedObjectContext *context = [_movieManager managedObjectContext];
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -402,15 +185,14 @@
     
     
     //execute la recherche:
-    /*NSMutableArray *json = [[NSMutableArray alloc] init];
-     NSDictionary *dico;
-     BOOL success = NO;
-     int try = 0;*/
+
     
     __block int numberMovieOk = 0;
     __block int indexMovieUsed = 0;
     
     if([movies count] > 0){
+        
+        //initialisation ProgressView
         [self setProgressView:nil];
         _progressView = [[MBProgressHUD alloc] initWithView:_blackViewPictureLoading];
         [_progressView setMode:MBProgressHUDModeDeterminate];
@@ -426,26 +208,30 @@
         
         
         
-        DLog(@"w: %f, h:%f",_blackViewPictureLoading.frame.size.width, _blackViewPictureLoading.frame.size.height);
+        //DLog(@"w: %f, h:%f",_blackViewPictureLoading.frame.size.width, _blackViewPictureLoading.frame.size.height);
         
-        
+        //Lancement du processus de recherche d'image (et de TMDB rate) pour tous les films
         
         dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
             while(indexMovieUsed < [movies count] && [self stopImageCompletition] == NO){
                 int try = 0;
-                while((indexMovieUsed - numberMovieOk) > MAX_DOWNLOADS && try < MAX_TRY_THREAD){
+                while((indexMovieUsed - numberMovieOk) > MAX_DOWNLOADS && try < MAX_TRY_THREAD && [self stopImageCompletition] == NO){
                     DLog(@"plus que 3");
                     [NSThread sleepForTimeInterval:2];
                 }
                 try = 0;
-                DLog(@"Nouveau Thread")
+                DLog(@"Nouveau Thread");
                 int index = indexMovieUsed;
                 
                 dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                     Movie *currentMovie = [movies objectAtIndex:index];
+                    Cover *covers = (Cover *)currentMovie.cover;
+                    NSData *coverData = covers.mini_cover;
+                    NSData *defaultBigCoverData = [MovieManagerUtils defaultBigCoverData];
+
                     
-                    if(currentMovie.big_picture == nil){
+                    //if([coverData isEqualToData:defaultBigCoverData]){
                         if(currentMovie.tmdb_ID != nil){
                             [self loadMoviePictureForMovieWithTMDB_ID:currentMovie];
                         }
@@ -453,10 +239,11 @@
                         {
                             [self loadMoviePictureForMovieWithoutTMDB_ID:currentMovie];
                         }
-                    }
+                    //}
                     
                     dispatch_async( dispatch_get_main_queue(), ^{
                         numberMovieOk++;
+                        //[_movieManager saveContext];
                         [_progressView setLabelText:[NSString stringWithFormat:@"%d/%d",numberMovieOk,[movies count]]];
                         float progress = (float)numberMovieOk / (float)[movies count];
                         [_progressView setProgress:progress];
@@ -486,6 +273,8 @@
         });
     }
     
+[_movieManager saveContext];
+
     
 }
 
@@ -502,9 +291,25 @@
             NSDictionary *dico = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
             
             NSString *picturePath = [@"http://cf2.imgobject.com/t/p" stringByAppendingFormat:@"/w500%@?api_key=%@",[dico valueForKey:@"poster_path"],TMDB_API_KEY];
-            UIImage *picture = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:picturePath]]];
             
-            [movie setPicturesWithBigPicture:picture];
+            //On crée l'image, enregistre en png via saveImage dans le dossier temporaire
+            NSData *picData = [NSData dataWithContentsOfURL:[NSURL URLWithString:picturePath]];
+            //UIImage *picture = [UIImage imageWithData:[NSData dataWithContentsOfURL:]];
+            //NSString *pictureTempPath = [MovieManagerUtils saveImageInTemporaryDirectory:picture];
+            //NSDictionary *movieInfos = [movie formattedInfoInDictionnaryWithImage:ImageSizeBig];
+            //[movieInfos setValue:pictureTempPath forKey:@"big_picture_path"];
+            
+            Cover *cover = movie.cover;
+            
+            //DLog(@"Cover avant: %@", cover.big_cover);
+            [movie setCoversWithData:picData];
+
+            //DLog(@"Cover après: %@", cover.big_cover);
+
+            
+            
+            //on enregistre
+            //[_movieManager modifyMovie:movie WithInformations:movieInfos];
             DLog(@"Image trouvée et enregistrée pour le film %@", [movie valueForKey:@"title"]);
             
         }
@@ -519,6 +324,11 @@
 }
 
 
+/*
+ * 1. On cherche un film correspondant au titre, année de sortie sur TMDB
+ * 2. On associe le TMDB_ID à ce film
+ * 3. On lance la recherche d'image de ce film via la méthode loadMoviePictureForMovieWithTMDB_ID
+ */
 -(void)loadMoviePictureForMovieWithoutTMDB_ID:(Movie *)movie
 {
     BOOL success = NO;
@@ -581,6 +391,8 @@
             
             //DLog(@"Image trouvée et enregistrée pour le film %@", [currentInfos valueForKey:@"title"]);
             //NSString *picturePath = [@"http://cf2.imgobject.com/t/p" stringByAppendingFormat:@"/w500%@?api_key=%@",[currentInfos valueForKey:@"poster_path"],TMDB_API_KEY];
+            
+            //on a trouvé un film correspondant. On l'associe donc au TMDB_ID et on relance la recherche d'image pour ce film
             [movie setTmdb_ID:[NSNumber numberWithInt:[[currentInfos valueForKey:@"id"] intValue] ]];
             [self loadMoviePictureForMovieWithTMDB_ID:movie];
             

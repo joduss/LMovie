@@ -67,7 +67,9 @@ static SettingsLoader *_globalSettings;
 
 
 
-
+/*
+ Get the sigleton instance
+ */
 +(SettingsLoader *)settings
 {
     if(_globalSettings == nil){
@@ -77,5 +79,7 @@ static SettingsLoader *_globalSettings;
     return _globalSettings;
     
 }
+
+
 
 @end

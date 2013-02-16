@@ -28,4 +28,5 @@ typedef enum ActionDoneIn {
 
 
 +(CGRect)getScreenBoundsForOrientation:(UIInterfaceOrientation)orientation;
+
 @end

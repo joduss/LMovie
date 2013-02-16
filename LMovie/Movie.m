@@ -1,24 +1,23 @@
 //
 //  Movie.m
-//  LMovie
+//  LMovieB
 //
-//  Created by Jonathan Duss on 07.09.12.
+//  Created by Jonathan Duss on 07.02.13.
 //
 //
 
 #import "Movie.h"
+//#import "Cover.h"
 
 
 @implementation Movie
 
 @dynamic actors;
-@dynamic big_picture;
 @dynamic comment;
 @dynamic director;
 @dynamic duration;
 @dynamic genre;
 @dynamic language;
-@dynamic mini_picture;
 @dynamic resolution;
 @dynamic subtitle;
 @dynamic title;
@@ -27,5 +26,6 @@
 @dynamic user_rate;
 @dynamic viewed;
 @dynamic year;
+@dynamic cover;
 
 @end

@@ -49,7 +49,7 @@
 
 - (int)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    int number = [[[_movieManager keyOrderedBySection] objectAtIndex:section] count];
+    int number = [[[MovieManagerUtils keyOrderedBySection] objectAtIndex:section] count];
     if(section == 0)
         number--;
     return number;
@@ -80,7 +80,7 @@
      */
     
     
-    NSString *key = [_movieManager keyAtIndexPath:indexPathCorrected];
+    NSString *key = [MovieManagerUtils keyAtIndexPath:indexPathCorrected];
     
     
     
@@ -98,7 +98,7 @@
         [cell.choice insertSegmentWithTitle:NSLocalizedString(@"? KEY", @"") atIndex:ViewedMAYBE animated:NO];
         [cell.choice insertSegmentWithTitle:NSLocalizedString(@"All Viewed KEY", @"") atIndex:ViewedAll animated:NO];
         
-        [cell.infoLabel setText:[_movieManager labelForKey:key]];
+        [cell.infoLabel setText:[MovieManagerUtils labelForKey:key]];
         DLog(@"infolabel: %@", cell.infoLabel);
         [cell.choice addTarget:self action:@selector(segmentControlChanged:) forControlEvents:UIControlEventValueChanged];
         int viewedValue = [[self.valueEntered valueForKey:@"viewed"] intValue];
@@ -116,7 +116,7 @@
         identifier = @"rateView cell";
         RateViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
-        cell.infoLabel.text = [_movieManager labelForKey:key];
+        cell.infoLabel.text = [MovieManagerUtils labelForKey:key];
         cell.delegate = self;
         DLog(@"rateViewCell: %@ et rateView:%@", cell, cell.rateView);
         
@@ -136,8 +136,8 @@
         identifier = @"general cell movieEditor";
         MovieEditorGeneralCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         cell.textField.text = [self.valueEntered valueForKey:key];
-        cell.infoLabel.text = [_movieManager labelForKey:key];
-        cell.textField.placeholder = [_movieManager placeholderForKey:key];
+        cell.infoLabel.text = [MovieManagerUtils labelForKey:key];
+        cell.textField.placeholder = [MovieManagerUtils placeholderForKey:key];
         [cell setAssociatedKey:key];
         cell.textField.delegate = self;
         NSPredicate *test = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@" argumentArray:[NSArray arrayWithObjects:@"duration", @"year", @"rate", nil]];
@@ -150,7 +150,7 @@
             if([self.valueEntered valueForKey:key] == nil){
                 reso = LMResolutionAll;
             }
-            NSString *title = [MovieManager resolutionToStringForResolution:reso];
+            NSString *title = [MovieManagerUtils resolutionToStringForResolution:reso];
             cell.textField.text = title;
         }
         

@@ -14,6 +14,7 @@
 @interface MovieInfoTVC ()
 @property (nonatomic, strong) NSMutableArray *keyArray;
 @property (nonatomic, strong) NSDictionary *infos;
+@property (nonatomic, strong) MovieManager *movieManager;
 @end
 
 @implementation MovieInfoTVC
@@ -23,6 +24,11 @@
 @synthesize movie = _movie;
 @synthesize popover = _popover;
 
+-(id)init{
+    self = [super init];
+    [self setMovieManager:[MovieManager instance]];
+    return self;
+}
 
 
 -(void)viewDidLoad
@@ -83,9 +89,9 @@
                  [[NSMutableArray alloc] init], nil];
     
     //On regarde si la valeur associée à la clé n'est pas nulle. Si elle n'est pas nulle, on l'ajoute dans le tableau de clé
-    for(NSString *key in [_movieManager orderedKey]){
-        if([_infos valueForKey:key] != nil || [key isEqualToString:@"big_picture"]){
-            int section = [_movieManager sectionForKey:key];
+    for(NSString *key in [MovieManagerUtils orderedKey]){
+        if([_infos valueForKey:key] != nil || [key isEqualToString:@"big_cover"]){
+            int section = [MovieManagerUtils sectionForKey:key];
             [[_keyArray objectAtIndex:section]addObject:key];
         }
     }
@@ -110,9 +116,9 @@
 {
     // Return the number of sections.
     int section = 0;
-    for(NSString *key in [_movieManager allKey]){
+    for(NSString *key in [MovieManagerUtils allKey]){
         if([_infos valueForKey:key] != nil){
-            int thisSection = [_movieManager sectionForKey:key] + 1;
+            int thisSection = [MovieManagerUtils sectionForKey:key] + 1;
             if(thisSection > section){
                 section = thisSection;
             }
@@ -137,25 +143,21 @@
     
     
     if(indexPath.row == 0 && indexPath.section == 0){
-        key = @"big_picture";
+        key = @"big_cover";
         CellIdentifier = @"picture cell";
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        UIImage *image;
-        if([_infos valueForKey:key] == nil){
-            image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"emptyartwork_big" ofType:@"jpg"]];
-        }
-        else {
-            image = [_infos valueForKey:key];
-        }
         
-        [(MovieEditorPictureCell *)cell setCellImage:image];
+        //DLog(@"BLABLA: image: %@", [_infos valueForKey:key]);
+        
+        
+        [(MovieEditorPictureCell *)cell setCellImage:[_infos valueForKey:key]];
     }
     else {
         if ([key isEqualToString:@"user_rate"] || [key isEqualToString:@"tmdb_rate"]){
             CellIdentifier = @"rateView cell";
             RateViewCell *thisCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
             
-            thisCell.infoLabel.text = [_movieManager labelForKey:key];
+            thisCell.infoLabel.text = [MovieManagerUtils labelForKey:key];
             //DLog(@"rateViewCell: %@ et rateView:%@", cell, cell.rateView);
             
             thisCell.key =  key;
@@ -170,7 +172,7 @@
             cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
             UILabel *label = (UILabel *)[cell viewWithTag:200];
             UIImageView *image = (UIImageView *)[cell viewWithTag:201];
-            label.text = [_movieManager labelForKey:key];
+            label.text = [MovieManagerUtils labelForKey:key];
             
             [image setImage:[[SharedManager getInstance] viewedIcon:[[_infos valueForKey:key] intValue]]];
 
@@ -181,13 +183,13 @@
             cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
             UITextView *rightLabel = (UITextView *)[cell viewWithTag:101];
             UILabel *leftLabel = (UILabel *)[cell viewWithTag:100];
-            NSString *rightLabelText = [_movieManager labelForKey:key];
+            NSString *rightLabelText = [MovieManagerUtils labelForKey:key];
             //rightLabel.numberOfLines = 0;
             
             //DLog(@"key: %@", [_keyArray description]);
             if([key isEqualToString:@"resolution"])
             {
-                NSString *title = [MovieManager resolutionToStringForResolution:[[_infos valueForKey:key] intValue]];
+                NSString *title = [MovieManagerUtils resolutionToStringForResolution:[[_infos valueForKey:key] intValue]];
                 rightLabel.text = title;
             }
             else if([key isEqualToAnyString:@"director", @"actors", @"language", @"subtitle",@"genre", nil])
@@ -273,8 +275,7 @@
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     MovieEditorTVC *view = [segue destinationViewController];
-    view.movieManager = _movieManager;
-    view.movieToEdit = _movie;
+    [view modifyMovie:_movie];
     view.delegate = self;
 }
 

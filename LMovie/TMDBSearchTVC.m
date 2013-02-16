@@ -187,7 +187,7 @@
         
         dispatch_async( dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.view animated:YES];
-            [self performSegueWithIdentifier:@"segue to MovieEditorTVC" sender:infoDico];
+            [self performSegueWithIdentifier:@"segue to MovieEditorTVC" sender:movie];
             DLog(@"On va ajouter un film avec ces infos: %@", [infoDico description]);
         });
     });
@@ -271,10 +271,17 @@
     if([segue.identifier isEqualToString:@"segue to MovieEditorTVC"])
     {
         MovieEditorTVC *vc = segue.destinationViewController;
-        vc.addedFromTMDB = YES;
-        vc.valueEntered = sender;
-        vc.movieManager = _movieManager;
         vc.popover = self.popover;
+        //vc.addedFromTMDB = YES;
+        
+        
+        TMDBMovie *tmdbMovie = (TMDBMovie *)sender;
+
+        [vc createAAA:@"salut"];
+        DLog(@"JONATHAN LOAD TMDB");
+        [vc viewInfoTMDBBeforeCreatingMovie:tmdbMovie];
+        
+
     }
 }
 

@@ -14,6 +14,7 @@
 
 @implementation TMDBMovie
 
+
 -(id)initWithMovieID:(NSString *)movieID
 {
     self = [super init];
@@ -55,10 +56,10 @@
             DLog(@"_infoGenelra: %@", [_infosGeneral description]);
             
             
-            NSString *miniPicturePath = [self.basePath stringByAppendingFormat:@"/w150%@?api_key=%@",[_infosGeneral valueForKey:@"poster_path"],TMDB_API_KEY];
-            DLog(@"image path: %@", miniPicturePath);
+            NSString *miniCoverURL = [self.basePath stringByAppendingFormat:@"/w150%@?api_key=%@",[_infosGeneral valueForKey:@"poster_path"],TMDB_API_KEY];
+            DLog(@"image path: %@", miniCoverURL);
             
-            _miniPicture = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:miniPicturePath]]];
+            _miniCover = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:miniCoverURL]]];
             
             succes = YES;
             
@@ -137,16 +138,15 @@
         }
         else
         {*/
-    if(_title == nil)
-    {
-            _title = [_infosGeneral valueForKey:@"title"];
-        if(_title == nil){
-            _title = [_infosGeneral valueForKey:@"original_title"];
+    NSString *title;
+            title = [_infosGeneral valueForKey:@"title"];
+        if(title == nil){
+            title = [_infosGeneral valueForKey:@"original_title"];
         }
-    }
+    
         //}
     //}
-    return _title;
+    return title;
 }
 
 
@@ -154,7 +154,6 @@
 {
     if([_infosGeneral valueForKey:@"release_date"] != [NSNull null]){
         NSArray *yearDecomposed;
-        DLog(@"bla connard de merde: %@", [_infosGeneral valueForKey:@"release_date"]);
         yearDecomposed = [[_infosGeneral valueForKey:@"release_date"] componentsSeparatedByString:@"-"];
         return [yearDecomposed objectAtIndex:0];
     }
@@ -184,15 +183,16 @@
 {
     if(_infosDictionnaryFormatted == nil)
     {
-        UIImage *big_picture;
+        NSString *big_picture_path;
         NSString *genre;
         NSString *actors;
 
         
-        
-        //Load Big_Picture
+        //Load Big_Picture: store it in temporaryDir (passe par UIImage, puis stock en PNG pour être sûr que ce soit en PNG, utile???)
         NSString *picturePath = [self.basePath stringByAppendingFormat:@"/w500%@?api_key=%@",[_infosGeneral valueForKey:@"poster_path"],TMDB_API_KEY];        
-        big_picture = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:picturePath]]];
+        UIImage *big_picture = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:picturePath]]];
+        big_picture_path = [MovieManagerUtils saveImageInTemporaryDirectory:big_picture];
+        
         
         //load genre
         NSArray *rawGenreArray = [self.infosGeneral objectForKey:@"genres"];
@@ -213,14 +213,13 @@
         }
         actors = [utilities stringFromArray:actorArray];
         
-        
-        
+                
         
         
         
         NSMutableDictionary *info = [[NSMutableDictionary alloc] init];
 
-        [info setObjectWithNilControl:big_picture forKey:@"big_picture"];
+        [info setObjectWithNilControl:big_picture_path forKey:@"big_picture_path"];
         [info setObjectWithNilControl:self.title forKey:@"title"];
         [info setObjectWithNilControl:[NSString stringWithFormat:@"%@", self.year] forKey:@"year"];
         [info setObjectWithNilControl:[NSString stringWithFormat:@"%@",[self.infosGeneral valueForKey:@"runtime"] ] forKey:@"duration"];
@@ -236,6 +235,89 @@
     }
     
     return _infosDictionnaryFormatted;
+}
+
+-(void)completeInfoForMovie:(Movie *)movie{
+    NSString *actors;
+    
+    
+    
+    //Load Big_Picture: store it in temporaryDir (passe par UIImage, puis stock en PNG pour être sûr que ce soit en PNG, utile???)
+    NSString *pictureURL = [self.basePath stringByAppendingFormat:@"/w500%@?api_key=%@",[_infosGeneral valueForKey:@"poster_path"],TMDB_API_KEY];
+    NSData *pictureData = [NSData dataWithContentsOfURL:[NSURL URLWithString:pictureURL]];
+    [movie setCoversWithData:pictureData];
+    
+    
+    //TITLE
+    [movie setTitle:self.title];
+    
+    
+    //YEAR
+    [movie setYear:[self.year nsNumber]];
+    
+    //DURATION
+    NSString *duration = [NSString stringWithFormat:@"%@",[self.infosGeneral valueForKey:@"runtime"] ];
+    [movie setDuration:[duration nsNumber]];
+    
+    
+    //DIRECTOR
+    [movie setDirector:self.directors];
+    
+    
+    //GENRE
+    NSString *genre;
+    NSArray *rawGenreArray = [self.infosGeneral objectForKey:@"genres"];
+    NSMutableArray *genreArray = [NSMutableArray array];
+    for(NSDictionary *dico in rawGenreArray){
+        [genreArray addObject:[dico valueForKey:@"name"]];
+    }
+    genre = [utilities stringFromArray:genreArray];
+    
+    [movie setGenre:genre];
+    
+    
+    //ACTORS
+    NSArray *actorsArray = [_infosCasts valueForKey:@"cast"];
+    actors = [utilities stringFromArray:actorsArray];
+    
+    NSArray *rawActorArray = [self.infosCasts objectForKey:@"cast"];
+    NSMutableArray *actorArray = [NSMutableArray array];
+    for(NSDictionary *dico in rawActorArray){
+        [actorArray addObject:[dico valueForKey:@"name"]];
+    }
+    actors = [utilities stringFromArray:actorArray];
+    
+    [movie setActors:actors];
+    
+    
+    //TMDB_ID
+    NSString *tmdbID = [NSString stringWithFormat:@"%@",[_infosGeneral valueForKey:@"id"]];
+    [movie setTmdb_ID:[tmdbID nsNumber]];
+    
+    
+    //TMDB_RATE
+    NSString *tmdbRate = [NSString stringWithFormat:@"%@",[_infosGeneral valueForKey:@"id"]];
+    [movie setTmdb_rate:[tmdbRate nsNumber]];
+    
+    //USER_RATE
+    
+
+    
+    
+    
+    
+    NSMutableDictionary *info = [[NSMutableDictionary alloc] init];
+    
+    
+
+   
+}
+
+
+
+
+-(NSString *)description{
+    return [NSString stringWithFormat:@"TITRE: %@", self.title];
 }
 
 

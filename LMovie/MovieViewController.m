@@ -87,11 +87,11 @@
     NSArray *sortDescriptors = [NSArray arrayWithObjects:sortDescriptor, nil];
     
     [fetchRequest setSortDescriptors:sortDescriptors];
-    [fetchRequest setPropertiesToFetch:[NSArray arrayWithObjects:@"title", @"year", @"duration", @"tmdb_rate", @"user_rate", @"actors", @"viewed", @"director", @"mini_picture", nil]];
+    //[fetchRequest setPropertiesToFetch:[NSArray arrayWithObjects:@"title", @"year", @"duration", @"tmdb_rate", @"user_rate", @"actors", @"viewed", @"director", @"mini_picture", nil]];
     
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
-    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:_movieManager.managedObjectContext sectionNameKeyPath:nil cacheName:@"MainCache"];
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:_movieManager.managedObjectContext sectionNameKeyPath:nil cacheName:@"MainCache2"];
     self.fetchedResultsController = aFetchedResultsController;
     _fetchedResultsController.delegate = self;
     
@@ -239,17 +239,17 @@
         //[pc setPopoverContentSize:CGSizeMake(500, 630)];
         view.delegate = self;
         view.popover = pc;
-        view.movieManager = self.movieManager;
-        if([sender isKindOfClass:[Movie class]]){
+        /*if([sender isKindOfClass:[Movie class]]){
             view.movieToEdit = sender;
-        }
+        }*/
+        [view createMovie];
     }
     else if ([segue.identifier isEqualToString:@"segue to movieInfoTVC"]) {
         [(SeguePopoverMovieInfoTVC *)segue setRec:[_tableView rectForRowAtIndexPath:[_tableView indexPathForSelectedRow]]];
+        MovieInfoTVC *view = [[segue.destinationViewController viewControllers] lastObject];
         
-        [[[[segue destinationViewController] childViewControllers] lastObject]setDelegate:self];
-        [[[[segue destinationViewController] childViewControllers] lastObject]setMovieManager:_movieManager];
-        [[[[segue destinationViewController] childViewControllers] lastObject] setMovie:[_fetchedResultsController objectAtIndexPath:[_tableView indexPathForSelectedRow]]];
+        [view setDelegate:self];
+        [view setMovie:[_fetchedResultsController objectAtIndexPath:[_tableView indexPathForSelectedRow]]];
     }
     else if ([segue.identifier isEqualToString:@"segue to SettingTVC"]) {
         UINavigationController *nav = segue.destinationViewController;

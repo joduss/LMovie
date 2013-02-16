@@ -8,6 +8,8 @@
 
 #import "Movie.h"
 #import "NSString+MultipleStringCompare.h"
+#import "MovieManager.h"
+#import "Cover.h"
 
 
 /**
@@ -38,7 +40,23 @@ typedef enum {
  @return Le dictionnaire d'informations
  */
 - (NSDictionary *)formattedInfoInDictionnaryWithImage:(ImageSize)imageSize;
--(void)setPicturesWithBigPicture:(UIImage *)image;
+//-(void)setPicturesWithBigPicture:(UIImage *)image;
+
+
+
+-(void)verifyData;
+
+-(UIImage *)big_cover;
+
+-(UIImage *)mini_cover;
+
+-(void)setCoversWithData:(NSData*)data;
+
+-(void)setCoversWithImage:(UIImage *)image;
+
+- (void) revertChanges;
+
+
 @end
 
 

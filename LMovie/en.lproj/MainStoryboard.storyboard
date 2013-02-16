@@ -336,7 +336,7 @@
                         <barButtonItem title="Cancel" id="eWN-bh-D0T">
                             <color key="tintColor" red="0.67043138589999995" green="0.35450387620000001" blue="0.015711290119999999" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <action selector="resetButtonPressed:" destination="yuP-w1-40X" id="l2I-JN-60j"/>
+                                <action selector="cancelButtonPressed:" destination="yuP-w1-40X" id="JKy-aL-9Mf"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>

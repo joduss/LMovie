@@ -10,6 +10,7 @@
 #import "Movie.h"
 #import "RateView.h"
 #import "SharedManager.h"
+#import "MovieManager.h"
 
 @interface MainCellHorizontal : UITableViewCell <RateViewDelegate>
 @property IBOutlet UIImageView *picture;
