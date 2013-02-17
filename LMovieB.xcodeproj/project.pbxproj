@@ -47,6 +47,8 @@
 		C8A2494E16CFCD5B0038985B /* UIWindow+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A2494D16CFCD5A0038985B /* UIWindow+Extension.m */; };
 		C8A4D2AF15DC1EE20082BFD4 /* SearchTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A4D2AE15DC1EE20082BFD4 /* SearchTVC.m */; };
 		C8A4D2B215DC27780082BFD4 /* CellWithSegmentedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A4D2B115DC27780082BFD4 /* CellWithSegmentedButton.m */; };
+		C8B2EE8C16D0F671006FADEB /* DownloadMoviePoster.m in Sources */ = {isa = PBXBuildFile; fileRef = C8B2EE8B16D0F671006FADEB /* DownloadMoviePoster.m */; };
+		C8B2EE9216D10398006FADEB /* MBProgressHUDOnTop.m in Sources */ = {isa = PBXBuildFile; fileRef = C8B2EE9116D10398006FADEB /* MBProgressHUDOnTop.m */; };
 		C8BAD26B15BF057D00291D43 /* MovieEditorViewedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C8BAD26A15BF057D00291D43 /* MovieEditorViewedCell.m */; };
 		C8BB2E1315BDDBB5004E8CE2 /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = C8BB2E1215BDDBB5004E8CE2 /* RateView.m */; };
 		C8C42A5E15D0539D0006C59F /* RateViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C42A5D15D0539D0006C59F /* RateViewCell.m */; };
@@ -149,6 +151,10 @@
 		C8A4D2AE15DC1EE20082BFD4 /* SearchTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchTVC.m; path = SearchTVC/SearchTVC.m; sourceTree = "<group>"; };
 		C8A4D2B015DC27780082BFD4 /* CellWithSegmentedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellWithSegmentedButton.h; sourceTree = "<group>"; };
 		C8A4D2B115DC27780082BFD4 /* CellWithSegmentedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellWithSegmentedButton.m; sourceTree = "<group>"; };
+		C8B2EE8A16D0F671006FADEB /* DownloadMoviePoster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadMoviePoster.h; sourceTree = "<group>"; };
+		C8B2EE8B16D0F671006FADEB /* DownloadMoviePoster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadMoviePoster.m; sourceTree = "<group>"; };
+		C8B2EE9016D10398006FADEB /* MBProgressHUDOnTop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUDOnTop.h; sourceTree = "<group>"; };
+		C8B2EE9116D10398006FADEB /* MBProgressHUDOnTop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUDOnTop.m; sourceTree = "<group>"; };
 		C8BAD26915BF057D00291D43 /* MovieEditorViewedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieEditorViewedCell.h; sourceTree = "<group>"; };
 		C8BAD26A15BF057D00291D43 /* MovieEditorViewedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieEditorViewedCell.m; sourceTree = "<group>"; };
 		C8BB2E1115BDDBB5004E8CE2 /* RateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RateView.h; path = LMovie/RateView.h; sourceTree = "<group>"; };
@@ -370,6 +376,10 @@
 			children = (
 				C8A2494816CFC6880038985B /* ImportExport.h */,
 				C8A2494916CFC6880038985B /* ImportExport.m */,
+				C8B2EE9016D10398006FADEB /* MBProgressHUDOnTop.h */,
+				C8B2EE9116D10398006FADEB /* MBProgressHUDOnTop.m */,
+				C8B2EE8A16D0F671006FADEB /* DownloadMoviePoster.h */,
+				C8B2EE8B16D0F671006FADEB /* DownloadMoviePoster.m */,
 			);
 			name = AutomatedTasks;
 			sourceTree = "<group>";
@@ -653,6 +663,8 @@
 				C8852B0F16C933AD007B881A /* NSString+NumberConvert.m in Sources */,
 				C8A2494A16CFC6880038985B /* ImportExport.m in Sources */,
 				C8A2494E16CFCD5B0038985B /* UIWindow+Extension.m in Sources */,
+				C8B2EE8C16D0F671006FADEB /* DownloadMoviePoster.m in Sources */,
+				C8B2EE9216D10398006FADEB /* MBProgressHUDOnTop.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

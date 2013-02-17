@@ -18,7 +18,7 @@
 
 @implementation MovieManager
 
-@synthesize fetchedResultsController = _fetchedResultsController;
+//@synthesize fetchedResultsController = _fetchedResultsController;
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
@@ -328,6 +328,21 @@ static MovieManager *_movieManager;
 
 
 
+
+-(void)deleteAll{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Movie" inManagedObjectContext:_managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    
+    NSError *error = nil;
+    NSArray *movies = [_managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    for(Movie *m in movies){
+        [self deleteMovie:m];
+    }
+[self saveContext];
+}
 
 
 

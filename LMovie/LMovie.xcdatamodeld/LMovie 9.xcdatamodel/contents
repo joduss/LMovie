@@ -14,16 +14,16 @@
         <attribute name="language" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="resolution" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="subtitle" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" attributeType="String" syncable="YES"/>
         <attribute name="tmdb_ID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="tmdb_rate" optional="YES" attributeType="Float" defaultValueString="0" syncable="YES"/>
         <attribute name="user_rate" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="viewed" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="viewed" optional="YES" attributeType="Integer 16" syncable="YES"/>
         <attribute name="year" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="cover" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Cover" inverseName="movie" inverseEntity="Cover" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Movie" positionX="0" positionY="0" width="128" height="270"/>
         <element name="Cover" positionX="160" positionY="192" width="128" height="90"/>
+        <element name="Movie" positionX="0" positionY="0" width="128" height="270"/>
     </elements>
 </model>

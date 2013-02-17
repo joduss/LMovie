@@ -31,7 +31,7 @@
 @property (strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 
-@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+//@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 
 @property (strong, nonatomic) NSManagedObjectContext *tempContext;
 
@@ -50,6 +50,8 @@
 - (void)saveContext;
 
 -(void)deleteMovie:(Movie *)movie;
+
+-(void)deleteAll;
 
 
 

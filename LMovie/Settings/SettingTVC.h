@@ -10,10 +10,9 @@
 #import "MovieManager.h"
 #import "utilities.h"
 #import "ImportExport.h"
+#import "DownloadMoviePoster.h"
 
-#define MAX_TRY 3
-#define MAX_TRY_THREAD 10
-#define MAX_DOWNLOADS 5
+
 
 
 /**

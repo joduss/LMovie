@@ -78,7 +78,9 @@
 }
 
 -(UIImage *)mini_cover{
+    //DLog(@"DANS MINICOVER");
     Cover *covers = (Cover *)[self cover];
+    //DLog(@"MINICOVER: %@", covers.mini_cover);
     return [UIImage imageWithData:covers.mini_cover];
 }
 

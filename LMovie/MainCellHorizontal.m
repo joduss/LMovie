@@ -51,13 +51,10 @@
     
     [_picture setImage:nil];
             //DLog(@"Picture non nil");
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 
                 UIImage * img = movie.mini_cover;
-                dispatch_sync(dispatch_get_main_queue(), ^{
                     [_picture setImage:img];
-                });
-            });
+
         
     
     _title.text = movie.title;

@@ -245,12 +245,12 @@ static NSArray *keyOrderedBySection = nil ;
 }
 
 +(NSString *)defaultBigPicturePath{
-    DLog(@"Default BigPicture Path: %@", [[NSBundle mainBundle] pathForResource:@"emptyartwork_big" ofType:@"jpg"]);
+    //DLog(@"Default BigPicture Path: %@", [[NSBundle mainBundle] pathForResource:@"emptyartwork_big" ofType:@"jpg"]);
     return [[NSBundle mainBundle] pathForResource:@"emptyartwork_big" ofType:@"jpg"];
 }
 
 +(NSString *)defaultMiniPicturePath{
-    DLog(@"Default MiniPicture Path: %@", [[NSBundle mainBundle] pathForResource:@"emptyartwork_mini" ofType:@"jpg"]);
+    //DLog(@"Default MiniPicture Path: %@", [[NSBundle mainBundle] pathForResource:@"emptyartwork_mini" ofType:@"jpg"]);
     return [[NSBundle mainBundle] pathForResource:@"emptyartwork_mini" ofType:@"jpg"];
 }
 

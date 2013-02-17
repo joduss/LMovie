@@ -37,14 +37,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _movieManager = [[MovieManager alloc] init];
+    _movieManager = [MovieManager instance];
+    //[_movieManager deleteAll];
     [[self.navigationController navigationBar] setBarStyle:UIBarStyleBlack];
     [[self.navigationController toolbar] setBarStyle:UIBarStyleBlackOpaque ];
         
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.title = @"LMovie Test";
-    _movieManager.fetchedResultsController = self.fetchedResultsController;
+    //_movieManager.fetchedResultsController = self.fetchedResultsController;
     [[NSNotificationCenter defaultCenter] addObserver:self.tableView  selector:@selector(clearS) name:@"Popover over MovieViewController closed" object:nil];
 }
 
@@ -74,6 +75,8 @@
         return _fetchedResultsController;
     }
     
+    [NSFetchedResultsController deleteCacheWithName:nil];
+    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Movie" inManagedObjectContext:_movieManager.managedObjectContext];
@@ -97,7 +100,7 @@
     
     
     NSError *error = nil;
-	if (![self.fetchedResultsController performFetch:&error]) {
+	if (![_fetchedResultsController performFetch:&error]) {
         // Replace this implementation with code to handle the error appropriately.
         // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
 	    DLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -113,6 +116,7 @@
 
 -(void)executeSearchWithInfo:(NSDictionary *)info
 {
+    [NSFetchedResultsController deleteCacheWithName:nil];
     _fetchedResultsController.delegate = nil;
     _fetchedResultsController = nil;
     //DLog(@"executeSearchWithInfo: %@", [info description]);
