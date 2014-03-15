@@ -39,8 +39,9 @@
     [super viewDidLoad];
     _movieManager = [MovieManager instance];
     //[_movieManager deleteAll];
-    [[self.navigationController navigationBar] setBarStyle:UIBarStyleBlack];
-    [[self.navigationController toolbar] setBarStyle:UIBarStyleBlackOpaque ];
+    //[[self.navigationController navigationBar] setBarStyle:UIBarStyleBlack];
+    //[[self.navigationController toolbar] setBarStyle:UIBarStyleBlackOpaque ];
+
         
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -248,8 +249,8 @@
         }*/
         [view createMovie];
     }
-    else if ([segue.identifier isEqualToString:@"segue to movieInfoTVC"]) {
-        [(SeguePopoverMovieInfoTVC *)segue setRec:[_tableView rectForRowAtIndexPath:[_tableView indexPathForSelectedRow]]];
+    else if ([segue.identifier isEqualToString:@"MovieInfo"]) {
+        //[(SeguePopoverMovieInfoTVC *)segue setRec:[_tableView rectForRowAtIndexPath:[_tableView indexPathForSelectedRow]]];
         MovieInfoTVC *view = [[segue.destinationViewController viewControllers] lastObject];
         
         [view setDelegate:self];

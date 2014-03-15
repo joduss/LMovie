@@ -51,9 +51,10 @@
     
     [_picture setImage:nil];
             //DLog(@"Picture non nil");
-                
-                UIImage * img = movie.mini_cover;
-                    [_picture setImage:img];
+    
+    
+    
+    [_picture setImage:movie.mini_cover];
 
         
     
@@ -63,8 +64,7 @@
     int minute = [movie.duration intValue] - hour * 60;
     _duration.text = [NSString stringWithFormat:@"%d:%02d", hour, minute];
     
-    //USER RATE
-    //TMDBRATE
+
     
     if(movie.director == nil){
         _director.text = NSLocalizedString(@"Director : KEY",@"");
@@ -92,22 +92,22 @@
     
     
     //SET OF "VIEWED ICON"
-    __block NSString *viewedIcon;
+    __block UIImage *viewedIcon;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         switch ([movie.viewed intValue]) {
             case 0:
-                viewedIcon = [[NSBundle mainBundle] pathForResource:@"PasVu" ofType:@"png"];
+                viewedIcon = [[SharedManager getInstance] viewedIconNO];
                 break;
             case 1:
-                viewedIcon = [[NSBundle mainBundle] pathForResource:@"Vu" ofType:@"png"];
+                viewedIcon = [[SharedManager getInstance] viewedIconYES];
                 break;
             default:
-                viewedIcon = [[NSBundle mainBundle] pathForResource:@"VuNoIdea" ofType:@"png"];
+                viewedIcon = [[SharedManager getInstance] viewedIconMAYBE];
                 break;
         }
         dispatch_sync(dispatch_get_main_queue(), ^{
-            [_viewedPicture setImage:[UIImage imageWithContentsOfFile:viewedIcon]];
+            [_viewedPicture setImage:viewedIcon];
 
         });
     });
@@ -116,13 +116,13 @@
     
 
     
-    
+    //USER RATE
+    //TMDBRATE
     
     //SET OF rate in String next to the star notation
     _labelAfterTMDBRate.text = [movie.tmdb_rate stringValue];
     _labelAfterUserRate.text = [movie.user_rate stringValue];
     
-    //VIEWED PICTURe
     
     
     

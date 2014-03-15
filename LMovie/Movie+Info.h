@@ -48,6 +48,7 @@ typedef enum {
 
 -(UIImage *)big_cover;
 
+
 -(UIImage *)mini_cover;
 
 -(void)setCoversWithData:(NSData*)data;

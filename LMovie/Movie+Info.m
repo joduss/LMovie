@@ -84,11 +84,8 @@
     return [UIImage imageWithData:covers.mini_cover];
 }
 
--(void)setCoversWithData:(NSData*)data{
 
-    UIImage *originalImage = [UIImage imageWithData:data];
-    [self setCoversWithImage:originalImage];
-}
+
 
 -(void)setCoversWithImage:(UIImage *)image{
     Cover *covers = (Cover *)[self cover];

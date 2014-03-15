@@ -27,6 +27,16 @@
     UINavigationController *masterNavigationController = [splitViewController.viewControllers objectAtIndex:0];
     MasterViewController *controller = (MasterViewController *)masterNavigationController.topViewController;
     controller.managedObjectContext = self.managedObjectContext;*/
+    
+    UIImage *topbar_landscape_img = [[UIImage imageNamed:@"topbar_landscape.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    UIImage *bottombar_landscape_img = [[UIImage imageNamed:@"bottombar_landscape.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    
+    DLog(@"%@",bottombar_landscape_img);
+
+    [[UINavigationBar appearance] setBackgroundImage:topbar_landscape_img forBarMetrics:UIBarMetricsDefault];
+    [[UIToolbar appearance] setBackgroundImage:bottombar_landscape_img forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+
+    
     return YES;
 }
 							

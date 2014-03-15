@@ -6,7 +6,7 @@
 //
 //
 
-#import "MBProgressHUD.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 #import "UIWindow+Extension.h"
 
 

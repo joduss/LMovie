@@ -17,6 +17,7 @@
 @implementation utilities
 
 +(UIImage *)resizeImageToBig:(UIImage *)image{
+    
     if(image.size.width > MAX_SIZE_BIG || image.size.width > MAX_SIZE_BIG){
         double ratio = image.size.height / image.size.width;
         float newWidth;

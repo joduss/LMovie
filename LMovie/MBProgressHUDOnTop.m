@@ -84,7 +84,7 @@
     } completion:^(BOOL finished){
         [_blackBackGroud removeFromSuperview];
     }];
-        
+    
 }
 
 @end
