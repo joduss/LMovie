@@ -235,6 +235,8 @@
 #pragma mark - prepareForSegue
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    DLog(@"%@", segue.identifier)
+    
     if([segue.identifier isEqualToString:@"segue to MovieEditorTVC to create movie"]){
 
         DLog(@"segue to MovieEditorTVC to create movie");
