@@ -20,6 +20,7 @@
 @end
 
 
+/** Handle search in the local library */
 @interface SearchTVC : CellWithSegmentedButton <RateViewCellDelegate, ResolutionPickerVC>
 @property  (nonatomic, strong)  MovieManager *movieManager;
 @property (nonatomic, strong) id <SearchTVCDelegate> delegate;

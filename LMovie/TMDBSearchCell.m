@@ -12,6 +12,7 @@
 @implementation TMDBSearchCell
 
 
+/** setup the cell with the information for the movie precised with the given movieID */
 -(void)setInfosWithTMDBMovieID:(NSString *)movieID{
     [self resetCell];
     

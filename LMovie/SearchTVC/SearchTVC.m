@@ -41,7 +41,6 @@
 
 #pragma mark - Table view data source
 
-
 - (int)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 2;
@@ -61,37 +60,26 @@
 {
     DLog(@"section: %d, row: %d ", indexPath.section, indexPath.row);
     UITableViewCell *cellToReturn;
+    NSString *identifier = @"";
+    identifier = @"general cell movieEditor";
     
     
-    //int row = indexPath.row;
     NSIndexPath *indexPathCorrected = indexPath;
     if(indexPath.section == 0){
+        //Is based on the MovieInfoTVC. First row is for image. In search we don't need image, so we directly pick the next
+        //information
         indexPathCorrected = [NSIndexPath indexPathForRow:(indexPath.row+1) inSection:indexPath.section];
     }
-    NSString *identifier = @""; //rempli plus tard
     
-    
-    /*NSString *file = [[NSBundle mainBundle] pathForResource:@"Keys" ofType:@"plist"];
-     NSArray *sectionArray = [[[NSArray arrayWithContentsOfFile:file] valueForKey:@"section"] objectAtIndex:indexPath.section];
-     NSDictionary *keyDico = [NSDictionary dictionaryWithDictionary:[sectionArray objectAtIndex:row]];
-     NSString *key = [[keyDico allKeys] objectAtIndex:0];
-     
-     //NSDictionary *dicoWithInfo = [keyDico valueForKey:key];
-     */
-    
-    
+
     NSString *key = [_movieManager keyAtIndexPath:indexPathCorrected];
-    
-    
-    
-    identifier = @"general cell movieEditor";
     
     //Pour cellule VIEWED
     if([key isEqualToString:@"viewed"]){
         
         identifier = @"viewed cell movieEditor";
         MovieEditorViewedCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        //gère les segments
+        //Init segmentcontrol
         [cell.choice removeAllSegments];
         [cell.choice insertSegmentWithTitle:NSLocalizedString(@"No KEY", @"") atIndex:ViewedNO animated:NO];
         [cell.choice insertSegmentWithTitle:NSLocalizedString(@"Yes KEY", @"") atIndex:ViewedYES animated:NO];
@@ -111,7 +99,7 @@
         cellToReturn = cell;
     
     }
-    //pour user_rate et tmdb_rate
+    //for user_rating et tmdb_rating information
     else if ([key isEqualToString:@"user_rate"] || [key isEqualToString:@"tmdb_rate"]){
         identifier = @"rateView cell";
         RateViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -132,6 +120,7 @@
         cellToReturn = cell;
         
     }
+    //For cell that shows other information (cast, title, year, genre, etc)
     else {
         identifier = @"general cell movieEditor";
         MovieEditorGeneralCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -144,6 +133,8 @@
         if([test evaluateWithObject:key]){
             [cell.textField setKeyboardType:UIKeyboardTypeNumberPad]; //si on entre une année, une durée ou une note -> clavier numérique
         }
+        
+        //Load resolution string title
         if([key isEqualToString:@"resolution"])
         {
             LMResolution reso = [[self.valueEntered valueForKey:key] intValue];
@@ -164,7 +155,7 @@
     //si clé contient "rate" faut agir différement
     
     
-    DLog(@"Load key: %@, value: %@", key, [self.valueEntered valueForKey:key]);
+    //DLog(@"Load key: %@, value: %@", key, [self.valueEntered valueForKey:key]);
     
     return cellToReturn;
     

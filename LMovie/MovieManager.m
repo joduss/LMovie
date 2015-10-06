@@ -46,16 +46,7 @@
 
 
 
-
-- (Movie *)insertNewMovieWithTitle:(NSString *)title genre:(NSString *)genre year:(NSNumber *)year director:(NSString *)director picture:(NSData *)picture actors:(NSString *)actors duration:(NSNumber *)duration language:(NSString *)language subtitle:(NSString *)subtitle userRate:(NSNumber *)userRate tmdbRate:(NSNumber *)tmdbRate viewed:(BOOL)viewed comment:(NSString *)comment
-{
-
-    NSLog(@"ERREUR, ERREUR ERREUR");
-    
-    return nil;
-}
-
-
+//Insert a movie describe with the given information and commit
 - (void)insertMovieWithInformations:(NSDictionary *)info
 {    
    // DLog(@"new movie inserted: %@", [newMovie description]);
@@ -64,6 +55,8 @@
     
 }
 
+//Insert movie in the DB, but does not commit the changes (use when adding a lot of movie at the same time
+// when importing for example)
 - (void)insertWithoutSavingMovieWithInformations:(NSDictionary *)infoAboutMovie
 {
     NSMutableDictionary *info = [infoAboutMovie mutableCopy];
@@ -121,7 +114,8 @@
 }
 
 
-
+//Modifie the Movie Object with the new information given by the user
+// TODO: modify information directly in the movie object, or create a mock object if not possible or find a better way
 -(Movie *)modifyMovie:(Movie *)movie WithInformations:(NSDictionary *)infoAboutMovie
 {
     Movie *movieToModify = movie;
@@ -181,23 +175,11 @@
 
 
 
-/*-(void)insertNewMovie:(MyMovie *)movie
-{
-    NSManagedObjectContext *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"Movie" inManagedObjectContext:self.managedObjectContext];
-    
-    NSDictionary *info = movie.getAllInfo;
-    
-    for (NSString *key in [info allKeys]) {
-        [newManagedObject setValue:[info valueForKey:key] forKey:key];
-    }
-}*/
-
-
 -(void)deleteMovie:(Movie *)movie{
     [_managedObjectContext deleteObject:movie];
 }
 
-
+//Commit
 - (void)saveContext
 {
     NSError *error = nil;
@@ -217,7 +199,7 @@
 
 
 
-
+//autocomplete missing mandatory information
 - (void)controlInfoDico:(NSMutableDictionary *)info
 {
     if([info valueForKey:@"viewed"] == nil){
@@ -232,7 +214,7 @@
 
 
 
-#pragma mark - gestion des clé, de leur ordre, section associée etc
+#pragma mark - gestion des clé, de leur ordre, section associée etc / Handle keys, order and in which table view section they should be
 /*
     On se base sur Keys.plist. Ce Plist définit le nom des clés (qui sont ceux définit dans CoreData), et on leur associe:
     - un ordre selon l'affichage que l'on veut dans nos TableView
@@ -240,12 +222,18 @@
     - les placeholder (FR et EN) à mettre
     - les "labels" (FR et EN) (label: genre si on a "Sous-titre: FR, EN", Sous-titre et le label)
  */
+/*
+    A plist file is used to organise the MovieInfo table view. The plist states what information should be at which position in
+    which section.
+    It also specifies the placeholder text and the title for the labels
+ */
 
 
 //Retourne soit le dico de la section associée à une variable d'un film, soit de l'ordre
 
+
 -(NSDictionary *)plist{
-    DLog(@"PLIST ACCESS");
+    //DLog(@"PLIST ACCESS");
     if(_plist == nil){
         NSString *file = [[NSBundle mainBundle] pathForResource:@"Keys" ofType:@"plist"];
         NSDictionary *dico = [NSDictionary dictionaryWithContentsOfFile:file];
@@ -257,16 +245,17 @@
 
 -(NSDictionary *)loadPlistValueOfKey:(NSString *)key
 {
-    DLog(@"PLIST: %@", _plist);
+    //DLog(@"PLIST: %@", _plist);
     return [_plist valueForKey:key];
 }
 
-
+//Returns an array that specify the order of the information in the Table view
 -(NSArray *)orderedKey
 {
     return (NSArray *)[self loadPlistValueOfKey:@"order"];
 }
 
+//SREturns an array that specify in which section each information should be
 -(NSArray *)keyOrderedBySection{
     if(_keyOrderedBySection == nil){
         NSMutableArray *indexPathOrdered = [[NSMutableArray alloc] init];
@@ -288,18 +277,20 @@
 
 }
 
-
+//Returns the KEY NAME (A key specify what kind it the information (title, year, duration, ratings, etc))
+// at a given index path
 -(NSString *)keyAtIndexPath:(NSIndexPath *)path
 {
     return [[[self keyOrderedBySection] objectAtIndex:path.section] objectAtIndex:path.row];
 }
 
-
+//Returns in which section the key should be
 -(int)sectionForKey:(NSString *)key{
     NSDictionary *dico = [self loadPlistValueOfKey:@"section"];
     return [[dico valueForKey:key] floatValue];
 }
 
+//Returns the label for a given key
 -(NSString *)labelForKey:(NSString *)key
 {
     DLog(@"langue label for key in MOVIEMANAGER: %@", [[SettingsLoader settings] language]);
@@ -311,7 +302,7 @@
 }
 
 
-
+//Returns the placeholder text for a given key
 -(NSString *)placeholderForKey:(NSString *)key
 {
     
@@ -328,7 +319,7 @@
 
 
 
-
+//Return the name associated to a LMResolution value
 +(NSString *)resolutionToStringForResolution:(LMResolution)resolution
 {
     NSString *file = [[NSBundle mainBundle] pathForResource:@"MultipleChoices" ofType:@"plist"];

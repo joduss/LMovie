@@ -22,7 +22,11 @@
 }
 
 
-//return YES when the loading is finished
+/**
+ Load basic information for that movie (title, cast, other information about the movie and with small poster image)
+ 
+ @return true when loading is over
+ */
 -(BOOL)loadBasicInfoFromTMDB
 {
     int try = 3;
@@ -80,16 +84,16 @@
 
 -(NSString *)basePath
 {
-    /*if(_basePath == nil){
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://api.themoviedb.org/3/configuration?api_key=%@", TMDB_API_KEY]];
-        NSData *jsonData = [NSData dataWithContentsOfURL:url];
-        NSDictionary *dico = [[NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:nil] valueForKey:@"images"];
-        _basePath = [dico valueForKey:@"base_url"];
-    
-    }
-    return _basePath;*/
-    
-    return @"http://cf2.imgobject.com/t/p";
+//    /*if(_basePath == nil){
+//        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://api.themoviedb.org/3/configuration?api_key=%@", TMDB_API_KEY]];
+//        NSData *jsonData = [NSData dataWithContentsOfURL:url];
+//        NSDictionary *dico = [[NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:nil] valueForKey:@"images"];
+//        _basePath = [dico valueForKey:@"base_url"];
+//    
+//    }
+//    return _basePath;*/
+//    
+return @"http://cf2.imgobject.com/t/p";
 }
 
 
@@ -164,6 +168,7 @@
 }
 
 
+/** Returns a dictionary with the basic information for a movie (title, year, director) */
 -(NSDictionary *)basicInfosDictionnaryFormatted
 {
     if(_basicInfosDictionnaryFormatted == nil){
@@ -179,7 +184,7 @@
 }
 
 
-
+/** Returns a dic with all information about the movie (title, year, cast, genres, rating, poster) */
 -(NSDictionary *)infosDictionnaryFormatted
 {
     if(_infosDictionnaryFormatted == nil)

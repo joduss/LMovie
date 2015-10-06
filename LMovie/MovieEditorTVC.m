@@ -99,7 +99,7 @@
 }
 
 
--(NSUInteger)supportedInterfaceOrientations
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskLandscape;
 }
@@ -290,17 +290,18 @@
  ****************************************/
 
 #pragma mark - IBAction methods
+/** Discard the movie creation or modification */
 - (IBAction)resetButtonPressed:(UIBarButtonItem *)sender {
     //[_delegate actionExecuted:ActionReset];
     _valueEntered = [[NSMutableDictionary alloc] init];
     
     [self.popover dismissPopoverAnimated:YES];
-    [self dismissModalViewControllerAnimated:YES];
+    //[self dismissModalViewControllerAnimated:YES];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 
-
+/** Save the movie information in the db */
 - (IBAction)saveButtonPressed:(UIBarButtonItem *)sender {
     
     [self.view endEditing:YES];
@@ -363,7 +364,7 @@
             [self.popover dismissPopoverAnimated:YES];
         }
         else{
-            [self dismissModalViewControllerAnimated:YES];
+            //[self dismissModalViewControllerAnimated:YES];
             [self.navigationController popViewControllerAnimated:YES];
         }
     }
@@ -489,7 +490,7 @@
 
 
 /****************************************
- RateViewCell en SegmentedControl
+ RateViewCell en SegmentedControl: indicates if use has watched the movie
  ****************************************/
 #pragma mark - methode pour SegmentedControl
 - (IBAction)segmentControlChanged:(UISegmentedControl *)sender;
@@ -514,7 +515,7 @@
 
 
 /****************************************
- Image picker
+ Image picker: To pick image for movie poster
  ****************************************/
 
 #pragma mark - image picker
@@ -531,15 +532,11 @@
         if (*stop) {
             return ;
         }
-        // TODO : access granted
         accessFree = YES;
         *stop = TRUE;
     } failureBlock:^(NSError *error) {
-        // TODO: User denied access. Tell them we can't do anything.
         accessFree = NO;
     }];
-    
-    
     
     
     if(accessFree == true)
@@ -591,7 +588,8 @@
 
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [picker dismissModalViewControllerAnimated:YES];
+    //[picker dismissModalViewControllerAnimated:YES];
+    [picker dismissViewControllerAnimated:true completion:nil];
 }
 
 

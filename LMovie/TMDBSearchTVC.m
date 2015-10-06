@@ -123,52 +123,14 @@
     return cellToReturn;
 }
 
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
-
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
- {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- }
- else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
-
 
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    //The user selected a cell, representing a movie. Now we have to get the information and show the MovieEditor so he can
+    //modify some information and add some personal information related to that movie
     DLog(@"selection019");
     TMDBMovie *movie = [ [TMDBMovie alloc] initWithMovieID:[_arrayOfMovieID objectAtIndex:indexPath.row]];
     __block NSDictionary *infoDico;
@@ -180,8 +142,9 @@
     [progressView show:YES];
     [progressView setMinShowTime:1];
     
+    
+    //asynchronous downloado of the movie's data.
     dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
         [movie loadBasicInfoFromTMDB];
         infoDico = movie.infosDictionnaryFormatted;
         
@@ -202,6 +165,7 @@
  ****************************************/
 #pragma mark - SearchBar delegate
 
+/** Send the user's queries*/
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [_searchBar resignFirstResponder];
@@ -209,8 +173,7 @@
     [_arrayOfMovieID removeAllObjects];
     [self.tableView reloadData];
     
-#warning éventuellement ajouter plus de résultats que une seulement une page
-    //execute la recherche:
+#warning Add the support for more results
     //int numberPages = 0;
     //int numberResults = 0;
     
@@ -220,7 +183,7 @@
     BOOL success = NO;
     int try = 0;
     
-    //chargement du dico des résultats
+    //Load the results on TMDB as JSON dictionary object
     while(!success){
         @try {
             NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://api.themoviedb.org/3/search/movie?api_key=%@&query=%@", TMDB_API_KEY, [searchBar.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]]];
@@ -241,7 +204,7 @@
         }
     }
     
-    //On traire selon succes ou non, et  selon résultat ou non
+    //Process the data that are in the dictionary
     if(success){
         DLog(@"ok, %d", [dico count]);
         NSArray *array = [dico valueForKey:@"results"];

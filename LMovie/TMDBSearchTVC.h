@@ -11,6 +11,9 @@
 #import "MBProgressHUD.h"
 #import "MovieEditorTVC.h"
 
+
+/** TV displaying the movies associated with the user query */
+
 @interface TMDBSearchTVC : UITableViewController <UISearchBarDelegate, UIPopoverControllerDelegate>
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) UIPopoverController *popover;

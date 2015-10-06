@@ -193,15 +193,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C810A0F915FE811100DE9FB3 /* Devenue Inutile */ = {
+		C810A0F915FE811100DE9FB3 /* Useless */ = {
 			isa = PBXGroup;
 			children = (
+				C8F369E715AAE8EE0024F2CD /* original */,
 				C8FDF6D415A89F9100289DAF /* MyMovie.h */,
 				C8FDF6D515A89F9100289DAF /* MyMovie.m */,
 				C888F00C15B419BF0063164C /* infoFormattedForArray.h */,
 				C888F00D15B419BF0063164C /* infoFormattedForArray.m */,
 			);
-			name = "Devenue Inutile";
+			name = Useless;
 			path = LMovie;
 			sourceTree = "<group>";
 		};
@@ -401,7 +402,7 @@
 			isa = PBXGroup;
 			children = (
 				C81756861687662A00F592C9 /* AssetsLibrary.framework */,
-				C810A0F915FE811100DE9FB3 /* Devenue Inutile */,
+				C810A0F915FE811100DE9FB3 /* Useless */,
 				C8559D5B15DAB4CA0027B75E /* External Classes */,
 				C8F30C1915A210C7000AB421 /* LMovie */,
 				C8F30C1015A210C7000AB421 /* Frameworks */,
@@ -432,7 +433,6 @@
 			isa = PBXGroup;
 			children = (
 				C888F01115B419FF0063164C /* Images */,
-				C8F369E715AAE8EE0024F2CD /* original */,
 				C8F30C2515A210C7000AB421 /* MainStoryboard.storyboard */,
 				C8137B5A15E7D51100DAA7A5 /* TMDBSearchTVC */,
 				C8A4D2AC15DC1EB00082BFD4 /* SearchTVC */,
