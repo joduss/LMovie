@@ -658,15 +658,13 @@
 		C8EA32AE16079C6E009BB92F /* Ad Hoc */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Michel Duss (RKFK698625)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Michel Duss (RKFK698625)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jonathan Duss (RKFK698625)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LMovie/LMovieB-Prefix.pch";
 				INFOPLIST_FILE = "LMovie/LMovieB-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = LMovieB;
-				PROVISIONING_PROFILE = "3EDC5120-D7F4-4660-A454-0963B68CAC3A";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EDC5120-D7F4-4660-A454-0963B68CAC3A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = "Ad Hoc";
@@ -721,15 +719,11 @@
 		C8F30C3415A210C7000AB421 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Michel Duss (RKFK698625)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Michel Duss (RKFK698625)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LMovie/LMovieB-Prefix.pch";
 				INFOPLIST_FILE = "LMovie/LMovieB-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = LMovieB;
-				PROVISIONING_PROFILE = "3EDC5120-D7F4-4660-A454-0963B68CAC3A";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EDC5120-D7F4-4660-A454-0963B68CAC3A";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -737,15 +731,11 @@
 		C8F30C3515A210C7000AB421 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Michel Duss (RKFK698625)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Michel Duss (RKFK698625)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LMovie/LMovieB-Prefix.pch";
 				INFOPLIST_FILE = "LMovie/LMovieB-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = LMovieB;
-				PROVISIONING_PROFILE = "3EDC5120-D7F4-4660-A454-0963B68CAC3A";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EDC5120-D7F4-4660-A454-0963B68CAC3A";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
