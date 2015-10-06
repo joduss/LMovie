@@ -53,7 +53,6 @@
             [_valueEntered removeObjectForKey:cell.associatedKey];
         }
         DLog(@"Value Entered set for: key: %@ and value: %@", cell.associatedKey, textField.text);
-        
     }
 }
 
@@ -67,9 +66,9 @@
 - (IBAction)segmentControlChanged:(UISegmentedControl *)sender;
 {
     DLog(@"segmentControlChanged !!!");
-    int value = [sender selectedSegmentIndex];
-    DLog(@"value entered: %@", [NSNumber numberWithInt:value]);
-    [_valueEntered setValue:[NSString stringWithFormat:@"%d", value] forKey:@"viewed"];
+    long value = [sender selectedSegmentIndex];
+    DLog(@"value entered: %@", [NSNumber numberWithInteger:value]);
+    [_valueEntered setValue:[NSString stringWithFormat:@"%ld", value] forKey:@"viewed"];
 }
 
 

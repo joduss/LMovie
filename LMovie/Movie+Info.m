@@ -9,9 +9,9 @@
 #import "Movie+Info.h"
 #import "MovieManager.h"
 
+
+
 @implementation Movie (Info)
-
-
 
 //Retourne les valeurs pour toutes les clés + avec les images de taille désirée, SANS tmdb_ID !!!
 

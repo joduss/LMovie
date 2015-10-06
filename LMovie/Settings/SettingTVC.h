@@ -36,6 +36,7 @@
 
 -(IBAction)okButtonPressed:(id)sender;
 
+/** Stop the download of the missing posters */
 -(void)stopPictureLoading:(UIGestureRecognizer *)gesture;
 
 @end

@@ -8,7 +8,7 @@
 
 #import "Movie.h"
 
-
+//Represents a movie object
 @implementation Movie
 
 @dynamic actors;

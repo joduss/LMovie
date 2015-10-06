@@ -41,14 +41,14 @@
 
 #pragma mark - Table view data source
 
-- (int)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 2;
 }
 
-- (int)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    int number = [[[_movieManager keyOrderedBySection] objectAtIndex:section] count];
+    NSInteger number = [[[_movieManager keyOrderedBySection] objectAtIndex:section] count];
     if(section == 0)
         number--;
     return number;
@@ -58,7 +58,7 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DLog(@"section: %d, row: %d ", indexPath.section, indexPath.row);
+    //DLog(@"section: %d, row: %d ", indexPath.section, indexPath.row);
     UITableViewCell *cellToReturn;
     NSString *identifier = @"";
     identifier = @"general cell movieEditor";
@@ -147,19 +147,9 @@
         
         cellToReturn = cell;
     }
-    
-    //DLog(@"Array %@", sectionArray);
-    //DLog(@"Populating cell: key %@, value: %@", key, value);
-    
-    
-    //si clé contient "rate" faut agir différement
-    
-    
-    //DLog(@"Load key: %@, value: %@", key, [self.valueEntered valueForKey:key]);
+
     
     return cellToReturn;
-    
-    
 }
 
 #pragma mark - Table view delegate
@@ -191,8 +181,7 @@
             resolutionPicker.popover = popover;
             [resolutionPicker setForSearch:YES];
             
-            // either one of the two, depending on if your view controller is the initial one
-            
+            // either one of the two, depending on if your view controller is the initial one    
             
         }
     }

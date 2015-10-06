@@ -65,12 +65,12 @@
  PICKER delegate
  ****************************************/
 #pragma mark - Picker Delegate et Datasource
--(int)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
     return 1;
 }
 
--(int)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
     if(component == 0){
         return [self.resolutionChoice count];
@@ -81,7 +81,7 @@
 
 -(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    return [MovieManager resolutionToStringForResolution:row];
+    return [MovieManager resolutionToStringForResolution:(LMResolution)row];
 }
 
 
@@ -126,7 +126,7 @@
 #pragma mark - IBAction
 - (IBAction)saveResolutionButtonPressed:(UIBarButtonItem *)sender {
     DLog(@"coucou");
-    [_delegate selectedResolution:[_picker selectedRowInComponent:0]];
+    [_delegate selectedResolution:(LMResolution)[_picker selectedRowInComponent:0]];
     [_popover dismissPopoverAnimated:YES];
 }
 @end

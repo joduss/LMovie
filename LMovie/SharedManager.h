@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "Movie+Info.h"
 
+
+/**Provide a way to load star images in a fast way. Keeps them in memory has they are access very often*/
 @interface SharedManager : NSObject
 
 @property (readonly, strong) UIImage *emptyStar;

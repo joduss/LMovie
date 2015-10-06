@@ -42,13 +42,9 @@
             
             NSURL *castsUrl = [NSURL URLWithString:[NSString stringWithFormat:@"http://api.themoviedb.org/3/movie/%@/casts?api_key=%@", _movieID, TMDB_API_KEY]];
             NSData *castJsonData = [NSData dataWithContentsOfURL:castsUrl];
+            _infosCasts = [NSJSONSerialization JSONObjectWithData:castJsonData options:kNilOptions error:nil];
             DLog(@"castsURL: %@", [castsUrl description]);
             
-            
-            _infosCasts = [NSJSONSerialization JSONObjectWithData:castJsonData options:kNilOptions error:nil];
-            
-            
-            DLog(@"language avant recherche : %@", language);
             
             NSURL *generalUrl = [NSURL URLWithString:[NSString stringWithFormat:@"http://api.themoviedb.org/3/movie/%@?api_key=%@&language=%@", _movieID, TMDB_API_KEY, language]];
             NSData *generalJsonData = [NSData dataWithContentsOfURL:generalUrl];
@@ -60,12 +56,10 @@
             
             
             NSString *miniPicturePath = [self.basePath stringByAppendingFormat:@"/w150%@?api_key=%@",[_infosGeneral valueForKey:@"poster_path"],TMDB_API_KEY];
+            _miniPicture = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:miniPicturePath]]];
             DLog(@"image path: %@", miniPicturePath);
             
-            _miniPicture = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:miniPicturePath]]];
-            
             succes = YES;
-            
         }
         @catch (NSException *exception) {
             succes = NO;
@@ -84,16 +78,8 @@
 
 -(NSString *)basePath
 {
-//    /*if(_basePath == nil){
-//        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://api.themoviedb.org/3/configuration?api_key=%@", TMDB_API_KEY]];
-//        NSData *jsonData = [NSData dataWithContentsOfURL:url];
-//        NSDictionary *dico = [[NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:nil] valueForKey:@"images"];
-//        _basePath = [dico valueForKey:@"base_url"];
-//    
-//    }
-//    return _basePath;*/
-//    
-return @"http://cf2.imgobject.com/t/p";
+//base path to get from tmdb api
+    return @"http://cf2.imgobject.com/t/p";
 }
 
 

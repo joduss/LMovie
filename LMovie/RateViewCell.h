@@ -6,6 +6,8 @@
 //
 //
 
+//IMPLEMENTATION FOLLOWING A TUTORIAL
+
 #import <UIKit/UIKit.h>
 #import "RateView.h"
 

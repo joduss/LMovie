@@ -17,7 +17,9 @@
 @end
 
 
-
+/**
+ This class presents a picker to set the resolution of the movie (480p, 720p, 1080p, 3D)
+ */
 @interface ResolutionPickerVC : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource, UIPopoverControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 @property (weak, nonatomic) IBOutlet UIPickerView *picker;

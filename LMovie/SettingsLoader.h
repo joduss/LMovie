@@ -11,7 +11,7 @@
 
 
 
-
+/** Handle settings */
 @interface SettingsLoader : NSObject
 -(NSString *)appLanguage;
 -(void)changeAppLanguageToLanguage:(NSString *)language;

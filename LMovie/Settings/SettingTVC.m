@@ -190,7 +190,7 @@
     DLog(@"fichier écrit vers: %@", filePath);
     float percentDonePerMovie = 1.0/[movies count];
     dispatch_async(dispatch_get_main_queue(), ^{
-        [_progressView setDetailsLabelText:[NSString stringWithFormat:@"%d movies", [movies count]]];
+        [_progressView setDetailsLabelText:[NSString stringWithFormat:@"%ld movies", [movies count]]];
     });
     
     NSMutableArray *keys = [[_movieManager orderedKey] mutableCopy];
@@ -277,7 +277,7 @@
     
     //affiche le nombre de films en train d'être importés
     dispatch_async(dispatch_get_main_queue(), ^{
-        [_progressView setDetailsLabelText:[NSString stringWithFormat:@"%d movies", [movies count]]];
+        [_progressView setDetailsLabelText:[NSString stringWithFormat:@"%lu movies", (unsigned long)[movies count]]];
         _progressView.minShowTime = 2;
     });
     
@@ -421,7 +421,7 @@
         [_progressView show:YES];
         [_progressView setMinShowTime:2];
         [_progressView setProgress:0];
-        [_progressView setLabelText:[NSString stringWithFormat:@"0/%d",[movies count]]];
+        [_progressView setLabelText:[NSString stringWithFormat:@"0/%lu",(unsigned long)[movies count]]];
         _progressView.detailsLabelText = NSLocalizedString(@"Clic to stop KEY", @"");
         
         
@@ -457,7 +457,7 @@
                     
                     dispatch_async( dispatch_get_main_queue(), ^{
                         numberMovieOk++;
-                        [_progressView setLabelText:[NSString stringWithFormat:@"%d/%d",numberMovieOk,[movies count]]];
+                        [_progressView setLabelText:[NSString stringWithFormat:@"%d/%ld",numberMovieOk,[movies count]]];
                         float progress = (float)numberMovieOk / (float)[movies count];
                         [_progressView setProgress:progress];
                         if(progress == 1){
@@ -614,7 +614,7 @@
 {
     DLog(@"User a changé de langue en cliquant");
     SettingsLoader *s = [SettingsLoader settings];
-    int choix = [self.appLanguageChooser selectedSegmentIndex];
+    long choix = [self.appLanguageChooser selectedSegmentIndex];
     
     switch (choix) {
         case 0:

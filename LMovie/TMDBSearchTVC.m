@@ -143,7 +143,7 @@
     [progressView setMinShowTime:1];
     
     
-    //asynchronous downloado of the movie's data.
+    //asynchronous download of the movie's data.
     dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [movie loadBasicInfoFromTMDB];
         infoDico = movie.infosDictionnaryFormatted;
@@ -195,6 +195,7 @@
             success = YES;
         }
         @catch (NSException *exception) {
+            //If there is an exception, try again a few times
             try ++;
             DLog(@"castch");
             if(try > 3){
@@ -206,7 +207,7 @@
     
     //Process the data that are in the dictionary
     if(success){
-        DLog(@"ok, %d", [dico count]);
+        DLog(@"ok, %lud",(unsigned long)[dico count]);
         NSArray *array = [dico valueForKey:@"results"];
         if([array count] <= 0){
             [_arrayOfMovieID addObject:@"NO RESULT"];
@@ -235,7 +236,7 @@
     {
         MovieEditorTVC *vc = segue.destinationViewController;
         vc.addedFromTMDB = YES;
-        vc.valueEntered = sender;
+        vc.movieInformation = sender;
         vc.movieManager = _movieManager;
         vc.popover = self.popover;
     }

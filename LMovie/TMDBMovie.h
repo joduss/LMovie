@@ -11,7 +11,11 @@
 #import "utilities.h"
 
 
-/** Class that represents a movie (information) downloaded from TMDB */
+/** Class that represents a movie (information) downloaded from TMDB.
+ It is init with a movieID that got when the user look for a movie coming from TMDB and 
+ then select that movie.
+ Before doing anything, first call loadBasicInfoFromTMDB just before getting some properties
+ */
 @interface TMDBMovie : NSObject
 
 -(id)initWithMovieID:(NSString *)movieID;

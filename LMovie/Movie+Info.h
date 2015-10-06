@@ -29,7 +29,9 @@ typedef enum {
 
 
 /**
- Classe représentant une instance d'un MOVIE.
+Represent a MOVIE.
+ Add some useful function for the Movie class
+ 
  */
 @interface Movie (Info)
 /**

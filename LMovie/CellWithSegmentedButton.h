@@ -11,6 +11,7 @@
 #import "MovieManager.h"
 
 
+/** Cell containing a SegmentedButton */
 @interface CellWithSegmentedButton : UITableViewController <UITextFieldDelegate>
 @property (nonatomic, strong) NSMutableDictionary *valueEntered;
 

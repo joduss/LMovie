@@ -54,7 +54,6 @@
 
 -(void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
-    DLog(@"popoverControllerDidDismiss dans movieinfo");
     [self.delegate movieInfoDidHide];
     self.popover = nil;
     
@@ -89,11 +88,9 @@
             [[_keyArray objectAtIndex:section]addObject:key];
         }
     }
-    
-    
+        
     DLog2(@"infos du film: %@", [_infos description]);
     //DLog(@"keyArray: %@", [_keyArray description]);
-    
 }
 
 
@@ -123,8 +120,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    int n = [[_keyArray objectAtIndex:section] count];
-    return n;
+    return [[_keyArray objectAtIndex:section] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -224,7 +220,7 @@
 {
     DLog2(@"info dans heighforRow: %@", [_infos description]);
 
-    
+    //Height of the cell for the image
     if(indexPath.row == 0 && indexPath.section == 0){
         return 330;
     }
@@ -241,7 +237,7 @@
             //DLog(@"text: %@",text);
             
             CGFloat height = size.height;
-            int numberOccurence = [[text componentsSeparatedByString:@"\n"] count];
+            NSInteger numberOccurence = [[text componentsSeparatedByString:@"\n"] count];
             
             if(height < 45 && numberOccurence < 2){
                 height = 45.0;
@@ -250,7 +246,6 @@
             {
                 height = height + 20.0;
             }
-            DLog(@"height for cell: %f", height);
             return height;
         }
         else

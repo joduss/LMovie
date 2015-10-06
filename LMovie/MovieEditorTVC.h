@@ -16,6 +16,8 @@
 #import "ResolutionPickerVC.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
+
+/** This class presents a table view to edit the movie */
 @interface MovieEditorTVC : UITableViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RateViewCellDelegate, ResolutionPickerVC, UIPopoverControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
@@ -27,7 +29,7 @@
 - (IBAction)pickImage:(id)sender;
 @property (nonatomic, weak) UIPopoverController *popover;
 - (IBAction)segmentControlChanged:(UISegmentedControl *)sender;
-@property (nonatomic, strong) NSMutableDictionary *valueEntered;
+@property (nonatomic, strong) NSMutableDictionary *movieInformation;
 @property (nonatomic) BOOL addedFromTMDB;
 -(void)deleteImage;
 

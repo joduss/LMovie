@@ -658,6 +658,7 @@
 		C8EA32AE16079C6E009BB92F /* Ad Hoc */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jonathan Duss (RKFK698625)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LMovie/LMovieB-Prefix.pch";
@@ -719,10 +720,12 @@
 		C8F30C3415A210C7000AB421 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LMovie/LMovieB-Prefix.pch";
 				INFOPLIST_FILE = "LMovie/LMovieB-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = LMovieB;
 				WRAPPER_EXTENSION = app;
 			};
@@ -731,6 +734,7 @@
 		C8F30C3515A210C7000AB421 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LMovie/LMovieB-Prefix.pch";
 				INFOPLIST_FILE = "LMovie/LMovieB-Info.plist";

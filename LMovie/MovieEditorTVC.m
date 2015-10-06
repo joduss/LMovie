@@ -24,7 +24,7 @@
 @synthesize movieManager = _movieManager;
 @synthesize delegate = _delegate;
 @synthesize popover = _popover; 
-@synthesize valueEntered = _valueEntered;
+@synthesize movieInformation = _movieInformation;
 @synthesize pc = _pc;
 @synthesize addedFromTMDB = _addedFromTMDB;
 
@@ -34,9 +34,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    if(!_valueEntered)
+    if(!_movieInformation)
     {
-        _valueEntered = [[NSMutableDictionary alloc] init];
+        _movieInformation = [[NSMutableDictionary alloc] init];
     }
     [self.tableView setAllowsSelection:NO];
     [self.navigationItem setHidesBackButton:YES animated:YES];
@@ -55,13 +55,13 @@
         self.title = NSLocalizedString(@"Modify movie KEY", @"");
         for(NSString *key in _movieManager.allKey){
             if([key isEqualToString:@"big_picture"]){
-                [_valueEntered setValue:[UIImage imageWithData:_movieToEdit.big_picture] forKey:key];
+                [_movieInformation setValue:[UIImage imageWithData:_movieToEdit.big_picture] forKey:key];
             }
             else if([key isEqualToString:@"mini_picture"]){
-                [_valueEntered setValue:[UIImage imageWithData:_movieToEdit.mini_picture] forKey:key];
+                [_movieInformation setValue:[UIImage imageWithData:_movieToEdit.mini_picture] forKey:key];
             }
             else {
-                [_valueEntered setValue:[[_movieToEdit valueForKey:key] description] forKey:key];
+                [_movieInformation setValue:[[_movieToEdit valueForKey:key] description] forKey:key];
             }
         }
     }
@@ -114,12 +114,12 @@
  ****************************************/
 #pragma mark - Table view data source
 
-- (int)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 2;
 }
 
-- (int)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [[[_movieManager keyOrderedBySection] objectAtIndex:section] count];
 }
@@ -127,17 +127,15 @@
 
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    DLog(@"section: %d, row: %d ", indexPath.section, indexPath.row);
+{    
     
-    
-    int row = indexPath.row;
+    NSInteger row = indexPath.row;
     NSString *identifier = @""; //rempli plus tard
     
     if(indexPath.section == 0 && row == 0){
         identifier = @"picture cell";
         MovieEditorPictureCell * cell = (MovieEditorPictureCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
-        if([_valueEntered valueForKey:@"big_picture"] == nil){
+        if([_movieInformation valueForKey:@"big_picture"] == nil){
             NSString *file = [[NSBundle mainBundle] pathForResource:@"emptyartwork_big" ofType:@"jpg"];
             cell.cellImage = [UIImage imageWithContentsOfFile:file];
 
@@ -145,7 +143,7 @@
         }
         else {
             DLog(@"Image mise");
-            cell.cellImage = [_valueEntered valueForKey:@"big_picture"];
+            cell.cellImage = [_movieInformation valueForKey:@"big_picture"];
         }
         [cell.selectButton addTarget:self action:@selector(pickImage:) forControlEvents:UIControlEventTouchUpInside];
         [cell.deleteImageButton addTarget:self action:@selector(deleteImage) forControlEvents:UIControlEventTouchUpInside];
@@ -182,10 +180,10 @@
             [cell.choice insertSegmentWithTitle:NSLocalizedString(@"? KEY", @"") atIndex:ViewedMAYBE animated:NO];
             
             [cell.choice addTarget:self action:@selector(segmentControlChanged:) forControlEvents:UIControlEventValueChanged];
-            int viewedValue = [[_valueEntered valueForKey:@"viewed"] intValue];
-            if(viewedValue < 0 || viewedValue > 2 || ![_valueEntered valueForKey:@"viewed"]){
+            int viewedValue = [[_movieInformation valueForKey:@"viewed"] intValue];
+            if(viewedValue < 0 || viewedValue > 2 || ![_movieInformation valueForKey:@"viewed"]){
                 viewedValue = ViewedMAYBE;
-                [_valueEntered setValue:[NSString stringWithFormat:@"%d", viewedValue] forKey:@"viewed"];
+                [_movieInformation setValue:[NSString stringWithFormat:@"%d", viewedValue] forKey:@"viewed"];
             }
             cell.choice.selectedSegmentIndex = viewedValue;
             
@@ -207,7 +205,7 @@
             NSDictionary *keyDico = [NSDictionary dictionaryWithDictionary:[sectionArray objectAtIndex:row]];
             NSString *key = [[keyDico allKeys] objectAtIndex:0];*/
             cell.key =  key;
-            [cell configureCellWithRate:[[_valueEntered valueForKey:key] floatValue]];
+            [cell configureCellWithRate:[[_movieInformation valueForKey:key] floatValue]];
             
             
             cellToReturn = cell;
@@ -218,12 +216,12 @@
             MovieEditorGeneralCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if([key isEqualToString:@"resolution"])
             {
-                NSString *title = [MovieManager resolutionToStringForResolution:[[self.valueEntered valueForKey:key] intValue]];
+                NSString *title = [MovieManager resolutionToStringForResolution:[[self.movieInformation valueForKey:key] intValue]];
                 cell.textField.text = title;
             }
             else
             {
-                cell.textField.text = [self.valueEntered valueForKey:key];
+                cell.textField.text = [self.movieInformation valueForKey:key];
             }
             cell.infoLabel.text = [_movieManager labelForKey:key];
             cell.textField.placeholder = [_movieManager placeholderForKey:key];
@@ -247,7 +245,7 @@
         //si clé contient "rate" faut agir différement
         
         
-        DLog(@"Load key: %@, value: %@", key, [self.valueEntered valueForKey:key]);
+        DLog(@"Load key: %@, value: %@", key, [self.movieInformation valueForKey:key]);
         
         return cellToReturn;
     }
@@ -293,7 +291,7 @@
 /** Discard the movie creation or modification */
 - (IBAction)resetButtonPressed:(UIBarButtonItem *)sender {
     //[_delegate actionExecuted:ActionReset];
-    _valueEntered = [[NSMutableDictionary alloc] init];
+    _movieInformation = [[NSMutableDictionary alloc] init];
     
     [self.popover dismissPopoverAnimated:YES];
     //[self dismissModalViewControllerAnimated:YES];
@@ -307,7 +305,7 @@
     [self.view endEditing:YES];
 
     
-    DLog(@"value entered lorsque save est pressé: %@", [_valueEntered description]);
+    DLog(@"value entered lorsque save est pressé: %@", [_movieInformation description]);
 
     
     BOOL error1 = NO;
@@ -315,7 +313,7 @@
     
     
     //test: title est différente de rien
-    NSString *test1 = [_valueEntered valueForKey:@"title"];
+    NSString *test1 = [_movieInformation valueForKey:@"title"];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[^a-zA-Z0-9]"];
     error1 = [test1 isEqualToString:@""] || test1 == nil || [predicate evaluateWithObject:test1]; 
     
@@ -326,7 +324,7 @@
     } else {
         
         //Test de la condition: année est un nombre
-        NSString *test2 = [_valueEntered valueForKey:@"year"];
+        NSString *test2 = [_movieInformation valueForKey:@"year"];
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         error2 = ([formatter numberFromString:test2] == nil);
         //DLog(@"From %@ -> formater -> %@", test2, [formatter numberFromString:test2]);
@@ -343,11 +341,13 @@
         Movie *movie;
         
         //si le film à éditer existe, on modifie l'objet, sinon, crée un nouveau objet
+        //If we are adding a new movie in the library, then we create a new record in the db
         if(_movieToEdit == nil || _addedFromTMDB){
-            [_movieManager insertMovieWithInformations:_valueEntered];
+            [_movieManager insertMovieWithInformations:_movieInformation];
         }
         else {
-            movie = [_movieManager modifyMovie:_movieToEdit WithInformations:_valueEntered];
+            //Otherwise it means movie information are being modified, thus we only update the record
+            movie = [_movieManager modifyMovie:_movieToEdit WithInformations:_movieInformation];
             
             if([_delegate respondsToSelector:@selector(actionExecuted:)]){
                 [_delegate actionExecuted:ActionSaveModification];
@@ -384,7 +384,7 @@
 {
     MovieEditorGeneralCell *cell = (MovieEditorGeneralCell *) [[textField superview] superview];
     if(cell != nil && cell.associatedKey != nil){
-        [_valueEntered setValue:textField.text forKey:cell.associatedKey];
+        [_movieInformation setValue:textField.text forKey:cell.associatedKey];
         [textField resignFirstResponder];
         DLog(@"Value Entered set for: key: %@ and value: %@", cell.associatedKey, textField.text);
     }
@@ -496,9 +496,9 @@
 - (IBAction)segmentControlChanged:(UISegmentedControl *)sender;
 {
     DLog(@"segmentControlChanged !!!");
-    int value = [sender selectedSegmentIndex];
+    long value = [sender selectedSegmentIndex];
     DLog(@"value entered: %@", [NSNumber numberWithInt:value]);
-    [_valueEntered setValue:[NSString stringWithFormat:@"%d", value] forKey:@"viewed"];
+    [_movieInformation setValue:[NSString stringWithFormat:@"%ld", value] forKey:@"viewed"];
 }
 
 
@@ -507,7 +507,7 @@
 
 -(void)rateChangeForKey:(NSString *)key newRate:(float)rate{
     DLog(@"rateChageForKey: %@, newRate:%f", key, rate);
-    [_valueEntered setValue:[NSString stringWithFormat:@"%f", rate] forKey:key];
+    [_movieInformation setValue:[NSString stringWithFormat:@"%f", rate] forKey:key];
 }
 
 
@@ -578,7 +578,7 @@
     originalImage = (UIImage *) [info objectForKey:
                                  UIImagePickerControllerOriginalImage];
 
-    [_valueEntered setValue:originalImage forKey:@"big_picture"];
+    [_movieInformation setValue:originalImage forKey:@"big_picture"];
     [self.tableView reloadData];
     
     [self.pc dismissPopoverAnimated:YES];
@@ -609,7 +609,7 @@
 -(void)deleteImage
 {
     DLog(@"deleteImage");
-    [_valueEntered removeObjectForKey:@"big_picture"];
+    [_movieInformation removeObjectForKey:@"big_picture"];
     [self.tableView reloadData];
 }
 
@@ -626,7 +626,7 @@
 -(void)selectedResolution:(LMResolution)resolution
 {
     DLog(@"resolutionSelected");
-    [_valueEntered setObject:[NSString stringWithFormat:@"%d",resolution] forKey:@"resolution"];
+    [_movieInformation setObject:[NSString stringWithFormat:@"%d",resolution] forKey:@"resolution"];
     [self.tableView reloadData];
 }
 

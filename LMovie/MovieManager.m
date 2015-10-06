@@ -293,7 +293,7 @@
 //Returns the label for a given key
 -(NSString *)labelForKey:(NSString *)key
 {
-    DLog(@"langue label for key in MOVIEMANAGER: %@", [[SettingsLoader settings] language]);
+    //DLog(@"langue label for key in MOVIEMANAGER: %@", [[SettingsLoader settings] language]);
 
     if([[[SettingsLoader settings] language] isEqualToString:@"fr"]){
         return [[self loadPlistValueOfKey:@"label-fr"] valueForKey:key];
@@ -305,8 +305,7 @@
 //Returns the placeholder text for a given key
 -(NSString *)placeholderForKey:(NSString *)key
 {
-    
-    DLog(@"langue placeholder: %@", [[SettingsLoader settings] language]);
+    //DLog(@"langue placeholder: %@", [[SettingsLoader settings] language]);
     
     if([[[SettingsLoader settings] language] isEqualToString:@"fr"]){
         return [[self loadPlistValueOfKey:@"placeholder-fr"] valueForKey:key];
