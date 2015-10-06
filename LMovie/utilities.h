@@ -20,10 +20,12 @@ typedef enum ActionDoneIn {
 
 @interface utilities : NSObject
 
+//Resize a huge image to a smaller bug big image
 +(UIImage *)resizeImageToBig:(UIImage *)image;
+///Resized a huge image to a mini image
 +(UIImage *)resizeImageToMini:(UIImage *)image;
 
-
+/// Represent an array in string betten than [array description]
 +(NSString *)stringFromArray:(NSArray *)array;
 
 
